@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#050807">
+
+    <title>Criar conta • RunWorld</title>
+
+    <link rel="stylesheet" href="./cadastro.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="./config.js"></script>
+</head>
+
+<body>
+
+    <!-- VÍDEO DE FUNDO -->
+    <div class="cadastro-cena">
+        <video
+            class="cadastro-video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-hidden="true"
+        >
+            <source src="./VID-20261001-WA7966.mp4" type="video/mp4">
+        </video>
+
+        <div class="cadastro-video-overlay"></div>
+    </div>
+
+    <main class="cadastro-page">
+
+        <!-- LOGO ORIGINAL -->
+        <header class="cadastro-marca">
+            <a href="./login.html"
+               class="cadastro-logo-link"
+               aria-label="Voltar para o login">
+                <img
+                    src="./IMG-20260923-WA4190.jpg"
+                    alt="Logo RunWorld"
+                    class="cadastro-logo"
+                >
+            </a>
+
+            <div class="cadastro-marca-texto">
+                <h1>RunWorld</h1>
+                <p>EXPLORE. CORRA. CONQUISTE.</p>
+            </div>
+        </header>
+
+        <!-- CARTÃO DE CADASTRO -->
+        <section class="cadastro-card">
+
+            <div class="cadastro-conteudo">
+
+                <div class="cadastro-cabecalho">
+                    <span class="cadastro-etiqueta">RUNWORLD</span>
+
+                    <h2>Crie sua conta</h2>
+
+                    <p>
+                        Prepare-se para explorar o mundo
+                        e conquistar novos caminhos.
+                    </p>
+                </div>
+
+                <form id="formCadastro">
+
+                    <div class="campo">
+                        <label for="nome">Nome completo</label>
+
+                        <div class="campo-input">
+                            <i data-lucide="user"></i>
+
+                            <input
+                                type="text"
+                                id="nome"
+                                name="nome"
+                                placeholder="Como podemos te chamar?"
+                                autocomplete="name"
+                                maxlength="80"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="email">E-mail</label>
+
+                        <div class="campo-input">
+                            <i data-lucide="mail"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="voce@exemplo.com"
+                                autocomplete="email"
+                                maxlength="254"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="senha">Senha</label>
+
+                        <div class="campo-input">
+                            <i data-lucide="lock-keyhole"></i>
+
+                            <input
+                                type="password"
+                                id="senha"
+                                name="senha"
+                                placeholder="Crie uma senha"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="botao-olho"
+                                data-alvo="senha"
+                                aria-label="Mostrar senha"
+                                aria-pressed="false"
+                            >
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+
+                        <small class="campo-ajuda">
+                            Use pelo menos 8 caracteres.
+                        </small>
+                    </div>
+
+                    <div class="campo">
+                        <label for="confirmarSenha">Confirmar senha</label>
+
+                        <div class="campo-input">
+                            <i data-lucide="shield-check"></i>
+
+                            <input
+                                type="password"
+                                id="confirmarSenha"
+                                name="confirmarSenha"
+                                placeholder="Digite a senha novamente"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="botao-olho"
+                                data-alvo="confirmarSenha"
+                                aria-label="Mostrar confirmação da senha"
+                                aria-pressed="false"
+                            >
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                        id="mensagemCadastro"
+                        class="mensagem"
+                        role="status"
+                        aria-live="polite"
+                        hidden
+                    ></div>
+
+                    <button
+                        type="submit"
+                        id="botaoCadastrar"
+                        class="botao-principal"
+                    >
+                        <span>Criar minha conta</span>
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+
+                </form>
+
+                <div class="cadastro-divisor">
+                    <span>JÁ TEM UMA CONTA?</span>
+                </div>
+
+                <a href="./login.html" class="botao-secundario">
+                    Entrar na minha conta
+                </a>
+
+                <p class="cadastro-rodape">
+                    Ao criar sua conta, você poderá começar sua jornada
+                    no RunWorld.
+                </p>
+
+            </div>
+        </section>
+
+        <footer class="rodape-pagina">
+            RUNWORLD © <span id="anoAtual"></span>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+
+            document.getElementById("anoAtual").textContent =
+                new Date().getFullYear();
+
+            const form = document.getElementById("formCadastro");
+            const nomeInput = document.getElementById("nome");
+            const emailInput = document.getElementById("email");
+            const senhaInput = document.getElementById("senha");
+            const confirmarInput = document.getElementById("confirmarSenha");
+            const botao = document.getElementById("botaoCadastrar");
+            const mensagem = document.getElementById("mensagemCadastro");
+
+            function mostrarMensagem(texto, tipo) {
+                mensagem.textContent = texto;
+                mensagem.className = "mensagem " + tipo;
+                mensagem.hidden = false;
+            }
+
+            function esconderMensagem() {
+                mensagem.hidden = true;
+                mensagem.textContent = "";
+                mensagem.className = "mensagem";
+            }
+
+            function atualizarIcones() {
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            }
+
+            // Mostrar ou ocultar as senhas
+            document.querySelectorAll(".botao-olho").forEach((botaoOlho) => {
+                botaoOlho.addEventListener("click", () => {
+                    const campoId = botaoOlho.dataset.alvo;
+                    const campo = document.getElementById(campoId);
+                    const mostrar = campo.type === "password";
+
+                    campo.type = mostrar ? "text" : "password";
+
+                    botaoOlho.setAttribute(
+                        "aria-label",
+                        mostrar ? "Ocultar senha" : "Mostrar senha"
+                    );
+
+                    botaoOlho.setAttribute(
+                        "aria-pressed",
+                        String(mostrar)
+                    );
+
+                    botaoOlho.innerHTML = mostrar
+                        ? '<i data-lucide="eye-off"></i>'
+                        : '<i data-lucide="eye"></i>';
+
+                    atualizarIcones();
+                });
+            });
+
+            form.addEventListener("submit", async (evento) => {
+                evento.preventDefault();
+                esconderMensagem();
+
+                const nome = nomeInput.value.trim();
+                const email = emailInput.value.trim().toLowerCase();
+                const senha = senhaInput.value;
+                const confirmarSenha = confirmarInput.value;
+
+                if (nome.length < 2) {
+                    mostrarMensagem(
+                        "Digite seu nome com pelo menos 2 caracteres.",
+                        "erro"
+                    );
+                    nomeInput.focus();
+                    return;
+                }
+
+                if (senha.length < 8) {
+                    mostrarMensagem(
+                        "Sua senha precisa ter pelo menos 8 caracteres.",
+                        "erro"
+                    );
+                    senhaInput.focus();
+                    return;
+                }
+
+                if (senha !== confirmarSenha) {
+                    mostrarMensagem(
+                        "As senhas não são iguais. Confira os dois campos.",
+                        "erro"
+                    );
+                    confirmarInput.focus();
+                    return;
+                }
+
+                const supabase = window.supabaseClient;
+
+                if (!supabase) {
+                    mostrarMensagem(
+                        "Não foi possível conectar ao sistema. Confira o arquivo config.js.",
+                        "erro"
+                    );
+                    return;
+                }
+
+                botao.disabled = true;
+                botao.innerHTML =
+                    '<span>Criando sua conta...</span>' +
+                    '<i data-lucide="loader-circle" class="icone-carregando"></i>';
+
+                atualizarIcones();
+
+                try {
+                    const { data, error } = await supabase.auth.signUp({
+                        email,
+                        password: senha,
+                        options: {
+                            data: {
+                                nome: nome
+                            },
+                            emailRedirectTo: new URL(
+                                "./login.html",
+                                window.location.href
+                            ).href
+                        }
+                    });
+
+                    if (error) {
+                        throw error;
+                    }
+
+                    if (!data.user) {
+                        throw new Error(
+                            "O sistema não retornou os dados da conta."
+                        );
+                    }
+
+                    // Se a confirmação por e-mail estiver desativada,
+                    // tenta registrar o perfil imediatamente.
+                    if (data.session) {
+                        const { error: erroPerfil } = await supabase
+                            .from("profiles")
+                            .upsert({
+                                id: data.user.id,
+                                nome: nome
+                            }, {
+                                onConflict: "id"
+                            });
+
+                        if (erroPerfil) {
+                            console.error(
+                                "Não foi possível salvar o perfil:",
+                                erroPerfil
+                            );
+                        }
+
+                        mostrarMensagem(
+                            "Conta criada! Vamos levar você para o login.",
+                            "sucesso"
+                        );
+
+                        window.setTimeout(() => {
+                            window.location.href = "./login.html";
+                        }, 1400);
+
+                    } else {
+                        mostrarMensagem(
+                            "Cadastro iniciado! Confira seu e-mail para confirmar a conta antes de entrar.",
+                            "sucesso"
+                        );
+
+                        botao.disabled = false;
+                        botao.innerHTML =
+                            '<span>Criar minha conta</span>' +
+                            '<i data-lucide="arrow-right"></i>';
+
+                        atualizarIcones();
+                    }
+
+                } catch (erro) {
+                    console.error("Erro no cadastro:", erro);
+
+                    let texto = erro.message ||
+                        "Não foi possível criar sua conta. Tente novamente.";
+
+                    if (
+                        texto.toLowerCase().includes("already registered") ||
+                        texto.toLowerCase().includes("already been registered") ||
+                        texto.toLowerCase().includes("user already exists")
+                    ) {
+                        texto = "Este e-mail já está cadastrado. Tente entrar ou recuperar sua senha.";
+                    } else if (
+                        texto.toLowerCase().includes("password should be")
+                    ) {
+                        texto = "A senha não atende aos requisitos. Use pelo menos 8 caracteres.";
+                    }
+
+                    mostrarMensagem(texto, "erro");
+
+                    botao.disabled = false;
+                    botao.innerHTML =
+                        '<span>Criar minha conta</span>' +
+                        '<i data-lucide="arrow-right"></i>';
+
+                    atualizarIcones();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

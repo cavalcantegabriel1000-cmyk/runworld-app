@@ -1,0 +1,410 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#050807">
+    <title>Entrar • RunWorld</title>
+
+    <link rel="stylesheet" href="./login.css">
+    <link rel="preload" as="image" href="./IMG-20260923-WA4190.jpg">
+
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="./config.js" defer></script>
+</head>
+<body>
+
+    <div id="splash">
+        <div class="splash-conteudo">
+            <img src="./IMG-20260923-WA4190.jpg" alt="RunWorld" class="splash-logo">
+            <h2>RunWorld</h2>
+            <p>Corra. Caminhe. Conquiste.</p>
+            <div class="splash-loader"></div>
+        </div>
+    </div>
+
+    <main class="login-page">
+
+        <section class="area-superior">
+            <header class="marca-login">
+                <img src="./IMG-20260923-WA4190.jpg" alt="Logo RunWorld" class="logo-login">
+                <div class="marca-texto">
+                    <h1>RunWorld</h1>
+                    <p>EXPLORE. CORRA. CONQUISTE.</p>
+                </div>
+            </header>
+
+            <div class="cena-corrida">
+                <video
+                    class="video-corrida"
+                    autoplay muted loop playsinline
+                    webkit-playsinline preload="metadata"
+                    disablepictureinpicture aria-hidden="true">
+                    <source src="./VID-20261001-WA7966.mp4" type="video/mp4">
+                </video>
+                <div class="video-overlay"></div>
+                <div class="luz-pista"></div>
+            </div>
+
+            <div class="texto-cena">
+                <span class="ponto-verde"></span>
+                <span>SUA PRÓXIMA CONQUISTA COMEÇA AQUI</span>
+            </div>
+        </section>
+
+        <section class="login-card">
+            <svg class="ondas-card" viewBox="0 0 400 75"
+                 preserveAspectRatio="none" aria-hidden="true">
+                <path
+                    d="M0 36 C48 3 80 4 126 29 C170 52 205 56 250 28 C302 0 350 8 400 30 L400 75 L0 75 Z"
+                    fill="#0b120e"
+                />
+                <path
+                    d="M0 44 C50 15 82 16 128 38 C174 59 207 63 253 37 C304 12 350 17 400 40"
+                    fill="none"
+                    stroke="#00e676"
+                    stroke-width="1"
+                    opacity=".25"
+                />
+                <path
+                    d="M0 36 C48 3 80 4 126 29 C170 52 205 56 250 28 C302 0 350 8 400 30"
+                    fill="none"
+                    stroke="#00e676"
+                    stroke-width="2"
+                    opacity=".7"
+                />
+            </svg>
+
+            <div class="login-conteudo">
+                <div class="login-cabecalho">
+                    <span class="login-etiqueta">BEM-VINDO DE VOLTA</span>
+                    <h2>Entre na sua conta</h2>
+                    <p>Continue sua jornada e explore novos caminhos.</p>
+                </div>
+
+                <form id="loginForm">
+                    <div class="campo">
+                        <label for="email">E-mail</label>
+                        <div class="campo-input">
+                            <i data-lucide="mail" class="icone-campo"></i>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="seu@email.com"
+                                autocomplete="email"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label for="senha">Senha</label>
+                        <div class="campo-input">
+                            <i data-lucide="lock-keyhole" class="icone-campo"></i>
+                            <input
+                                type="password"
+                                id="senha"
+                                name="senha"
+                                placeholder="Digite sua senha"
+                                autocomplete="current-password"
+                                required>
+
+                            <button
+                                type="button"
+                                id="mostrarSenha"
+                                class="botao-mostrar-senha"
+                                aria-label="Mostrar senha">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="login-opcoes">
+                        <a href="./recuperar-senha.html">Esqueci minha senha</a>
+                    </div>
+
+                    <p id="mensagem" class="mensagem-login"
+                       role="status" aria-live="polite"></p>
+
+                    <button type="submit" id="botaoEntrar" class="botao-entrar">
+                        <span>Entrar</span>
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="login-divisor"><span>OU</span></div>
+
+                <div class="login-social" aria-label="Entrar com uma conta social">
+                    <button
+                        type="button"
+                        class="login-social-botao"
+                        id="entrarGoogle"
+                        aria-label="Entrar com Google"
+                        title="Entrar com Google">
+                        <img
+                            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                            alt="Google">
+                    </button>
+
+                    <button
+                        type="button"
+                        class="login-social-botao"
+                        id="entrarFacebook"
+                        aria-label="Entrar com Facebook"
+                        title="Entrar com Facebook">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                fill="#1877F2"
+                                d="M24 12a12 12 0 1 0-13.875 11.85v-8.38H7.078V12h3.047V9.356c0-3.007 1.792-4.668 4.533-4.668 1.312 0 2.686.234 2.686.234v2.953h-1.513c-1.49 0-1.956.925-1.956 1.874V12h3.328l-.532 3.47h-2.796v8.38A12.003 12.003 0 0 0 24 12Z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+
+                <p id="mensagemSocial" class="mensagem-login"
+                   role="status" aria-live="polite"></p>
+
+                <p class="login-cadastro">
+                    Ainda não tem uma conta?
+                    <a href="./cadastro.html" id="linkCadastro">Criar conta</a>
+                </p>
+
+                <div class="login-seguranca">
+                    <i data-lucide="shield-check"></i>
+                    <span>Sua jornada, sua conta, suas conquistas.</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+    (() => {
+        "use strict";
+
+        const splash = document.getElementById("splash");
+        const formulario = document.getElementById("loginForm");
+        const email = document.getElementById("email");
+        const senha = document.getElementById("senha");
+        const mostrarSenha = document.getElementById("mostrarSenha");
+        const botaoEntrar = document.getElementById("botaoEntrar");
+        const mensagem = document.getElementById("mensagem");
+        const mensagemSocial = document.getElementById("mensagemSocial");
+        const botaoGoogle = document.getElementById("entrarGoogle");
+        const botaoFacebook = document.getElementById("entrarFacebook");
+
+        let enviando = false;
+        let entrandoSocial = false;
+
+        function esconderSplash() {
+            if (!splash || splash.dataset.oculto === "sim") return;
+
+            splash.dataset.oculto = "sim";
+            splash.classList.add("splash-oculto");
+
+            setTimeout(() => {
+                splash.style.display = "none";
+            }, 250);
+        }
+
+        setTimeout(esconderSplash, 250);
+        setTimeout(esconderSplash, 1500);
+
+        function atualizarIcones() {
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function mostrarMensagem(texto, tipo = "") {
+            mensagem.textContent = texto;
+            mensagem.className = "mensagem-login";
+            if (tipo) mensagem.classList.add(tipo);
+        }
+
+        function mostrarMensagemSocial(texto, tipo = "") {
+            mensagemSocial.textContent = texto;
+            mensagemSocial.className = "mensagem-login";
+            if (tipo) mensagemSocial.classList.add(tipo);
+        }
+
+        function obterCliente() {
+            return window.supabaseClient || null;
+        }
+
+        document.getElementById("linkCadastro").addEventListener("click", evento => {
+            evento.preventDefault();
+            window.location.href =
+                new URL("./cadastro.html", window.location.href).href;
+        });
+
+        mostrarSenha.addEventListener("click", () => {
+            const vaiMostrar = senha.type === "password";
+            senha.type = vaiMostrar ? "text" : "password";
+
+            mostrarSenha.innerHTML = vaiMostrar
+                ? '<i data-lucide="eye-off"></i>'
+                : '<i data-lucide="eye"></i>';
+
+            mostrarSenha.setAttribute(
+                "aria-label",
+                vaiMostrar ? "Ocultar senha" : "Mostrar senha"
+            );
+
+            atualizarIcones();
+        });
+
+        email.addEventListener("input", () => mostrarMensagem(""));
+        senha.addEventListener("input", () => mostrarMensagem(""));
+
+        async function verificarSessao() {
+            const cliente = obterCliente();
+            if (!cliente) return;
+
+            try {
+                const { data, error } = await cliente.auth.getSession();
+                if (error) throw error;
+
+                if (data.session) {
+                    window.location.replace("./index.html");
+                }
+            } catch (erro) {
+                console.warn("Verificação de sessão:", erro.message);
+            }
+        }
+
+        verificarSessao();
+
+        formulario.addEventListener("submit", async evento => {
+            evento.preventDefault();
+            if (enviando) return;
+
+            const cliente = obterCliente();
+
+            if (!cliente) {
+                mostrarMensagem(
+                    "Serviço de login indisponível. Confira o config.js e sua conexão.",
+                    "erro"
+                );
+                return;
+            }
+
+            enviando = true;
+            botaoEntrar.disabled = true;
+            botaoEntrar.innerHTML =
+                '<span>Entrando...</span><i data-lucide="loader-circle"></i>';
+            atualizarIcones();
+            mostrarMensagem("Verificando seus dados...");
+
+            try {
+                const { data, error } = await cliente.auth.signInWithPassword({
+                    email: email.value.trim(),
+                    password: senha.value
+                });
+
+                if (error) throw error;
+                if (!data.session) {
+                    throw new Error("Não foi possível iniciar sua sessão.");
+                }
+
+                mostrarMensagem("Login realizado!", "sucesso");
+                window.location.replace("./index.html");
+
+            } catch (erro) {
+                console.error("Erro no login:", erro);
+
+                const detalhe = (erro.message || "").toLowerCase();
+                let texto = "Não foi possível entrar. Tente novamente.";
+
+                if (detalhe.includes("invalid login credentials")) {
+                    texto = "E-mail ou senha incorretos.";
+                } else if (detalhe.includes("email not confirmed")) {
+                    texto = "Confirme seu e-mail antes de entrar.";
+                } else if (!navigator.onLine) {
+                    texto = "Você está sem conexão com a internet.";
+                }
+
+                mostrarMensagem(texto, "erro");
+                enviando = false;
+                botaoEntrar.disabled = false;
+                botaoEntrar.innerHTML =
+                    '<span>Entrar</span><i data-lucide="arrow-right"></i>';
+                atualizarIcones();
+            }
+        });
+
+        async function entrarComProvedor(provedor) {
+            if (entrandoSocial) return;
+
+            const cliente = obterCliente();
+
+            if (!cliente) {
+                mostrarMensagemSocial(
+                    "Serviço de login indisponível. Confira o config.js.",
+                    "erro"
+                );
+                return;
+            }
+
+            entrandoSocial = true;
+            botaoGoogle.disabled = true;
+            botaoFacebook.disabled = true;
+
+            mostrarMensagemSocial(
+                "Conectando com " +
+                (provedor === "google" ? "Google..." : "Facebook...")
+            );
+
+            try {
+                const destino =
+                    new URL("./index.html", window.location.href).href;
+
+                const opcoes = {
+                    redirectTo: destino
+                };
+
+                if (provedor === "google") {
+                    opcoes.queryParams = {
+                        prompt: "select_account"
+                    };
+                }
+
+                const { error } = await cliente.auth.signInWithOAuth({
+                    provider: provedor,
+                    options: opcoes
+                });
+
+                if (error) throw error;
+
+            } catch (erro) {
+                console.error("Erro no login social:", erro);
+
+                mostrarMensagemSocial(
+                    "Não foi possível iniciar o login. Confira a configuração do " +
+                    (provedor === "google" ? "Google" : "Facebook") +
+                    " no Supabase.",
+                    "erro"
+                );
+
+                entrandoSocial = false;
+                botaoGoogle.disabled = false;
+                botaoFacebook.disabled = false;
+            }
+        }
+
+        botaoGoogle.addEventListener("click", () => {
+            entrarComProvedor("google");
+        });
+
+        botaoFacebook.addEventListener("click", () => {
+            entrarComProvedor("facebook");
+        });
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", atualizarIcones);
+        } else {
+            atualizarIcones();
+        }
+    })();
+    </script>
+</body>
+</html>

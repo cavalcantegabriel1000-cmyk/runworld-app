@@ -1,0 +1,699 @@
+/* =====================================================
+   RUNWORLD — CADASTRO E RECUPERAÇÃO DE SENHA
+   ===================================================== */
+
+:root {
+    --fundo: #050807;
+    --verde: #00e676;
+    --verde-escuro: #00bd62;
+    --texto: #ffffff;
+    --texto-secundario: #b8c2bd;
+    --borda: rgba(255, 255, 255, 0.14);
+    --raio: 22px;
+    --largura: 460px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    min-height: 100%;
+    background: var(--fundo);
+    color-scheme: dark;
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+
+    background: var(--fundo);
+    color: var(--texto);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+/* =====================================================
+   VÍDEO DE FUNDO
+   ===================================================== */
+
+.cadastro-cena {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: #050807;
+    pointer-events: none;
+}
+
+.cadastro-video {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center 35%;
+
+    opacity: 0.8;
+}
+
+.cadastro-video-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(2, 5, 3, 0.52) 0%,
+            rgba(2, 5, 3, 0.35) 35%,
+            rgba(2, 5, 3, 0.78) 75%,
+            rgba(2, 5, 3, 0.96) 100%
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.48),
+            rgba(0, 0, 0, 0.08),
+            rgba(0, 0, 0, 0.48)
+        );
+}
+
+/* =====================================================
+   PÁGINA
+   ===================================================== */
+
+.cadastro-page {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    padding:
+        max(28px, env(safe-area-inset-top))
+        20px
+        max(20px, env(safe-area-inset-bottom));
+
+    background: transparent;
+}
+
+/* =====================================================
+   MARCA E LOGO ORIGINAL
+   ===================================================== */
+
+.cadastro-marca {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+
+    width: 100%;
+    max-width: var(--largura);
+
+    margin: 0 auto 26px;
+}
+
+.cadastro-logo-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    width: 58px;
+    height: 58px;
+    padding: 4px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 17px;
+
+    background: rgba(5, 8, 7, 0.78);
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.28);
+
+    text-decoration: none;
+}
+
+.cadastro-logo {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    border-radius: 11px;
+}
+
+.cadastro-marca-texto {
+    min-width: 0;
+}
+
+.cadastro-marca-texto h1 {
+    color: #ffffff;
+
+    font-size: 24px;
+    font-weight: 850;
+    letter-spacing: -0.8px;
+    line-height: 1.15;
+}
+
+.cadastro-marca-texto p {
+    margin-top: 5px;
+
+    color: var(--verde);
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    line-height: 1.4;
+}
+
+/* =====================================================
+   CARTÃO TRANSPARENTE
+   ===================================================== */
+
+.cadastro-card {
+    position: relative;
+
+    width: 100%;
+    max-width: var(--largura);
+
+    overflow: hidden;
+
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+
+    background: rgba(5, 12, 8, 0.60);
+
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+
+    box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.cadastro-conteudo {
+    padding: 30px 27px 24px;
+}
+
+/* =====================================================
+   CABEÇALHO DO FORMULÁRIO
+   ===================================================== */
+
+.cadastro-cabecalho {
+    margin-bottom: 26px;
+}
+
+.cadastro-etiqueta {
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    color: var(--verde);
+
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: 2.3px;
+}
+
+.cadastro-cabecalho h2 {
+    color: #ffffff;
+
+    font-size: clamp(27px, 7vw, 34px);
+    font-weight: 850;
+    letter-spacing: -1.2px;
+    line-height: 1.12;
+}
+
+.cadastro-cabecalho p {
+    max-width: 330px;
+
+    margin-top: 11px;
+
+    color: var(--texto-secundario);
+
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+/* =====================================================
+   CAMPOS
+   ===================================================== */
+
+#formCadastro {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campo label {
+    color: #f0f4f1;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.campo-input {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    min-height: 53px;
+    width: 100%;
+    padding: 0 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 14px;
+
+    background: rgba(0, 0, 0, 0.28);
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.campo-input:focus-within {
+    border-color: rgba(0, 230, 118, 0.75);
+
+    background: rgba(0, 0, 0, 0.4);
+
+    box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.08);
+}
+
+.campo-input > svg {
+    flex-shrink: 0;
+
+    width: 18px;
+    height: 18px;
+
+    color: #a7b4ac;
+    stroke-width: 1.8;
+}
+
+.campo-input input {
+    flex: 1;
+
+    width: 100%;
+    min-width: 0;
+    height: 51px;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.campo-input input::placeholder {
+    color: #87918a;
+    opacity: 1;
+}
+
+.campo-input input:-webkit-autofill,
+.campo-input input:-webkit-autofill:hover,
+.campo-input input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #ffffff;
+    transition: background-color 99999s ease-in-out 0s;
+}
+
+.campo-ajuda {
+    color: #a8b4ac;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* =====================================================
+   BOTÃO DE MOSTRAR / OCULTAR SENHA
+   ===================================================== */
+
+.botao-olho {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    width: 34px;
+    height: 38px;
+
+    border: 0;
+    border-radius: 9px;
+
+    background: transparent;
+    color: #aab5ad;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.botao-olho:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: #ffffff;
+}
+
+.botao-olho:focus-visible {
+    outline: 2px solid var(--verde);
+    outline-offset: 2px;
+}
+
+.botao-olho svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* =====================================================
+   BOTÃO PRINCIPAL
+   ===================================================== */
+
+.botao-principal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+
+    width: 100%;
+    min-height: 54px;
+
+    margin-top: 5px;
+    padding: 14px 18px;
+
+    border: 0;
+    border-radius: 14px;
+
+    background: var(--verde);
+    color: #031108;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 850;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+
+    box-shadow: 0 8px 24px rgba(0, 230, 118, 0.12);
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.botao-principal:hover:not(:disabled) {
+    background: #21f18b;
+    box-shadow: 0 10px 30px rgba(0, 230, 118, 0.2);
+    transform: translateY(-1px);
+}
+
+.botao-principal:active:not(:disabled) {
+    transform: scale(0.985);
+}
+
+.botao-principal:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+.botao-principal svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.3;
+}
+
+.icone-carregando {
+    animation: girar 0.9s linear infinite;
+}
+
+@keyframes girar {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =====================================================
+   MENSAGENS DE ESTADO
+   ===================================================== */
+
+.mensagem {
+    padding: 12px 13px;
+
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 12px;
+
+    font-size: 12px;
+    line-height: 1.6;
+
+    overflow-wrap: anywhere;
+}
+
+.mensagem[hidden] {
+    display: none;
+}
+
+.mensagem.erro {
+    border-color: rgba(255, 100, 100, 0.35);
+    background: rgba(130, 25, 25, 0.22);
+    color: #ffbaba;
+}
+
+.mensagem.sucesso {
+    border-color: rgba(0, 230, 118, 0.28);
+    background: rgba(0, 230, 118, 0.08);
+    color: #baffd6;
+}
+
+/* =====================================================
+   DIVISOR E BOTÃO SECUNDÁRIO
+   ===================================================== */
+
+.cadastro-divisor {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin: 23px 0 17px;
+
+    color: #a3aea6;
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.cadastro-divisor::before,
+.cadastro-divisor::after {
+    content: "";
+
+    flex: 1;
+    height: 1px;
+
+    background: rgba(255, 255, 255, 0.13);
+}
+
+.botao-secundario {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 49px;
+
+    padding: 12px 16px;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 13px;
+
+    background: rgba(255, 255, 255, 0.035);
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 750;
+
+    text-align: center;
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.botao-secundario:hover {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* =====================================================
+   TEXTO FINAL
+   ===================================================== */
+
+.cadastro-rodape {
+    margin-top: 20px;
+
+    color: #a7b1aa;
+
+    font-size: 10px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+.rodape-pagina {
+    width: 100%;
+    max-width: var(--largura);
+
+    margin-top: 23px;
+
+    color: rgba(255, 255, 255, 0.65);
+
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: 2px;
+
+    text-align: center;
+}
+
+/* =====================================================
+   ACESSIBILIDADE
+   ===================================================== */
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--verde);
+    outline-offset: 3px;
+}
+
+/* =====================================================
+   CELULARES
+   ===================================================== */
+
+@media (max-width: 480px) {
+    .cadastro-page {
+        justify-content: flex-start;
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+
+    .cadastro-marca {
+        margin-bottom: 22px;
+    }
+
+    .cadastro-logo-link {
+        width: 52px;
+        height: 52px;
+        border-radius: 15px;
+    }
+
+    .cadastro-marca-texto h1 {
+        font-size: 22px;
+    }
+
+    .cadastro-marca-texto p {
+        font-size: 8px;
+        letter-spacing: 1.6px;
+    }
+
+    .cadastro-conteudo {
+        padding: 25px 19px 22px;
+    }
+
+    .cadastro-cabecalho {
+        margin-bottom: 23px;
+    }
+
+    #formCadastro {
+        gap: 15px;
+    }
+
+    .campo-input {
+        min-height: 51px;
+        padding-right: 10px;
+        padding-left: 12px;
+    }
+
+    .campo-input input {
+        height: 49px;
+        font-size: 12px;
+    }
+
+    .botao-principal {
+        min-height: 52px;
+    }
+}
+
+@media (max-height: 760px) {
+    .cadastro-page {
+        padding-top: 18px;
+    }
+
+    .cadastro-marca {
+        margin-bottom: 17px;
+    }
+
+    .cadastro-conteudo {
+        padding-top: 22px;
+        padding-bottom: 19px;
+    }
+
+    .cadastro-cabecalho {
+        margin-bottom: 19px;
+    }
+
+    #formCadastro {
+        gap: 12px;
+    }
+
+    .campo {
+        gap: 6px;
+    }
+
+    .cadastro-divisor {
+        margin-top: 17px;
+        margin-bottom: 13px;
+    }
+
+    .cadastro-rodape {
+        margin-top: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+
+    <meta name="theme-color" content="#050807">
+
+    <title>Recuperar senha • RunWorld</title>
+
+    <link rel="stylesheet" href="./cadastro.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="./config.js"></script>
+</head>
+
+<body>
+
+    <div class="cadastro-cena">
+        <video
+            class="cadastro-video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-hidden="true"
+        >
+            <source
+                src="./VID-20261001-WA7966.mp4"
+                type="video/mp4"
+            >
+        </video>
+
+        <div class="cadastro-video-overlay"></div>
+    </div>
+
+    <main class="cadastro-page">
+
+        <header class="cadastro-marca">
+
+            <a
+                href="./login.html"
+                class="cadastro-logo-link"
+                aria-label="Voltar para o login"
+            >
+                <img
+                    src="./IMG-20260923-WA4190.jpg"
+                    alt="Logo RunWorld"
+                    class="cadastro-logo"
+                >
+            </a>
+
+            <div class="cadastro-marca-texto">
+                <h1>RunWorld</h1>
+                <p>EXPLORE. CORRA. CONQUISTE.</p>
+            </div>
+
+        </header>
+
+        <section class="cadastro-card">
+
+            <div class="cadastro-conteudo">
+
+                <div class="cadastro-cabecalho">
+
+                    <span class="cadastro-etiqueta">
+                        RECUPERAÇÃO DE CONTA
+                    </span>
+
+                    <h2>Esqueceu sua senha?</h2>
+
+                    <p>
+                        Informe o e-mail da sua conta.
+                        Enviaremos um código de verificação
+                        de 6 dígitos para você criar uma nova senha.
+                    </p>
+
+                </div>
+
+                <form id="formRecuperacao">
+
+                    <div class="campo">
+
+                        <label for="email">
+                            E-mail da sua conta
+                        </label>
+
+                        <div class="campo-input">
+
+                            <i data-lucide="mail"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="voce@exemplo.com"
+                                autocomplete="email"
+                                maxlength="254"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="mensagemRecuperacao"
+                        class="mensagem"
+                        role="status"
+                        aria-live="polite"
+                        hidden
+                    ></div>
+
+                    <button
+                        type="submit"
+                        id="botaoRecuperar"
+                        class="botao-principal"
+                    >
+                        <span>Enviar código</span>
+                        <i data-lucide="mail"></i>
+                    </button>
+
+                </form>
+
+                <a
+                    href="./redefinir-senha.html"
+                    id="continuarRedefinicao"
+                    class="botao-secundario"
+                    style="display:none; margin-top:14px"
+                >
+                    <i
+                        data-lucide="shield-check"
+                        style="width:16px;height:16px;margin-right:9px"
+                    ></i>
+                    Já tenho o código
+                </a>
+
+                <div class="cadastro-divisor">
+                    <span>LEMBROU DA SENHA?</span>
+                </div>
+
+                <a
+                    href="./login.html"
+                    class="botao-secundario"
+                >
+                    <i
+                        data-lucide="arrow-left"
+                        style="width:16px;height:16px;margin-right:9px"
+                    ></i>
+                    Voltar para o login
+                </a>
+
+                <p class="cadastro-rodape">
+                    Se o e-mail não chegar, confira sua pasta de spam
+                    ou lixo eletrônico.
+                </p>
+
+            </div>
+
+        </section>
+
+        <footer class="rodape-pagina">
+            RUNWORLD © <span id="anoAtual"></span>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            function atualizarIcones() {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }
+
+            atualizarIcones();
+
+            document.getElementById("anoAtual").textContent =
+                new Date().getFullYear();
+
+            const form =
+                document.getElementById("formRecuperacao");
+
+            const emailInput =
+                document.getElementById("email");
+
+            const botao =
+                document.getElementById("botaoRecuperar");
+
+            const mensagem =
+                document.getElementById("mensagemRecuperacao");
+
+            const continuar =
+                document.getElementById("continuarRedefinicao");
+
+            let enviando = false;
+
+            function mostrarMensagem(texto, tipo) {
+                mensagem.textContent = texto;
+                mensagem.className = "mensagem " + tipo;
+                mensagem.hidden = false;
+            }
+
+            function restaurarBotao() {
+                botao.disabled = false;
+
+                botao.innerHTML =
+                    "<span>Enviar código novamente</span>" +
+                    '<i data-lucide="refresh-cw"></i>';
+
+                atualizarIcones();
+            }
+
+            form.addEventListener("submit", async (evento) => {
+
+                evento.preventDefault();
+
+                if (enviando) return;
+
+                mensagem.hidden = true;
+                continuar.style.display = "none";
+
+                const email = emailInput.value.trim();
+
+                if (!email) {
+                    mostrarMensagem(
+                        "Digite o e-mail da sua conta.",
+                        "erro"
+                    );
+                    emailInput.focus();
+                    return;
+                }
+
+                const cliente = window.supabaseClient;
+
+                if (
+                    !cliente ||
+                    !cliente.auth ||
+                    typeof cliente.auth.resetPasswordForEmail !==
+                        "function"
+                ) {
+                    mostrarMensagem(
+                        "Não foi possível conectar ao Supabase. Confira o config.js e tente novamente.",
+                        "erro"
+                    );
+                    return;
+                }
+
+                enviando = true;
+                botao.disabled = true;
+
+                botao.innerHTML =
+                    '<span>Enviando código...</span>' +
+                    '<i data-lucide="loader-circle" class="icone-carregando"></i>';
+
+                atualizarIcones();
+
+                try {
+
+                    /*
+                     * Solicita ao Supabase um e-mail
+                     * de recuperação de senha.
+                     *
+                     * Para receber um código numérico,
+                     * o modelo de e-mail de recuperação
+                     * no Supabase precisa usar {{ .Token }}.
+                     */
+
+                    const urlRedefinicao = new URL(
+                        "./redefinir-senha.html",
+                        window.location.href
+                    ).href;
+
+                    const { error } = await cliente.auth
+                        .resetPasswordForEmail(email, {
+                            redirectTo: urlRedefinicao
+                        });
+
+                    if (error) {
+                        console.error(
+                            "Erro do Supabase:",
+                            error.message
+                        );
+
+                        throw error;
+                    }
+
+                    /*
+                     * Guarda o e-mail apenas nesta página
+                     * para encaminhá-lo à etapa de validação.
+                     */
+
+                    continuar.href =
+                        "./redefinir-senha.html?email=" +
+                        encodeURIComponent(email);
+
+                    continuar.style.display = "flex";
+
+                    mostrarMensagem(
+                        "Solicitação enviada! Confira seu e-mail e procure o código de 6 dígitos. Verifique também a pasta de spam.",
+                        "sucesso"
+                    );
+
+                    botao.innerHTML =
+                        '<span>Código solicitado</span>' +
+                        '<i data-lucide="check-circle-2"></i>';
+
+                    atualizarIcones();
+
+                } catch (erro) {
+
+                    console.error(
+                        "Erro ao solicitar recuperação:",
+                        erro
+                    );
+
+                    mostrarMensagem(
+                        "Não foi possível enviar o código. Verifique sua conexão e tente novamente.",
+                        "erro"
+                    );
+
+                    restaurarBotao();
+
+                } finally {
+                    enviando = false;
+                }
+
+            });
+
+        });
+    </script>
+
+</body>
+</html>
