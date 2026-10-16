@@ -123,37 +123,109 @@ function calcularDistancia(a, b) {
 
 /* ===================== SUPABASE / SESSÃO ===================== */
 
-async function verificarSessao() {
-    const supabase = window.supabaseClient;
+let observadorSessaoConfigurado = false;
+let carregandoUsuarioId = null;
 
-    // Permite testar o mapa sem Supabase, mas autenticação não funcionará.
-    if (!supabase) {
-        console.warn("Supabase não encontrado. Confira config.js.");
+async function aplicarSessaoRunWorld(sessao) {
+    if (!sessao || !sessao.user) return;
+
+    const idUsuario = sessao.user.id;
+
+    if (usuarioAtual?.id === idUsuario && perfilAtual) {
+        definirTexto("emailPerfil", sessao.user.email || "");
         return;
     }
 
+    if (carregandoUsuarioId === idUsuario) return;
+    carregandoUsuarioId = idUsuario;
+
     try {
-        const { data, error } = await supabase.auth.getSession();
-        if (error) throw error;
+        usuarioAtual = sessao.user;
+        definirTexto(
+            "emailPerfil",
+            usuarioAtual.email || "Conta conectada"
+        );
 
-        if (!data.session) {
-            // Em páginas de demonstração, não redirecionar automaticamente.
-            // Para exigir login, descomente a linha abaixo.
-            // window.location.href = "login.html";
-            return;
-        }
-
-        usuarioAtual = data.session.user;
         await carregarPerfil();
         await sincronizarHistoricoPendente();
+
         historicoSincronizado = false;
         await carregarHistoricoSincronizado();
+
         atualizarEstatisticasPerfil();
         configurarPresenca();
+
+        console.log(
+            "RunWorld: sessão reconhecida.",
+            usuarioAtual.email
+        );
     } catch (erro) {
-        console.error("Erro ao verificar sessão:", erro);
+        console.error(
+            "Erro ao carregar a sessão:",
+            erro
+        );
+    } finally {
+        carregandoUsuarioId = null;
     }
 }
+
+function observarMudancasDeSessao(supabase) {
+    if (observadorSessaoConfigurado) return;
+    observadorSessaoConfigurado = true;
+
+    supabase.auth.onAuthStateChange((evento, sessao) => {
+        if (
+            sessao &&
+            ["SIGNED_IN", "TOKEN_REFRESHED", "USER_UPDATED"]
+                .includes(evento)
+        ) {
+            setTimeout(() => {
+                aplicarSessaoRunWorld(sessao);
+            }, 0);
+        }
+    });
+}
+
+async function verificarSessao() {
+    const supabase = window.supabaseClient;
+
+    if (!supabase) {
+        console.error("Supabase não encontrado. Confira config.js.");
+        definirTexto("emailPerfil", "Login indisponível");
+        return;
+    }
+
+    observarMudancasDeSessao(supabase);
+
+    try {
+        const { data, error } =
+            await supabase.auth.getSession();
+
+        if (error) throw error;
+
+        if (data.session) {
+            await aplicarSessaoRunWorld(data.session);
+        } else {
+            console.warn(
+                "RunWorld: nenhuma sessão ativa encontrada."
+            );
+
+            definirTexto("emailPerfil", "Modo convidado");
+        }
+    } catch (erro) {
+        console.error(
+            "Erro ao verificar sessão:",
+            erro
+        );
+
+        definirTexto(
+            "emailPerfil",
+            "Não foi possível verificar a conta"
+        );
+    }
+}
+
+
 
 /* ===================== PERFIL ===================== */
 
