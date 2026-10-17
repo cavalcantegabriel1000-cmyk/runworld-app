@@ -48,12 +48,22 @@ window.RUNWORLD_CONFIG = {
             return null;
         }
 
-        try {
-            window.supabaseClient =
-                window.supabase.createClient(
-                    config.SUPABASE_URL.trim(),
-                    config.SUPABASE_ANON_KEY.trim()
-                );
+        
+try {
+    window.supabaseClient =
+        window.supabase.createClient(
+            config.SUPABASE_URL.trim(),
+            config.SUPABASE_ANON_KEY.trim(),
+            {
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true,
+                    detectSessionInUrl: true,
+                    flowType: "pkce"
+                }
+            }
+        );
+   
 
             console.log(
                 "RunWorld: cliente Supabase inicializado."
