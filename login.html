@@ -178,7 +178,7 @@
         const mensagem = document.getElementById("mensagem");
         const mensagemSocial = document.getElementById("mensagemSocial");
         const botaoGoogle = document.getElementById("entrarGoogle");
-        const botaoFacebook = document.getElementById("entrarFacebook");
+    
 
         let enviando = false;
         let entrandoSocial = false;
@@ -333,7 +333,7 @@
 
             entrandoSocial = true;
             botaoGoogle.disabled = true;
-            botaoFacebook.disabled = true;
+            
 
             mostrarMensagemSocial(
                 "Conectando com " +
@@ -373,16 +373,12 @@
 
                 entrandoSocial = false;
                 botaoGoogle.disabled = false;
-                botaoFacebook.disabled = false;
+                
             }
         }
 
         botaoGoogle.addEventListener("click", () => {
             entrarComProvedor("google");
-        });
-
-        botaoFacebook.addEventListener("click", () => {
-            entrarComProvedor("facebook");
         });
 
         if (document.readyState === "loading") {
