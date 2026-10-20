@@ -1475,12 +1475,12 @@ function configurarNavegacao() {
     });
 
     document.querySelectorAll(
-        "#abrirConfiguracoes, #abrirConfiguracoesPerfilLink"
-    ).forEach(botao => {
-        botao.addEventListener("click", () => {
-            abrirTela("telaConfiguracoes");
-        });
+    "#abrirConfiguracoesMenu, #abrirConfiguracoes"
+).forEach(botao => {
+    botao.addEventListener("click", () => {
+        abrirTela("telaConfiguracoes");
     });
+});
 
     elemento("editarNomePerfil")?.addEventListener(
         "click",
