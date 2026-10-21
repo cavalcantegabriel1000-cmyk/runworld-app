@@ -1716,18 +1716,42 @@ function atualizarCorredoresOnline() {
 
 /* ===================== CONFIGURAÇÕES ===================== */
 
+
 function aplicarTema(tema) {
     const temaSeguro = tema === "claro" ? "claro" : "escuro";
-    if (temaSeguro === "claro") document.documentElement.dataset.tema = "claro";
-    else delete document.documentElement.dataset.tema;
-    try { localStorage.setItem(CHAVE_TEMA, temaSeguro); } catch (_) {}
+
+    document.documentElement.dataset.tema = temaSeguro;
+
+    if (document.body) {
+        document.body.dataset.tema = temaSeguro;
+    }
+
+    try {
+        localStorage.setItem(CHAVE_TEMA, temaSeguro);
+    } catch (erro) {
+        console.warn("Não foi possível salvar o tema:", erro);
+    }
+
     const botaoTema = elemento("configTema");
+
     if (botaoTema) {
-        botaoTema.setAttribute("aria-pressed", String(temaSeguro === "claro"));
-        const texto = botaoTema.querySelector(".dados-configuracao small");
-        if (texto) texto.textContent = temaSeguro === "claro" ? "Tema claro ativado" : "Tema escuro ativado";
+        botaoTema.setAttribute(
+            "aria-pressed",
+            String(temaSeguro === "claro")
+        );
+
+        const texto = botaoTema.querySelector(
+            ".dados-configuracao small"
+        );
+
+        if (texto) {
+            texto.textContent = temaSeguro === "claro"
+                ? "Tema claro ativado"
+                : "Tema escuro ativado";
+        }
     }
 }
+
 
 function configurarOpcoesExtras() {
     elemento("configTema")?.addEventListener("click", () => {
