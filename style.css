@@ -398,3 +398,46 @@ html[data-tema="claro"] .notificacao-item.nao-lida {
     display: none !important;
 }
 
+/* ===== TEMA CLARO DO RUNWORLD ===== */
+
+html[data-tema="claro"] {
+    color-scheme: light;
+
+    --fundo: #f3f7f4;
+    --painel: #ffffff;
+    --painel2: #e8f0eb;
+    --texto: #17221b;
+    --suave: #647268;
+    --borda: #d4e0d7;
+    --verde: #00a854;
+    --verde2: #008f48;
+    --perigo: #d93636;
+    --sombra: 0 18px 50px #0002;
+}
+
+html[data-tema="claro"] body {
+    background: var(--fundo);
+    color: var(--texto);
+}
+
+html[data-tema="claro"] .topo,
+html[data-tema="claro"] .painel,
+html[data-tema="claro"] .painel-notificacoes,
+html[data-tema="claro"] .menu-flutuante,
+html[data-tema="claro"] .cabecalho-tela,
+html[data-tema="claro"] .atividade,
+html[data-tema="claro"] .opcao-camada,
+html[data-tema="claro"] .mapa-btn {
+    color: var(--texto);
+    background-color: var(--painel);
+    border-color: var(--borda);
+}
+
+html[data-tema="claro"] input,
+html[data-tema="claro"] select,
+html[data-tema="claro"] textarea {
+    color: var(--texto);
+    background-color: var(--painel2);
+    border-color: var(--borda);
+}
+
