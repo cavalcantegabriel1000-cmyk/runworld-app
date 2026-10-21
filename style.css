@@ -371,3 +371,30 @@ html[data-tema="claro"] .notificacao-item.nao-lida {
     border-color: #86cda1;
 }
 
+.botao-com-contador {
+    position: relative;
+}
+
+.contador-notificacoes {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--painel);
+    border-radius: 999px;
+    background: var(--verde);
+    color: #05200f;
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.contador-notificacoes[hidden] {
+    display: none !important;
+}
+
