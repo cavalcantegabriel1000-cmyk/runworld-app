@@ -194,3 +194,180 @@ body.tema-claro #listaRanking .vazio { background: #f6faf7; border-color: #cbdac
     #listaRanking .item-ranking > span:nth-child(2) { font-size: 13px; }
     #listaRanking .item-ranking > span:nth-child(3) { font-size: 11px; }
 }
+
+/* =====================================================
+   RUNWORLD — AJUSTES DE TEMA E NOTIFICAÇÕES
+   Acrescentar ao final de style.css
+===================================================== */
+
+/* Compatibilidade com o tema aplicado pelo app.js */
+html[data-tema="claro"] {
+    --fundo: #edf3ee;
+    --painel: #ffffff;
+    --painel2: #e8f0e9;
+    --texto: #162219;
+    --suave: #627166;
+    --borda: #d4e0d6;
+    --sombra: 0 18px 45px #0002;
+}
+
+html[data-tema="claro"] body {
+    background: var(--fundo);
+    color: var(--texto);
+}
+
+html[data-tema="claro"] .topo {
+    background: #ffffffed;
+    border-color: var(--borda);
+}
+
+html[data-tema="claro"] .cabecalho-tela {
+    background: #f5f8f5ed;
+}
+
+html[data-tema="claro"] .icone-btn,
+html[data-tema="claro"] .avatar-btn {
+    background: #f4f8f4;
+    color: var(--texto);
+    border-color: var(--borda);
+}
+
+html[data-tema="claro"] .mapa-btn {
+    background: #fffffff0;
+    color: #172219;
+    border-color: var(--borda);
+}
+
+html[data-tema="claro"] .painel,
+html[data-tema="claro"] .painel-atividade,
+html[data-tema="claro"] .painel-notificacoes {
+    background: #fffffff5;
+    color: var(--texto);
+    border-color: var(--borda);
+}
+
+html[data-tema="claro"] .atividade,
+html[data-tema="claro"] .opcao-camada {
+    background: #f4f8f4;
+    color: #243128;
+}
+
+html[data-tema="claro"] .atividade.active,
+html[data-tema="claro"] .atividade.selecionada {
+    background: #d8f7e3;
+    color: #007b3b;
+    border-color: var(--verde);
+}
+
+html[data-tema="claro"] .item-menu,
+html[data-tema="claro"] .linha-config {
+    color: var(--texto);
+}
+
+html[data-tema="claro"] .cartao-missao,
+html[data-tema="claro"] .cartao-perfil,
+html[data-tema="claro"] .grade-estatisticas > div {
+    background: var(--painel);
+    border-color: var(--borda);
+}
+
+html[data-tema="claro"] .botao-secundario {
+    background: #e8f0e9;
+    color: #162219;
+}
+
+html[data-tema="claro"] .trilho-progresso {
+    background: #dce7de;
+}
+
+/* Notificações: classes geradas pelo notificacoes.js */
+#listaNotificacoes {
+    display: grid;
+    gap: 9px;
+}
+
+.notificacao-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 13px;
+    margin: 0 0 9px;
+    border: 1px solid var(--borda);
+    border-radius: 15px;
+    background: var(--painel2);
+    color: var(--texto);
+    overflow-wrap: anywhere;
+}
+
+.notificacao-item.nao-lida {
+    border-color: #00b85c80;
+    box-shadow: inset 3px 0 0 var(--verde);
+}
+
+.notificacao-icone {
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: #00e6761a;
+    font-size: 19px;
+}
+
+.notificacao-conteudo {
+    flex: 1;
+    min-width: 0;
+}
+
+.notificacao-conteudo strong {
+    display: block;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.notificacao-conteudo p {
+    margin: 5px 0;
+    color: var(--suave);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.notificacao-data {
+    display: block;
+    color: var(--suave);
+    font-size: 10px;
+}
+
+.notificacao-ponto {
+    flex: 0 0 8px;
+    width: 8px;
+    height: 8px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background: var(--verde);
+}
+
+#notificacoesVazias[hidden] {
+    display: none !important;
+}
+
+#fundoNotificacoes[aria-hidden="true"] {
+    pointer-events: none;
+}
+
+#fundoNotificacoes[aria-hidden="false"] {
+    pointer-events: auto;
+}
+
+html[data-tema="claro"] .notificacao-item {
+    background: #f4f8f4;
+    border-color: var(--borda);
+    color: var(--texto);
+}
+
+html[data-tema="claro"] .notificacao-item.nao-lida {
+    background: #effaf2;
+    border-color: #86cda1;
+}
+
