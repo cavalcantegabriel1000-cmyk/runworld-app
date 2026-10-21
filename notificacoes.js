@@ -252,10 +252,9 @@
 
         const lista = elemento("listaNotificacoes");
         const fundo = elemento("fundoNotificacoes");
-        const botaoAbrir = elemento("botaoNotificacoes");
         const botaoFechar = elemento("fecharNotificacoes");
 
-        botaoAbrir?.addEventListener("click", abrir);
+        
         botaoFechar?.addEventListener("click", fechar);
 
         // Clicar numa notificação marca apenas aquela como lida.
