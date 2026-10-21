@@ -1,0 +1,22 @@
+
+{
+  "id": "./index.html",
+  "name": "RunWorld — Explore. Corra. Conquiste.",
+  "short_name": "RunWorld",
+  "description": "Explore. Corra. Conquiste. Registre suas atividades e acompanhe sua evolução.",
+  "lang": "pt-BR",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050807",
+  "theme_color": "#050807",
+  "icons": [
+    {
+      "src": "./IMG-20260923-WA4190.jpg",
+      "sizes": "any",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}
