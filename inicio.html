@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+
+    <meta name="theme-color" content="#050807">
+
+    <title>RunWorld — Explore. Corra. Conquiste.</title>
+
+    <style>
+        :root {
+            --fundo: #050807;
+            --verde: #00e676;
+            --verde-escuro: #00bd62;
+            --branco: #ffffff;
+            --texto-secundario: #d4ded7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            background: var(--fundo);
+            color: var(--branco);
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+        .tela-inicial {
+            position: relative;
+            isolation: isolate;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+
+            padding:
+                max(30px, env(safe-area-inset-top))
+                26px
+                max(28px, env(safe-area-inset-bottom));
+
+            overflow: hidden;
+            background-color: var(--fundo);
+        }
+
+        /* FOTO DE FUNDO */
+        .fundo-foto {
+            position: absolute;
+            z-index: -2;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+            object-position: center center;
+        }
+
+        /* CAMADA ESCURA SOBRE A FOTO */
+        .camada-escura {
+            position: absolute;
+            z-index: -1;
+            inset: 0;
+
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.58) 0%,
+                rgba(0, 0, 0, 0.12) 28%,
+                rgba(0, 0, 0, 0.40) 45%,
+                rgba(0, 0, 0, 0.83) 70%,
+                #050807 100%
+            );
+        }
+
+        /* CABEÇALHO */
+        .topo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* LOGO OFICIAL */
+        .logo-imagem {
+            width: 58px;
+            height: 58px;
+            flex-shrink: 0;
+
+            object-fit: contain;
+            border-radius: 15px;
+
+            background: rgba(5, 8, 7, 0.70);
+            padding: 3px;
+
+            box-shadow:
+                0 0 25px rgba(0, 230, 118, 0.18);
+        }
+
+        .nome-app {
+            font-size: 25px;
+            font-weight: 850;
+            letter-spacing: -0.8px;
+        }
+
+        .nome-app span {
+            color: var(--verde);
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+        .conteudo {
+            width: 100%;
+            max-width: 460px;
+
+            margin: auto auto 0;
+            padding-top: 55px;
+        }
+
+        .etiqueta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 18px;
+            padding: 9px 13px;
+
+            border: 1px solid rgba(0, 230, 118, 0.40);
+            border-radius: 30px;
+
+            background: rgba(0, 20, 10, 0.70);
+            color: var(--verde);
+
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .ponto {
+            width: 7px;
+            height: 7px;
+            flex-shrink: 0;
+
+            border-radius: 50%;
+            background: var(--verde);
+
+            box-shadow: 0 0 10px var(--verde);
+        }
+
+        h1 {
+            max-width: 430px;
+
+            font-size: clamp(39px, 10vw, 55px);
+            line-height: 1.04;
+            letter-spacing: -2px;
+            font-weight: 900;
+
+            text-shadow: 0 3px 18px rgba(0, 0, 0, 0.30);
+        }
+
+        h1 span {
+            color: var(--verde);
+        }
+
+        .descricao {
+            max-width: 350px;
+            margin-top: 17px;
+
+            color: var(--texto-secundario);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* BOTÕES */
+        .acoes {
+            display: grid;
+            gap: 12px;
+
+            margin-top: 30px;
+        }
+
+        .botao {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            width: 100%;
+            min-height: 57px;
+            padding: 15px 20px;
+
+            border: 1px solid transparent;
+            border-radius: 17px;
+
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 800;
+            text-align: center;
+            text-decoration: none;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.18s ease,
+                background 0.18s ease;
+        }
+
+        .botao:active {
+            transform: scale(0.98);
+        }
+
+        .botao-criar {
+            background: var(--verde);
+            color: #002411;
+
+            box-shadow:
+                0 8px 28px rgba(0, 230, 118, 0.18);
+        }
+
+        .botao-criar:hover {
+            background: var(--verde-escuro);
+        }
+
+        .seta {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .botao-entrar {
+            border-color: rgba(255, 255, 255, 0.38);
+
+            background: rgba(12, 16, 13, 0.60);
+            color: var(--branco);
+
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .botao-entrar:hover {
+            background: rgba(35, 45, 38, 0.80);
+        }
+
+        /* RODAPÉ */
+        .rodape {
+            padding-top: 23px;
+
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 11px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* TELAS BAIXAS */
+        @media (max-height: 700px) {
+            .tela-inicial {
+                padding-top: max(18px, env(safe-area-inset-top));
+                padding-bottom: max(16px, env(safe-area-inset-bottom));
+            }
+
+            .logo-imagem {
+                width: 48px;
+                height: 48px;
+            }
+
+            .conteudo {
+                padding-top: 25px;
+            }
+
+            h1 {
+                font-size: clamp(35px, 8vw, 45px);
+            }
+
+            .acoes {
+                margin-top: 20px;
+                gap: 9px;
+            }
+
+            .botao {
+                min-height: 51px;
+            }
+
+            .rodape {
+                padding-top: 14px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .botao {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="tela-inicial">
+
+        <!-- FOTO DE FUNDO -->
+        <img
+            class="fundo-foto"
+            src="IMG-20261022-WA2582.jpg"
+            alt=""
+            aria-hidden="true"
+        >
+
+        <!-- DEGRADÊ -->
+        <div class="camada-escura"></div>
+
+        <!-- LOGO E NOME -->
+        <header class="topo">
+
+            <img
+                class="logo-imagem"
+                src="IMG-20260923-WA4190.jpg"
+                alt="Logo oficial RunWorld"
+            >
+
+            <div class="nome-app">
+                Run<span>World</span>
+            </div>
+
+        </header>
+
+        <!-- TEXTO E ACESSO -->
+        <section class="conteudo">
+
+            <div class="etiqueta">
+                <span class="ponto"></span>
+                EXPLORE. CORRA. CONQUISTE.
+            </div>
+
+            <h1>
+                O mundo é seu <span>caminho.</span>
+            </h1>
+
+            <p class="descricao">
+                Cada passo conta. Explore novos caminhos,
+                supere seus limites e conquiste o mundo
+                com o RunWorld.
+            </p>
+
+            <div class="acoes">
+
+                <!-- ABRE O CADASTRO -->
+                <a
+                    class="botao botao-criar"
+                    href="cadastro.html"
+                >
+                    Criar minha conta
+                    <span class="seta" aria-hidden="true">→</span>
+                </a>
+
+                <!-- ABRE O LOGIN -->
+                <a
+                    class="botao botao-entrar"
+                    href="login.html"
+                >
+                    Já tenho uma conta · Entrar
+                </a>
+
+            </div>
+
+            <footer class="rodape">
+                Sua próxima conquista começa aqui.
+            </footer>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
