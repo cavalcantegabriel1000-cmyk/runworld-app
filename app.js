@@ -1125,6 +1125,15 @@ function alternarPainel(id) {
     const painel = elemento(id);
     if (!painel) return;
     const abrir = !painel.classList.contains("aberto") && !painel.classList.contains("active");
+    // Evita que Menu, Camadas, Mensagens e Online fiquem sobrepostos.
+    if (abrir) {
+        ["menuFlutuante", "painelCamadas", "painelMensagens", "painelOnline", "painelCorredoresOnline", "painelNotificacoes", "fundoNotificacoes"].forEach(outroId => {
+            if (outroId !== id) fecharPainel(outroId);
+        });
+        document.querySelectorAll(".menu-painel.aberto, .camadas-painel.aberto, .online-painel.aberto, .mensagens-painel.aberto").forEach(outro => {
+            if (outro.id !== id) outro.classList.remove("aberto", "active");
+        });
+    }
     painel.classList.toggle("aberto", abrir);
     painel.classList.toggle("active", abrir);
 }
@@ -1167,6 +1176,9 @@ function abrirTela(id) {
     if (id === "telaConfiguracoes") preencherDadosPerfil();
     setTimeout(() => mapa?.invalidateSize(), 250);
 }
+
+window.abrirTela = abrirTela;
+window.voltarParaMapa = voltarParaMapa;
 
 function configurarNavegacao() {
     elemento("botaoMenu")?.addEventListener("click", () => alternarPainel("menuFlutuante"));
