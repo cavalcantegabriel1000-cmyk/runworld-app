@@ -1219,3 +1219,307 @@ button:focus-visible {
         font-size: 11px;
     }
 }
+
+/* =====================================================
+   RUNWORLD SHOP
+   ===================================================== */
+
+.shop-conteudo {
+    max-width: 850px;
+}
+
+.shop-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 22px;
+    margin-bottom: 20px;
+    border: 1px solid #24613c;
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at 90% 10%, #00e67625, transparent 45%),
+        linear-gradient(135deg, #14271b, #0d140f);
+}
+
+.shop-banner-texto {
+    min-width: 0;
+}
+
+.shop-etiqueta {
+    color: var(--verde);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.6px;
+}
+
+.shop-banner h2 {
+    max-width: 430px;
+    margin: 9px 0;
+    font-size: clamp(23px, 5vw, 31px);
+    line-height: 1.15;
+}
+
+.shop-banner p {
+    color: var(--suave);
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.shop-banner-icone {
+    display: grid;
+    place-items: center;
+    flex: 0 0 62px;
+    width: 62px;
+    height: 62px;
+    border-radius: 20px;
+    background: #00e67619;
+    color: var(--verde);
+}
+
+.shop-banner-icone svg {
+    width: 32px;
+    height: 32px;
+}
+
+.shop-selo {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    color: var(--verde);
+    background: #00e67616;
+}
+
+.shop-pesquisa {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    height: 48px;
+    border: 1px solid var(--borda);
+    border-radius: 15px;
+    background: var(--painel);
+    color: var(--suave);
+}
+
+.shop-pesquisa svg {
+    width: 19px;
+    flex-shrink: 0;
+}
+
+.shop-pesquisa input {
+    min-width: 0;
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--texto);
+    font-size: 13px;
+}
+
+.shop-categorias {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 15px 0;
+    scrollbar-width: none;
+}
+
+.shop-categorias::-webkit-scrollbar {
+    display: none;
+}
+
+.shop-filtro {
+    flex-shrink: 0;
+    padding: 10px 14px;
+    border: 1px solid var(--borda);
+    border-radius: 999px;
+    background: var(--painel);
+    color: var(--suave);
+    font-size: 12px;
+}
+
+.shop-filtro.ativo {
+    background: var(--verde);
+    border-color: var(--verde);
+    color: #05200f;
+    font-weight: 850;
+}
+
+.shop-lojas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 22px;
+    color: var(--suave);
+    font-size: 12px;
+}
+
+.shop-lojas select {
+    max-width: 65%;
+    padding: 10px 12px;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    background: var(--painel);
+    color: var(--texto);
+    font-size: 12px;
+}
+
+.shop-resultados {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 13px;
+}
+
+.shop-resultados strong {
+    font-size: 15px;
+}
+
+.shop-resultados span {
+    color: var(--suave);
+    font-size: 11px;
+}
+
+.shop-grade {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.shop-produto {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 11px;
+    border: 1px solid var(--borda);
+    border-radius: 19px;
+    background: linear-gradient(155deg, #142019, #0c110e);
+}
+
+.shop-produto-imagem {
+    display: grid;
+    place-items: center;
+    height: 115px;
+    margin-bottom: 11px;
+    border-radius: 14px;
+    background:
+        radial-gradient(circle at 50% 35%, #00e67624, transparent 60%),
+        #18251c;
+    color: var(--verde);
+}
+
+.shop-produto-imagem svg {
+    width: 43px;
+    height: 43px;
+    stroke-width: 1.5;
+}
+
+.shop-produto-loja {
+    color: var(--verde);
+    font-size: 10px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.shop-produto h3 {
+    min-height: 36px;
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.shop-produto-preco {
+    font-size: 16px;
+    font-weight: 900;
+    overflow-wrap: anywhere;
+}
+
+.shop-produto-detalhe {
+    min-height: 29px;
+    margin: 5px 0 12px;
+    color: var(--suave);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.shop-comprar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40px;
+    margin-top: auto;
+    border-radius: 12px;
+    background: var(--verde);
+    color: #05200f;
+    font-size: 12px;
+    font-weight: 900;
+    text-decoration: none;
+}
+
+.shop-comprar:active {
+    transform: scale(.98);
+}
+
+.shop-aviso,
+.shop-afiliados {
+    color: var(--suave);
+    font-size: 11px;
+    line-height: 1.65;
+    margin-top: 20px;
+}
+
+.shop-afiliados {
+    padding-top: 14px;
+    border-top: 1px solid var(--borda);
+}
+
+.shop-vazio {
+    grid-column: 1 / -1;
+    padding: 24px 12px;
+    border: 1px dashed var(--borda);
+    border-radius: 16px;
+    color: var(--suave);
+    text-align: center;
+    font-size: 13px;
+}
+
+.shop-botao-topo {
+    color: var(--verde);
+}
+
+@media (min-width: 560px) {
+    .shop-grade {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .shop-produto-imagem {
+        height: 145px;
+    }
+}
+
+@media (max-width: 350px) {
+    .shop-grade {
+        grid-template-columns: 1fr;
+    }
+
+    .shop-produto-imagem {
+        height: 135px;
+    }
+
+    .shop-banner {
+        padding: 17px;
+    }
+
+    .shop-banner-icone {
+        flex-basis: 48px;
+        width: 48px;
+        height: 48px;
+    }
+}
+
