@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050807">
+  <title>RunWorld Shop</title>
+  <link rel="stylesheet" href="shop.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <main id="telaShop" class="rw-shop">
+    <header class="rw-shop-topo">
+      <button class="icone-btn" id="shopVoltar" type="button" aria-label="Voltar" title="Voltar"><i data-lucide="arrow-left"></i></button>
+      <div class="rw-shop-marca">
+        <img class="rw-shop-logo" src="IMG-20260923-WA4190.jpg" alt="Logo RunWorld" onerror="this.style.display='none'">
+        <div class="rw-shop-titulo"><h1>RunWorld <span>Shop</span></h1><p>Equipamentos para sua jornada</p></div>
+      </div>
+      <button class="icone-btn rw-shop-carrinho" type="button" id="shopAbrirCarrinho" aria-label="Abrir carrinho"><i data-lucide="shopping-cart"></i><span id="shopContador">0</span></button>
+    </header>
+    <section class="rw-shop-destaque"><span class="rw-kicker">RUNWORLD GEAR</span><h2>Seu próximo treino começa aqui.</h2><p>Encontre equipamentos para correr, caminhar e explorar. Compare opções e confira preço, frete e disponibilidade no vendedor.</p></section>
+    <div class="rw-shop-conteudo">
+      <div class="rw-shop-aviso"><i data-lucide="info"></i><span>Preços ilustrativos de referência, não atualizados automaticamente. Confirme o valor e a disponibilidade no site do vendedor.</span></div>
+      <label class="rw-shop-busca"><i data-lucide="search"></i><input id="shopBusca" type="search" placeholder="Buscar tênis, garrafas, acessórios..." autocomplete="off"></label>
+      <div class="rw-shop-categorias" id="shopCategorias">
+        <button type="button" class="selecionado" data-categoria="Todas">Todas</button><button type="button" data-categoria="Tênis">Tênis</button><button type="button" data-categoria="Roupas">Roupas</button><button type="button" data-categoria="Acessórios">Acessórios</button><button type="button" data-categoria="Hidratação">Hidratação</button>
+      </div>
+      <div class="rw-shop-lojas" id="shopLojas">
+        <button type="button" class="selecionado" data-loja="Todas">Todas as lojas</button><button type="button" data-loja="Mercado Livre">Mercado Livre</button><button type="button" data-loja="Amazon">Amazon</button><button type="button" data-loja="Shopee">Shopee</button>
+      </div>
+      <div class="rw-shop-resultados"><h2>Produtos em destaque</h2><span id="shopQuantidade"></span></div>
+      <div class="rw-shop-produtos" id="shopProdutos"></div><p class="rw-shop-vazio" id="shopVazio" hidden>Nenhum produto encontrado. Tente outra busca ou categoria.</p>
+    </div>
+    <section class="rw-shop-proximas"><h2><i data-lucide="map-pin"></i> Lojas perto de você</h2><p>Abra o mapa para encontrar lojas esportivas próximas. Seu navegador poderá pedir permissão de localização.</p><button class="rw-shop-localizar" id="shopLojasProximas" type="button"><i data-lucide="navigation"></i> Encontrar lojas próximas</button></section>
+  </main>
+  <script src="shop.js"></script>
+</body>
+</html>
