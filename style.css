@@ -1923,3 +1923,794 @@ button:focus-visible {
     }
     }
 
+
+/* =====================================================
+   RUNWORLD SHOP — DESIGN PREMIUM
+   Adicione este bloco ao FINAL do style.css
+   ===================================================== */
+
+.rw-shop {
+    --shop-bg: #050807;
+    --shop-panel: #101713;
+    --shop-panel-2: #151f19;
+    --shop-green: #00e676;
+    --shop-green-dark: #00bd62;
+    --shop-text: #f5f7f5;
+    --shop-muted: #9aa99f;
+    --shop-border: rgba(255, 255, 255, 0.08);
+
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background:
+        radial-gradient(
+            ellipse at 50% -15%,
+            rgba(0, 230, 118, 0.13),
+            transparent 55%
+        ),
+        var(--shop-bg);
+    color: var(--shop-text);
+    font-family: inherit;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.rw-shop[hidden] {
+    display: none !important;
+}
+
+/* Cabeçalho */
+
+.rw-shop .rw-shop-topo {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 48px;
+    align-items: center;
+    gap: 12px;
+    min-height: 78px;
+    padding: 12px 16px;
+    padding-top: max(12px, env(safe-area-inset-top, 0px));
+    background: rgba(5, 8, 7, 0.91);
+    border-bottom: 1px solid var(--shop-border);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.rw-shop .rw-shop-topo .icone-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--shop-border);
+    border-radius: 15px;
+    background: var(--shop-panel);
+    color: var(--shop-text);
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.rw-shop .rw-shop-topo .icone-btn:active {
+    transform: scale(0.94);
+}
+
+.rw-shop .rw-shop-topo .icone-btn svg {
+    width: 21px;
+    height: 21px;
+}
+
+.rw-shop .rw-shop-titulo {
+    min-width: 0;
+}
+
+.rw-shop .rw-shop-titulo h1 {
+    margin: 0;
+    color: var(--shop-text);
+    font-size: 19px;
+    line-height: 1.25;
+    font-weight: 850;
+    letter-spacing: -0.5px;
+}
+
+.rw-shop .rw-shop-titulo p {
+    margin: 4px 0 0;
+    color: var(--shop-muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.rw-shop .rw-shop-carrinho {
+    width: 46px !important;
+    height: 46px !important;
+    color: var(--shop-green) !important;
+}
+
+.rw-shop .rw-shop-carrinho span {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 19px;
+    height: 19px;
+    padding: 0 5px;
+    border: 2px solid var(--shop-bg);
+    border-radius: 20px;
+    background: var(--shop-green);
+    color: #001b0c;
+    font-size: 10px;
+    line-height: 1;
+    font-weight: 900;
+}
+
+/* Conteúdo */
+
+.rw-shop .rw-shop-conteudo {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 18px 15px 35px;
+}
+
+.rw-shop .rw-shop-aviso {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 13px 14px;
+    border: 1px solid rgba(0, 230, 118, 0.17);
+    border-radius: 16px;
+    background: rgba(0, 230, 118, 0.055);
+    color: #c4d7ca;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.rw-shop .rw-shop-aviso svg {
+    flex: 0 0 auto;
+    width: 17px;
+    height: 17px;
+    margin-top: 1px;
+    color: var(--shop-green);
+}
+
+/* Busca */
+
+.rw-shop .rw-shop-busca {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    min-height: 52px;
+    margin: 20px 0 17px;
+    padding: 0 15px;
+    border: 1px solid var(--shop-border);
+    border-radius: 17px;
+    background: #101612;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.rw-shop .rw-shop-busca:focus-within {
+    border-color: rgba(0, 230, 118, 0.65);
+    box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.08);
+}
+
+.rw-shop .rw-shop-busca svg {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    color: var(--shop-green);
+}
+
+.rw-shop .rw-shop-busca input {
+    width: 100%;
+    min-width: 0;
+    height: 48px;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--shop-text);
+    font-family: inherit;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+.rw-shop .rw-shop-busca input::placeholder {
+    color: #78877d;
+}
+
+/* Categorias e lojas */
+
+.rw-shop .rw-shop-categorias,
+.rw-shop .rw-shop-lojas {
+    display: flex;
+    gap: 9px;
+    overflow-x: auto;
+    padding: 2px 1px 9px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.rw-shop .rw-shop-categorias::-webkit-scrollbar,
+.rw-shop .rw-shop-lojas::-webkit-scrollbar {
+    display: none;
+}
+
+.rw-shop .rw-shop-categorias button,
+.rw-shop .rw-shop-lojas button {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-height: 37px;
+    padding: 0 15px;
+    border: 1px solid var(--shop-border);
+    border-radius: 30px;
+    background: #101612;
+    color: #b9c5bd;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 650;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.rw-shop .rw-shop-categorias button.selecionado,
+.rw-shop .rw-shop-lojas button.selecionado {
+    border-color: var(--shop-green);
+    background: var(--shop-green);
+    color: #032211;
+    box-shadow: 0 4px 15px rgba(0, 230, 118, 0.12);
+}
+
+.rw-shop .rw-shop-lojas {
+    margin-top: 3px;
+    padding-bottom: 17px;
+}
+
+.rw-shop .rw-shop-lojas button {
+    min-height: 32px;
+    font-size: 11px;
+}
+
+/* Título da lista */
+
+.rw-shop .rw-shop-resultados {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 8px 1px 15px;
+}
+
+.rw-shop .rw-shop-resultados h2 {
+    margin: 0;
+    color: var(--shop-text);
+    font-size: 19px;
+    font-weight: 850;
+    letter-spacing: -0.4px;
+}
+
+.rw-shop #shopQuantidade {
+    color: var(--shop-muted);
+    font-size: 11px;
+}
+
+/* Grade de produtos */
+
+.rw-shop .rw-shop-produtos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.rw-shop .rw-shop-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--shop-border);
+    border-radius: 20px;
+    background: linear-gradient(
+        160deg,
+        #151e18 0%,
+        #0d130f 100%
+    );
+    box-shadow: 0 7px 22px rgba(0, 0, 0, 0.16);
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease;
+    animation: rwShopEntrada 0.35s ease both;
+}
+
+.rw-shop .rw-shop-card:nth-child(2n) {
+    animation-delay: 0.04s;
+}
+
+.rw-shop .rw-shop-card:active {
+    transform: scale(0.985);
+}
+
+.rw-shop .rw-shop-imagem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 125px;
+    padding: 15px;
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(0, 230, 118, 0.14),
+            transparent 66%
+        ),
+        linear-gradient(135deg, #18251c, #0d130f);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+    font-size: 53px;
+    line-height: 1;
+}
+
+.rw-shop .rw-shop-card-corpo {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+}
+
+.rw-shop .rw-shop-etiqueta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    padding: 3px 8px;
+    border: 1px solid rgba(0, 230, 118, 0.15);
+    border-radius: 7px;
+    background: rgba(0, 230, 118, 0.07);
+    color: var(--shop-green);
+    font-size: 9px;
+    line-height: 1.2;
+    font-weight: 750;
+}
+
+.rw-shop .rw-shop-card h3 {
+    width: 100%;
+    margin: 10px 0 5px;
+    color: var(--shop-text);
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.rw-shop .rw-shop-card p {
+    margin: 0 0 12px;
+    color: var(--shop-muted);
+    font-size: 10px;
+    line-height: 1.55;
+}
+
+.rw-shop .rw-shop-preco {
+    margin-top: auto;
+    color: var(--shop-green);
+    font-size: 18px;
+    line-height: 1.25;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+}
+
+.rw-shop .rw-shop-card-corpo > small {
+    margin-top: 4px;
+    color: #77877c;
+    font-size: 9px;
+}
+
+.rw-shop .rw-shop-vendedor {
+    margin-top: 9px;
+    color: #c1ccc4;
+    font-size: 10px;
+    font-weight: 650;
+}
+
+/* Botão comprar */
+
+.rw-shop .rw-shop-comprar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    min-height: 43px;
+    margin-top: 13px;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(
+        135deg,
+        #00ef7b,
+        #00bd62
+    );
+    color: #032111;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 230, 118, 0.12);
+    transition:
+        filter 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.rw-shop .rw-shop-comprar:active {
+    transform: scale(0.97);
+}
+
+.rw-shop .rw-shop-comprar:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Estado vazio */
+
+.rw-shop .rw-shop-vazio {
+    padding: 30px 12px;
+    color: var(--shop-muted);
+    text-align: center;
+    font-size: 13px;
+}
+
+/* Fundo e caixa dos modais */
+
+.rw-shop-modal-fundo {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 16px;
+    padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    animation: rwShopFundo 0.18s ease both;
+}
+
+.rw-shop-modal {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    max-height: 85dvh;
+    overflow-y: auto;
+    padding: 25px 19px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(0, 230, 118, 0.09),
+            transparent 55%
+        ),
+        #101713;
+    color: var(--shop-text);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.55);
+    animation: rwShopModal 0.23s ease both;
+}
+
+.rw-shop-modal h2 {
+    margin: 0 35px 20px 0;
+    color: var(--shop-text);
+    font-size: 21px;
+    font-weight: 850;
+    letter-spacing: -0.5px;
+}
+
+.rw-shop-modal p {
+    color: #c1ccc4;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.rw-shop-modal .rw-shop-fechar {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--shop-border);
+    border-radius: 12px;
+    background: #1b251e;
+    color: var(--shop-text);
+    font-size: 23px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.rw-shop .rw-shop-modal-produto {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--shop-border);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.025);
+    font-size: 14px;
+}
+
+.rw-shop .rw-shop-modal-produto strong {
+    color: var(--shop-text);
+}
+
+/* Opções de compra */
+
+.rw-shop .rw-shop-opcao {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 15px 13px;
+    border: 1px solid var(--shop-border);
+    border-radius: 15px;
+    background: #17211a;
+    color: var(--shop-text);
+    text-align: left;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.rw-shop .rw-shop-opcao:active {
+    border-color: var(--shop-green);
+    background: #1b2a20;
+}
+
+.rw-shop .rw-shop-opcao > svg {
+    flex: 0 0 auto;
+    width: 23px;
+    height: 23px;
+    color: var(--shop-green);
+}
+
+.rw-shop .rw-shop-opcao span {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.rw-shop .rw-shop-opcao strong {
+    color: var(--shop-text);
+    font-size: 13px;
+}
+
+.rw-shop .rw-shop-opcao small {
+    color: var(--shop-muted);
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+.rw-shop .rw-shop-nota {
+    margin: 15px 0 0;
+    color: #87958b;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+/* Carrinho */
+
+.rw-shop .rw-shop-linha-carrinho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--shop-border);
+}
+
+.rw-shop .rw-shop-linha-carrinho > div {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.rw-shop .rw-shop-linha-carrinho strong {
+    color: var(--shop-text);
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.rw-shop .rw-shop-linha-carrinho small {
+    color: var(--shop-muted);
+    font-size: 11px;
+}
+
+.rw-shop .rw-shop-linha-carrinho button {
+    flex: 0 0 auto;
+    padding: 8px 10px;
+    border: 1px solid rgba(232, 75, 75, 0.2);
+    border-radius: 10px;
+    background: rgba(232, 75, 75, 0.08);
+    color: #ff9292;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+.rw-shop .rw-shop-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 17px;
+    padding: 15px;
+    border: 1px solid rgba(0, 230, 118, 0.16);
+    border-radius: 15px;
+    background: rgba(0, 230, 118, 0.06);
+}
+
+.rw-shop .rw-shop-total span {
+    color: #c0ccc3;
+    font-size: 12px;
+}
+
+.rw-shop .rw-shop-total strong {
+    color: var(--shop-green);
+    font-size: 19px;
+    font-weight: 900;
+}
+
+.rw-shop .rw-shop-limpar {
+    width: 100%;
+    min-height: 42px;
+    margin-top: 9px;
+    border: 1px solid var(--shop-border);
+    border-radius: 12px;
+    background: transparent;
+    color: #c4cec7;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* Aviso temporário */
+
+.rw-shop-toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(25px + env(safe-area-inset-bottom, 0px));
+    z-index: 6000;
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    padding: 13px 18px;
+    border: 1px solid rgba(0, 230, 118, 0.2);
+    border-radius: 14px;
+    background: #17231b;
+    color: #eafff0;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.5;
+    text-align: center;
+    transform: translateX(-50%);
+    animation: rwShopToast 0.2s ease both;
+}
+
+/* Animações */
+
+@keyframes rwShopEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes rwShopFundo {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes rwShopModal {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes rwShopToast {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 8px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* Telas maiores */
+
+@media (min-width: 600px) {
+    .rw-shop .rw-shop-conteudo {
+        padding: 24px 24px 45px;
+    }
+
+    .rw-shop .rw-shop-produtos {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .rw-shop .rw-shop-imagem {
+        min-height: 155px;
+        font-size: 62px;
+    }
+
+    .rw-shop .rw-shop-card-corpo {
+        padding: 15px;
+    }
+
+    .rw-shop .rw-shop-card h3 {
+        font-size: 15px;
+    }
+
+    .rw-shop .rw-shop-card p {
+        font-size: 11px;
+    }
+
+    .rw-shop-modal-fundo {
+        align-items: center;
+    }
+}
+
+@media (min-width: 900px) {
+    .rw-shop .rw-shop-produtos {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+/* Acessibilidade: reduz animações se o aparelho solicitar */
+
+@media (prefers-reduced-motion: reduce) {
+    .rw-shop *,
+    .rw-shop-modal-fundo,
+    .rw-shop-modal,
+    .rw-shop-toast {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+                    }
+    
