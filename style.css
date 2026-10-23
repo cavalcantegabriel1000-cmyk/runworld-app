@@ -610,3 +610,654 @@ button:focus-visible, input:focus-visible {
         scroll-behavior: auto !important;
     }
 }
+
+/* ==========================================
+   RUNWORLD SHOP — VISUAL PREMIUM
+   Compatível com o shop.js enviado
+   ========================================== */
+
+#telaShop.rw-shop {
+    --shop-bg: #070b09;
+    --shop-card: #121b15;
+    --shop-border: rgba(170, 205, 180, .15);
+    --shop-text: #f4faf5;
+    --shop-muted: #a4b4a8;
+    --shop-green: #00e676;
+
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: none;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    color: var(--shop-text);
+    background:
+        radial-gradient(ellipse at top right, #00e67615, transparent 38%),
+        linear-gradient(160deg, #0b120e, var(--shop-bg) 65%);
+    font-family: inherit;
+    -webkit-overflow-scrolling: touch;
+}
+
+#telaShop.rw-shop.active,
+#telaShop.rw-shop.aberto {
+    display: block;
+}
+
+#telaShop *,
+#shopModal * {
+    box-sizing: border-box;
+}
+
+#telaShop button,
+#shopModal button {
+    font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#telaShop .rw-shop-topo {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 46px;
+    align-items: center;
+    gap: 12px;
+    padding: max(14px, env(safe-area-inset-top)) 15px 14px;
+    background: #070b09ed;
+    border-bottom: 1px solid var(--shop-border);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+#telaShop .rw-shop-topo .icone-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: var(--shop-text);
+    background: #17221b;
+    border: 1px solid var(--shop-border);
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#telaShop .rw-shop-topo .icone-btn svg {
+    width: 21px;
+    height: 21px;
+}
+
+#telaShop .rw-shop-titulo {
+    min-width: 0;
+}
+
+#telaShop .rw-shop-titulo h1 {
+    margin: 0;
+    color: var(--shop-text);
+    font-size: clamp(19px, 5vw, 25px);
+    font-weight: 850;
+    letter-spacing: -.6px;
+}
+
+#telaShop .rw-shop-titulo p {
+    margin: 5px 0 0;
+    color: var(--shop-muted);
+    font-size: 12px;
+}
+
+#telaShop .rw-shop-carrinho {
+    justify-self: end;
+}
+
+#telaShop #shopContador {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: grid;
+    place-items: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    color: #041109;
+    background: var(--shop-green);
+    border: 2px solid #070b09;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 900;
+}
+
+#telaShop .rw-shop-conteudo {
+    width: min(1120px, 100%);
+    margin: auto;
+    padding: 18px 15px 35px;
+}
+
+#telaShop .rw-shop-aviso {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 17px;
+    padding: 13px;
+    color: #c8d8cc;
+    background: #102017;
+    border: 1px solid #00e6762a;
+    border-radius: 15px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+#telaShop .rw-shop-aviso svg {
+    flex-shrink: 0;
+    width: 18px;
+    color: var(--shop-green);
+}
+
+#telaShop .rw-shop-busca {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 52px;
+    padding: 0 15px;
+    background: #131c16;
+    border: 1px solid var(--shop-border);
+    border-radius: 16px;
+}
+
+#telaShop .rw-shop-busca:focus-within {
+    border-color: #00e67699;
+    box-shadow: 0 0 0 3px #00e67612;
+}
+
+#telaShop .rw-shop-busca svg {
+    flex-shrink: 0;
+    width: 20px;
+    color: var(--shop-muted);
+}
+
+#telaShop .rw-shop-busca input {
+    width: 100%;
+    min-width: 0;
+    height: 49px;
+    padding: 0;
+    color: var(--shop-text);
+    background: transparent;
+    border: 0;
+    outline: none;
+    font-size: 14px;
+}
+
+#telaShop .rw-shop-busca input::placeholder {
+    color: #809086;
+}
+
+#telaShop .rw-shop-categorias,
+#telaShop .rw-shop-lojas {
+    display: flex;
+    gap: 8px;
+    padding: 13px 0 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+#telaShop .rw-shop-categorias::-webkit-scrollbar,
+#telaShop .rw-shop-lojas::-webkit-scrollbar {
+    display: none;
+}
+
+#telaShop .rw-shop-categorias button,
+#telaShop .rw-shop-lojas button {
+    flex-shrink: 0;
+    min-height: 38px;
+    padding: 0 14px;
+    color: #c0cec3;
+    background: #111a14;
+    border: 1px solid var(--shop-border);
+    border-radius: 50px;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+#telaShop .rw-shop-categorias button.selecionado,
+#telaShop .rw-shop-lojas button.selecionado {
+    color: #041109;
+    background: var(--shop-green);
+    border-color: var(--shop-green);
+}
+
+#telaShop .rw-shop-resultados {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 25px 0 13px;
+}
+
+#telaShop .rw-shop-resultados h2 {
+    margin: 0;
+    color: var(--shop-text);
+    font-size: 20px;
+    font-weight: 850;
+}
+
+#telaShop #shopQuantidade {
+    color: var(--shop-muted);
+    font-size: 12px;
+}
+
+#telaShop .rw-shop-produtos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 12px;
+}
+
+#telaShop .rw-shop-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background: linear-gradient(150deg, #17221a, #0e1510);
+    border: 1px solid var(--shop-border);
+    border-radius: 19px;
+    box-shadow: 0 10px 25px #0002;
+    transition: transform .18s ease, border-color .18s ease;
+}
+
+#telaShop .rw-shop-card:active {
+    transform: scale(.985);
+}
+
+#telaShop .rw-shop-imagem {
+    display: grid;
+    place-items: center;
+    min-height: 108px;
+    padding: 16px 8px;
+    background:
+        radial-gradient(circle, #00e67620, transparent 65%),
+        #142019;
+    border-bottom: 1px solid #ffffff0a;
+    font-size: clamp(42px, 10vw, 56px);
+    line-height: 1;
+}
+
+#telaShop .rw-shop-card-corpo {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+    padding: 12px;
+}
+
+#telaShop .rw-shop-etiqueta {
+    display: inline-block;
+    padding: 5px 8px;
+    color: #8ff5b8;
+    background: #00e67612;
+    border: 1px solid #00e67620;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+#telaShop .rw-shop-card h3 {
+    margin: 10px 0 6px;
+    color: var(--shop-text);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+#telaShop .rw-shop-card p {
+    margin: 0 0 12px;
+    color: var(--shop-muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+#telaShop .rw-shop-preco {
+    margin-top: auto;
+    color: var(--shop-green);
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.3;
+}
+
+#telaShop .rw-shop-card-corpo > small {
+    margin-top: 4px;
+    color: #829087;
+    font-size: 10px;
+}
+
+#telaShop .rw-shop-vendedor {
+    display: block;
+    margin: 10px 0 12px;
+    color: #c3cec5;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+#telaShop .rw-shop-comprar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 43px;
+    padding: 10px;
+    color: #031109;
+    background: linear-gradient(135deg, #00ef7c, #00c96a);
+    border: 0;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+#telaShop .rw-shop-comprar:disabled,
+#shopModal .rw-shop-comprar:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+#telaShop .rw-shop-vazio {
+    margin: 18px 0;
+    padding: 25px 15px;
+    color: var(--shop-muted);
+    background: #111a14;
+    border: 1px dashed var(--shop-border);
+    border-radius: 16px;
+    text-align: center;
+    font-size: 13px;
+}
+
+#telaShop [hidden] {
+    display: none !important;
+}
+
+/* MODAIS: comprar e carrinho */
+
+#shopModal.rw-shop-modal-fundo {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: #000b;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+#shopModal .rw-shop-modal {
+    position: relative;
+    width: min(440px, 100%);
+    max-height: 84dvh;
+    overflow-y: auto;
+    padding: 24px 18px 20px;
+    color: var(--shop-text);
+    background: linear-gradient(155deg, #17221a, #0a100c);
+    border: 1px solid #aaccb433;
+    border-radius: 23px;
+    box-shadow: 0 25px 80px #0009;
+}
+
+#shopModal .rw-shop-fechar {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    color: #f4faf5;
+    background: #26352a;
+    border: 1px solid var(--shop-border);
+    border-radius: 12px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+#shopModal #shopModalTitulo {
+    margin: 0 42px 20px 0;
+    color: var(--shop-text);
+    font-size: 21px;
+    font-weight: 850;
+}
+
+#shopModal .rw-shop-modal-conteudo > p {
+    color: #c1cec4;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+#shopModal .rw-shop-modal-produto {
+    padding: 13px;
+    background: #00e67612;
+    border: 1px solid #00e67622;
+    border-radius: 13px;
+}
+
+#shopModal .rw-shop-opcao {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    margin: 10px 0;
+    padding: 14px;
+    color: #f3faf4;
+    background: #152019;
+    border: 1px solid var(--shop-border);
+    border-radius: 15px;
+    text-align: left;
+    cursor: pointer;
+}
+
+#shopModal .rw-shop-opcao > svg {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    color: var(--shop-green);
+}
+
+#shopModal .rw-shop-opcao span {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#shopModal .rw-shop-opcao strong {
+    font-size: 13px;
+}
+
+#shopModal .rw-shop-opcao small {
+    color: var(--shop-muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+#shopModal .rw-shop-nota {
+    color: #91a095;
+    font-size: 11px;
+}
+
+#shopModal .rw-shop-linha-carrinho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--shop-border);
+}
+
+#shopModal .rw-shop-linha-carrinho > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+#shopModal .rw-shop-linha-carrinho strong {
+    color: var(--shop-text);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+#shopModal .rw-shop-linha-carrinho small {
+    color: var(--shop-muted);
+    font-size: 11px;
+}
+
+#shopModal .rw-shop-linha-carrinho button {
+    flex-shrink: 0;
+    padding: 8px 10px;
+    color: #ffb8b8;
+    background: #e84b4b15;
+    border: 1px solid #e84b4b35;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+#shopModal .rw-shop-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 18px 0 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--shop-border);
+}
+
+#shopModal .rw-shop-total span {
+    color: #c1cec4;
+    font-size: 12px;
+}
+
+#shopModal .rw-shop-total strong {
+    color: var(--shop-green);
+    font-size: 21px;
+    font-weight: 900;
+}
+
+#shopModal .rw-shop-limpar {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+    margin-top: 9px;
+    color: #ffc0c0;
+    background: transparent;
+    border: 1px solid #e84b4b40;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+/* Mensagem de confirmação */
+
+.rw-shop-toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(22px + env(safe-area-inset-bottom));
+    z-index: 3000;
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    padding: 13px 17px;
+    color: #f4fff7;
+    background: #17251b;
+    border: 1px solid #00e67655;
+    border-radius: 14px;
+    box-shadow: 0 12px 36px #0006;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    transform: translateX(-50%);
+}
+
+/* Tablet e computador */
+
+@media (min-width: 700px) {
+    #telaShop .rw-shop-topo {
+        padding-right: max(24px, calc((100vw - 1120px) / 2));
+        padding-left: max(24px, calc((100vw - 1120px) / 2));
+    }
+
+    #telaShop .rw-shop-conteudo {
+        padding: 25px 24px 42px;
+    }
+
+    #telaShop .rw-shop-produtos {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    #telaShop .rw-shop-imagem {
+        min-height: 145px;
+        font-size: 64px;
+    }
+
+    #telaShop .rw-shop-card-corpo {
+        padding: 16px;
+    }
+
+    #telaShop .rw-shop-card h3 {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1000px) {
+    #telaShop .rw-shop-produtos {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 360px) {
+    #telaShop .rw-shop-topo {
+        grid-template-columns: 40px minmax(0, 1fr) 42px;
+        gap: 8px;
+        padding-right: 11px;
+        padding-left: 11px;
+    }
+
+    #telaShop .rw-shop-topo .icone-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    #telaShop .rw-shop-conteudo {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    #telaShop .rw-shop-produtos {
+        gap: 8px;
+    }
+
+    #telaShop .rw-shop-card-corpo {
+        padding: 9px;
+    }
+
+    #telaShop .rw-shop-preco {
+        font-size: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #telaShop *,
+    #shopModal * {
+        animation: none !important;
+        transition: none !important;
+    }
+   }
+           
