@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050807"><title>RunWorld — Explore. Corra. Conquiste.</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="shop.css">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <main id="telaMapa" class="tela active">
+    <div id="mapa" aria-label="Mapa do RunWorld"></div>
+    <header class="topo">
+      <button id="botaoMenu" class="icone-btn" aria-label="Abrir menu"><i data-lucide="menu"></i></button>
+      <div class="marca"><img class="logo-runworld" src="IMG-20260923-WA4190.jpg" alt="Logo RunWorld" onerror="this.onerror=null;this.src='runworld-logo.svg'"><div><strong>RunWorld</strong><small>Explore. Corra. Conquiste.</small></div></div>
+      <div class="topo-acoes"><button id="botaoNotificacoes" class="icone-btn" aria-label="Notificações"><i data-lucide="bell"></i></button><button id="abrirPerfil" class="avatar-btn" aria-label="Abrir perfil"><img id="avatarTopo" alt="Foto de perfil" hidden><i data-lucide="user-round"></i></button></div>
+    </header>
+    <div class="controles-mapa"><button id="minhaLocalizacao" class="mapa-btn" aria-label="Minha localização"><i data-lucide="locate-fixed"></i></button><button id="botaoCamada" class="mapa-btn"><i data-lucide="layers"></i><span>Mapa</span></button></div>
+    <section id="menuFlutuante" class="painel flutuante menu-painel">
+      <div class="painel-cabecalho"><strong>Menu RunWorld</strong><button class="icone-btn" aria-label="Fechar" data-fechar-tela><i data-lucide="x"></i></button></div>
+      <button id="abrirPerfilMenu" class="item-menu"><i data-lucide="user-round"></i><span><b id="nomePerfilMenu">Meu perfil</b><small>Ver suas estatísticas</small></span></button>
+      <button id="abrirRanking" class="item-menu"><i data-lucide="trophy"></i><span><b>Ranking</b><small>Compare seus resultados</small></span></button>
+      <button id="abrirMissoes" class="item-menu"><i data-lucide="target"></i><span><b>Missões</b><small>Ganhe XP e conquistas</small></span></button>
+      <button id="abrirMensagens" class="item-menu"><i data-lucide="users"></i><span><b>Corredores online</b><small>Veja quem está por perto</small></span></button>
+      <button id="abrirConfiguracoes" class="item-menu"><i data-lucide="settings"></i><span><b>Configurações</b><small>Personalize o aplicativo</small></span></button>
+    </section>
+    <section id="painelCamadas" class="painel flutuante camadas-painel">
+      <div class="painel-cabecalho"><strong>Camadas do mapa</strong><button id="fecharCamadas" class="icone-btn" aria-label="Fechar"><i data-lucide="x"></i></button></div>
+      <div class="opcoes-camada"><button class="opcao-camada active" data-camada="padrao">Padrão</button><button class="opcao-camada" data-camada="satelite">Satélite</button><button class="opcao-camada" data-camada="relevo">Relevo</button></div>
+      <label class="linha-switch">Ciclovias <input id="camadaBicicleta" type="checkbox"></label><label class="linha-switch">Trânsito ao vivo <input id="camadaTransito" type="checkbox"></label><label class="linha-switch">Edifícios <input id="camadaEdificios" type="checkbox"></label>
+    </section>
+    <section id="painelMensagens" class="painel flutuante online-painel painel-online">
+      <div class="painel-cabecalho"><strong>Corredores online</strong><button id="fecharMensagens" class="icone-btn" aria-label="Fechar"><i data-lucide="x"></i></button></div><p class="online-resumo">Conecte-se para ver outros corredores.</p><div id="listaCorredoresOnline"></div>
+    </section>
+    <section id="painelAtividade" class="painel-atividade">
+      <div class="barra-arraste" tabindex="0" role="button" aria-label="Arraste para abrir ou recolher"><span></span></div>
+      <div class="escolha-atividade"><button class="atividade selecionada active" data-atividade="corrida"><i data-lucide="footprints"></i> Corrida</button><button class="atividade" data-atividade="caminhada"><i data-lucide="person-standing"></i> Caminhada</button><button class="atividade" data-atividade="ciclismo"><i data-lucide="bike"></i> Ciclismo</button></div>
+      <div class="metricas"><div><small>Distância</small><strong id="distancia">0</strong><small class="unidade">m</small></div><div><small>Tempo</small><strong id="tempo">00:00</strong></div><div><small id="tituloRitmo">Ritmo</small><strong id="ritmo">--:--</strong></div></div>
+      <p id="statusAtividade" class="status-atividade">Pronto para começar</p>
+      <div class="botoes-atividade"><button id="botaoComecar" class="botao-principal"><i data-lucide="play"></i> Começar</button><button id="botaoParar" class="botao-parar" style="display:none"><i data-lucide="square"></i> Parar</button></div>
+    </section>
+  </main>
+  <section id="telaRanking" class="tela tela-interna"><header class="cabecalho-tela"><button id="voltarRanking" class="icone-btn" aria-label="Voltar"><i data-lucide="arrow-left"></i></button><h1>Classificação</h1></header><div class="conteudo-tela"><p class="subtitulo">Os corredores em destaque</p><div id="listaRanking" class="lista-cartoes"><p class="vazio">Entre na sua conta e sincronize o perfil para participar do ranking.</p></div></div></section>
+  <section id="telaMissoes" class="tela tela-interna"><header class="cabecalho-tela"><button id="voltarMissoes" class="icone-btn" aria-label="Voltar"><i data-lucide="arrow-left"></i></button><h1>Missões</h1></header><div class="conteudo-tela"><p class="subtitulo">Complete desafios e evolua</p><article class="cartao-missao" data-missao="primeiros_km"><div class="missao-icone">🏃</div><div><strong>Primeiros quilômetros</strong><p>Complete 5 km no total</p><div class="trilho-progresso"><span class="barra-progresso"><span></span></span></div><small class="texto-progresso">0 / 5 km</small></div><b>+100 XP</b></article><article class="cartao-missao" data-missao="constancia"><div class="missao-icone">🔥</div><div><strong>Constância</strong><p>Complete 5 atividades</p><div class="trilho-progresso"><span class="barra-progresso"><span></span></span></div><small class="texto-progresso">0 / 5 atividades</small></div><b>+150 XP</b></article><article class="cartao-missao" data-missao="explorador"><div class="missao-icone">🧭</div><div><strong>Explorador</strong><p>Registre uma atividade</p><div class="trilho-progresso"><span class="barra-progresso"><span></span></span></div><small class="texto-progresso">0 / 1 atividade</small></div><b>+50 XP</b></article></div></section>
+  <section id="telaPerfil" class="tela tela-interna"><header class="cabecalho-tela"><button id="voltarPerfil" class="icone-btn" aria-label="Voltar"><i data-lucide="arrow-left"></i></button><h1>Meu perfil</h1><button id="abrirConfiguracoesPerfil" class="icone-btn" aria-label="Configurações"><i data-lucide="settings"></i></button></header><div class="conteudo-tela"><div class="cartao-perfil"><div class="foto-grande"><img id="fotoPerfil" alt="Foto de perfil" hidden><i data-lucide="user-round"></i></div><input id="arquivoFotoPerfil" type="file" accept="image/*" hidden><button id="editarFotoPerfil" class="botao-secundario">Alterar foto</button><h2 id="nomePerfil">Corredor</h2><p id="emailPerfil">Modo convidado</p><button id="editarNomePerfil" class="botao-secundario">Editar nome</button><div class="nivel"><strong id="nivelPerfilCartao">Nível 1</strong><span id="perfilXP">0 XP</span></div><div class="trilho-progresso"><span id="barraXpPerfil" class="barra-progresso"><span></span></span></div></div><div class="grade-estatisticas"><div><strong id="perfilDistancia">0 km</strong><small>Distância total</small></div><div><strong id="perfilTempo">00:00</strong><small>Tempo ativo</small></div><div><strong id="perfilAtividades">0</strong><small>Atividades</small></div></div><button id="abrirHistorico" class="linha-config"><i data-lucide="history"></i><span>Histórico de atividades</span><i data-lucide="chevron-right"></i></button><button id="abrirMissoesPerfil" class="linha-config"><i data-lucide="target"></i><span>Minhas missões</span><i data-lucide="chevron-right"></i></button><button id="abrirConfiguracoesPerfilLink" class="linha-config"><i data-lucide="settings"></i><span>Configurações</span><i data-lucide="chevron-right"></i></button><button id="botaoSair" class="botao-perigo">Sair da conta</button></div></section>
+  <section id="telaConfiguracoes" class="tela tela-interna"><header class="cabecalho-tela"><button id="voltarConfiguracoes" class="icone-btn" aria-label="Voltar"><i data-lucide="arrow-left"></i></button><h1>Configurações</h1></header><div class="conteudo-tela"><p class="subtitulo">Personalize sua experiência</p><button id="configLocalizacao" class="linha-config"><i data-lucide="map-pin"></i><span class="dados-configuracao"><b>Localização</b><small>Centralizar no GPS</small></span></button><button id="configPrivacidade" class="linha-config"><i data-lucide="shield-check"></i><span class="dados-configuracao"><b>Privacidade</b><small>Gerenciar suas preferências</small></span></button><button id="configSobre" class="linha-config"><i data-lucide="info"></i><span class="dados-configuracao"><b>Sobre o RunWorld</b><small>Explore. Corra. Conquiste.</small></span></button><button id="botaoSairTela" class="botao-perigo">Sair da conta</button></div></section>
+  <div id="fundoNotificacoes" class="sobreposicao" aria-hidden="true"><section id="painelNotificacoes" class="painel-notificacoes"><div class="painel-cabecalho"><strong>Notificações</strong><button id="fecharNotificacoes" class="icone-btn" aria-label="Fechar"><i data-lucide="x"></i></button></div><div id="listaNotificacoes"></div><p id="notificacoesVazias" class="vazio">Você não tem notificações novas.</p></section></div>
+  <div id="modalCorteFoto" class="modal-corte-foto" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tituloCorteFoto">
+    <div class="cartao-corte-foto">
+      <div class="painel-cabecalho"><strong id="tituloCorteFoto">Ajustar foto de perfil</strong><button id="cancelarCorteFotoX" class="icone-btn" aria-label="Fechar ajuste"><i data-lucide="x"></i></button></div>
+      <p class="dica-corte-foto">Arraste a imagem para ajustar e use o controle para aproximar.</p>
+      <div id="areaCorteFoto" class="area-corte-foto"><img id="imagemCorteFoto" alt="Prévia da foto para cortar"></div>
+      <label class="zoom-corte-foto" for="zoomCorteFoto">Zoom <input id="zoomCorteFoto" type="range" min="1" max="3" step="0.05" value="1"></label>
+      <div class="acoes-corte-foto"><button id="cancelarCorteFoto" class="botao-secundario">Cancelar</button><button id="aplicarCorteFoto" class="botao-principal">Usar esta foto</button></div>
+    </div>
+  </div>
+  <div id="parabens" class="toast-conquista" hidden><span>🏆</span><div><strong>Parabéns!</strong><p id="mensagemParabens">Nova conquista desbloqueada.</p></div><button id="fecharParabens" class="icone-btn" aria-label="Fechar"><i data-lucide="x"></i></button></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="notificacoes.js"></script><script src="app.js"></script><script src="shop.js"></script>
+</body></html>

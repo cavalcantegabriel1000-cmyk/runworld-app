@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050807"><title>Redefinir senha • RunWorld</title>
+  <link rel="stylesheet" href="./login.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+</head>
+<body class="auth-page">
+  <main class="auth-container"><section class="auth-card">
+    <img src="./runworld-logo.svg" alt="RunWorld" style="display:block;width:76px;height:76px;object-fit:contain;margin:0 auto 20px">
+    <h1>Nova senha</h1><p>Abra o link recebido por e-mail e defina sua nova senha.</p>
+    <form id="formSenha">
+      <label for="senha">Nova senha</label><input id="senha" type="password" minlength="6" autocomplete="new-password" required placeholder="Mínimo de 6 caracteres">
+      <label for="confirmar">Confirmar senha</label><input id="confirmar" type="password" minlength="6" autocomplete="new-password" required placeholder="Digite novamente">
+      <button type="submit" id="salvar">Salvar nova senha</button>
+    </form>
+    <p id="mensagem" role="status" aria-live="polite"></p><p><a href="./login.html">Voltar para entrar</a></p>
+  </section></main>
+  <script>
+    const form = document.getElementById('formSenha');
+    const mensagem = document.getElementById('mensagem');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const client = window.supabaseClient;
+      if (!client) { mensagem.textContent = 'Não foi possível conectar ao Supabase. Confira config.js.'; return; }
+      const senha = document.getElementById('senha').value;
+      const confirmar = document.getElementById('confirmar').value;
+      if (senha !== confirmar) { mensagem.textContent = 'As senhas não coincidem.'; return; }
+      const botao = document.getElementById('salvar'); botao.disabled = true; mensagem.textContent = 'Salvando...';
+      try {
+        const { data: { session }, error: sessaoErro } = await client.auth.getSession();
+        if (sessaoErro) throw sessaoErro;
+        if (!session) throw new Error('A sessão de recuperação não foi encontrada. Abra novamente o link mais recente recebido por e-mail.');
+        const { error } = await client.auth.updateUser({ password: senha });
+        if (error) throw error;
+        mensagem.textContent = 'Senha alterada com sucesso! Redirecionando para o login...';
+        await client.auth.signOut();
+        setTimeout(() => { window.location.href = './login.html'; }, 1200);
+      } catch (err) { mensagem.textContent = err.message || 'Não foi possível alterar a senha.'; }
+      finally { botao.disabled = false; }
+    });
+  </script>
+</body>
+</html>
