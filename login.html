@@ -1,287 +1,423 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#050807">
 
-    <title>Entrar — RunWorld</title>
+    <title>Entrar • RunWorld</title>
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./login.css">
 
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="./config.js"></script>
 </head>
 
-<body class="login-page">
+<body>
 
-    <main class="login-screen">
+    <!-- VÍDEO DE FUNDO -->
+    <section class="login-hero">
+        <video
+            class="login-video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-hidden="true"
+        >
+            <source src="./VID-20261001-WA7966.mp4" type="video/mp4">
+        </video>
 
-        <!-- CABEÇALHO COM VÍDEO -->
-        <header class="login-hero">
+        <div class="login-video-overlay"></div>
 
-            <video
-                class="login-video"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                aria-hidden="true"
+        <!-- LOGO ORIGINAL -->
+        <a href="./inicio.html" class="login-brand"
+           aria-label="RunWorld - página inicial">
+
+            <img
+                src="./IMG-20260923-WA4190.jpg"
+                alt="Logo RunWorld"
+                class="login-logo"
             >
-                <source src="VID-20261001-WA7966.mp4" type="video/mp4">
-            </video>
 
-            <div class="login-video-overlay"></div>
+            <span class="login-brand-text">
+                <strong>RunWorld</strong>
+                <small>EXPLORE. CORRA. CONQUISTE.</small>
+            </span>
+        </a>
 
-            <!-- LOGO NO CANTO SUPERIOR ESQUERDO -->
-            <a class="login-brand" href="inicio.html" aria-label="RunWorld - Início">
-                <img
-                    src="IMG-20260923-WA4190.jpg"
-                    alt="Logo RunWorld"
-                    class="login-logo"
-                >
+        <div class="login-hero-text">
+            <span class="login-etiqueta">SUA PRÓXIMA JORNADA</span>
+            <h1>O mundo espera<br>por você.</h1>
+            <p>Explore. Corra. Conquiste.</p>
+        </div>
+    </section>
 
-                <span>RunWorld</span>
-            </a>
+    <!-- CONTEÚDO -->
+    <main class="login-page">
 
-            <div class="login-hero-text">
-                <p class="login-eyebrow">SUA JORNADA COMEÇA AQUI</p>
-                <h1>Explore. Corra.<br>Conquiste.</h1>
-                <p>Supere seus limites. Conquiste seu mundo.</p>
-            </div>
-
-        </header>
-
-        <!-- CARD DE LOGIN -->
         <section class="login-card">
 
-            <div class="login-heading">
-                <h2>Bem-vindo de volta</h2>
-                <p>Entre para continuar sua jornada.</p>
-            </div>
+            <div class="login-card-conteudo">
 
-            <form id="formLogin">
+                <header class="login-cabecalho">
+                    <span class="login-selo">BEM-VINDO DE VOLTA</span>
 
-                <label class="login-field">
-                    <span>E-mail</span>
+                    <h2>Entre no RunWorld</h2>
 
-                    <span class="login-input-wrap">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <rect x="3" y="5" width="18" height="14" rx="3"></rect>
-                            <path d="m4 7 8 6 8-6"></path>
-                        </svg>
+                    <p>
+                        Continue sua jornada e conquiste novos caminhos.
+                    </p>
+                </header>
 
-                        <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            autocomplete="email"
-                            placeholder="voce@email.com"
-                            required
-                        >
-                    </span>
-                </label>
+                <!-- FORMULÁRIO DE LOGIN -->
+                <form id="formLogin">
 
-                <label class="login-field">
-                    <span>Senha</span>
+                    <div class="login-campo">
+                        <label for="email">E-mail</label>
 
-                    <span class="login-input-wrap">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <rect x="4" y="10" width="16" height="11" rx="3"></rect>
-                            <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
-                        </svg>
+                        <div class="login-input">
+                            <i data-lucide="mail"></i>
 
-                        <input
-                            id="senha"
-                            name="senha"
-                            type="password"
-                            autocomplete="current-password"
-                            placeholder="Sua senha"
-                            required
-                        >
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="voce@exemplo.com"
+                                autocomplete="email"
+                                maxlength="254"
+                                required
+                            >
+                        </div>
+                    </div>
 
-                        <button
-                            class="login-eye"
-                            type="button"
-                            id="toggleSenha"
-                            aria-label="Mostrar senha"
-                            aria-pressed="false"
-                        >
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path>
-                                <circle cx="12" cy="12" r="3"></circle>
-                            </svg>
-                        </button>
-                    </span>
-                </label>
+                    <div class="login-campo">
+                        <label for="senha">Senha</label>
 
-                <div class="login-options">
-                    <label class="login-remember">
-                        <input type="checkbox" id="lembrar">
-                        <span>Lembrar de mim</span>
-                    </label>
+                        <div class="login-input">
+                            <i data-lucide="lock-keyhole"></i>
 
-                    <a href="recuperar-senha.html">
-                        Esqueci minha senha
-                    </a>
+                            <input
+                                type="password"
+                                id="senha"
+                                name="senha"
+                                placeholder="Digite sua senha"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="login-olho"
+                                id="alternarSenha"
+                                aria-label="Mostrar senha"
+                                aria-pressed="false"
+                            >
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- LEMBRAR E RECUPERAR SENHA -->
+                    <div class="login-opcoes">
+
+                        <label class="login-lembrar">
+                            <input type="checkbox" id="lembrar">
+                            <span>Lembrar de mim</span>
+                        </label>
+
+                        <a href="./recuperar-senha.html"
+                           class="login-esqueci">
+                            Esqueci minha senha
+                        </a>
+
+                    </div>
+
+                    <!-- MENSAGEM DE ERRO OU SUCESSO -->
+                    <div
+                        id="mensagem"
+                        class="login-mensagem"
+                        role="status"
+                        aria-live="polite"
+                        hidden
+                    ></div>
+
+                    <!-- ENTRAR -->
+                    <button
+                        type="submit"
+                        id="botaoEntrar"
+                        class="login-botao-principal"
+                    >
+                        <span>Entrar</span>
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+
+                </form>
+
+                <!-- SEPARADOR -->
+                <div class="login-divisor">
+                    <span>OU CONTINUE COM</span>
                 </div>
 
+                <!-- GOOGLE -->
                 <button
-                    class="login-submit"
-                    id="botaoEntrar"
-                    type="submit"
+                    type="button"
+                    id="entrarGoogle"
+                    class="login-botao-google"
                 >
-                    <span>Entrar</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    <svg
+                        class="google-icone"
+                        viewBox="0 0 48 48"
+                        aria-hidden="true"
+                    >
+                        <path fill="#EA4335"
+                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4"
+                            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.76 7.18l7.73 6C44.42 37.95 46.98 31.7 46.98 24.55z"/>
+                        <path fill="#FBBC05"
+                            d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.2A23.9 23.9 0 0 0 0 24c0 3.87.93 7.52 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853"
+                            d="M24 48c6.48 0 11.93-2.13 15.9-5.8l-7.73-6c-2.14 1.44-4.89 2.3-8.17 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
                     </svg>
+
+                    <span>Continuar com Google</span>
                 </button>
 
-                <p id="mensagem" class="login-message" role="status" aria-live="polite"></p>
+                <!-- CRIAR CONTA: LINK INCLUÍDO -->
+                <div class="login-cadastro">
+                    <span>Não tem uma conta?</span>
+                    <a href="./cadastro.html">Criar conta</a>
+                </div>
 
-            </form>
+                <p class="login-rodape">
+                    Sua próxima conquista começa aqui.
+                </p>
 
-            <div class="login-divider">
-                <span>OU CONTINUE COM</span>
             </div>
-
-            <button class="login-google" id="entrarGoogle" type="button">
-                <svg viewBox="0 0 48 48" aria-hidden="true">
-                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z" transform="translate(0 4)"/>
-                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.72 7.18l7.64 5.93c4.46-4.12 7.12-10.2 7.12-17.58Z"/>
-                    <path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.88.93 7.55 2.56 10.78l7.97-6.19Z" transform="translate(0 0)"/>
-                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.87l-7.64-5.93c-2.12 1.42-4.84 2.27-8.27 2.27-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48Z"/>
-                </svg>
-
-                <span>Continuar com Google</span>
-            </button>
-
-            <p class="login-create">
-                Ainda não tem conta?
-                <a href="cadastro.html">Criar minha conta</a>
-            </p>
-
         </section>
 
         <footer class="login-footer">
-            RUNWORLD <span>•</span> EXPLORE SEU MUNDO
+            RUNWORLD © <span id="anoAtual"></span>
         </footer>
 
     </main>
 
     <script>
-    (() => {
-        "use strict";
+        document.addEventListener("DOMContentLoaded", () => {
 
-        const form = document.getElementById("formLogin");
-        const email = document.getElementById("email");
-        const senha = document.getElementById("senha");
-        const mensagem = document.getElementById("mensagem");
-        const botaoEntrar = document.getElementById("botaoEntrar");
-        const botaoGoogle = document.getElementById("entrarGoogle");
-        const toggleSenha = document.getElementById("toggleSenha");
-
-        function mostrarMensagem(texto, tipo = "erro") {
-            mensagem.textContent = texto;
-            mensagem.dataset.tipo = tipo;
-        }
-
-        function obterClienteSupabase() {
-            return window.supabaseClient || null;
-        }
-
-        toggleSenha.addEventListener("click", () => {
-            const mostrar = senha.type === "password";
-
-            senha.type = mostrar ? "text" : "password";
-            toggleSenha.setAttribute("aria-pressed", String(mostrar));
-            toggleSenha.setAttribute(
-                "aria-label",
-                mostrar ? "Ocultar senha" : "Mostrar senha"
-            );
-        });
-
-        form.addEventListener("submit", async (evento) => {
-            evento.preventDefault();
-
-            const supabase = obterClienteSupabase();
-
-            if (!supabase) {
-                mostrarMensagem(
-                    "Não foi possível conectar ao sistema. Confira o config.js e o carregamento do Supabase."
-                );
-                return;
+            if (window.lucide) {
+                lucide.createIcons();
             }
 
-            botaoEntrar.disabled = true;
-            botaoEntrar.querySelector("span").textContent = "Entrando...";
-            mostrarMensagem("");
+            document.getElementById("anoAtual").textContent =
+                new Date().getFullYear();
 
-            try {
-                const { error } = await supabase.auth.signInWithPassword({
-                    email: email.value.trim(),
-                    password: senha.value
-                });
+            const form = document.getElementById("formLogin");
+            const email = document.getElementById("email");
+            const senha = document.getElementById("senha");
+            const botaoEntrar = document.getElementById("botaoEntrar");
+            const botaoGoogle = document.getElementById("entrarGoogle");
+            const botaoOlho = document.getElementById("alternarSenha");
+            const mensagem = document.getElementById("mensagem");
 
-                if (error) {
+            function mostrarMensagem(texto, tipo = "erro") {
+                mensagem.textContent = texto;
+                mensagem.className = "login-mensagem " + tipo;
+                mensagem.hidden = false;
+            }
+
+            function limparMensagem() {
+                mensagem.hidden = true;
+                mensagem.textContent = "";
+                mensagem.className = "login-mensagem";
+            }
+
+            function atualizarIcones() {
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            }
+
+            function obterSupabase() {
+                return window.supabaseClient || null;
+            }
+
+            // MOSTRAR / OCULTAR SENHA
+            botaoOlho.addEventListener("click", () => {
+                const mostrar = senha.type === "password";
+
+                senha.type = mostrar ? "text" : "password";
+
+                botaoOlho.setAttribute(
+                    "aria-label",
+                    mostrar ? "Ocultar senha" : "Mostrar senha"
+                );
+
+                botaoOlho.setAttribute(
+                    "aria-pressed",
+                    String(mostrar)
+                );
+
+                botaoOlho.innerHTML = mostrar
+                    ? '<i data-lucide="eye-off"></i>'
+                    : '<i data-lucide="eye"></i>';
+
+                atualizarIcones();
+            });
+
+            // LOGIN COM E-MAIL E SENHA
+            form.addEventListener("submit", async (evento) => {
+                evento.preventDefault();
+                limparMensagem();
+
+                const emailDigitado = email.value.trim().toLowerCase();
+                const senhaDigitada = senha.value;
+
+                if (!emailDigitado || !senhaDigitada) {
+                    mostrarMensagem("Preencha seu e-mail e sua senha.");
+                    return;
+                }
+
+                const supabase = obterSupabase();
+
+                if (!supabase) {
                     mostrarMensagem(
-                        error.message === "Invalid login credentials"
-                            ? "E-mail ou senha incorretos. Confira os dados e tente novamente."
-                            : error.message
+                        "Não foi possível conectar ao sistema. Confira o config.js e a conexão com o Supabase."
                     );
                     return;
                 }
 
-                window.location.href = "index.html";
+                botaoEntrar.disabled = true;
+                botaoGoogle.disabled = true;
 
-            } catch (erro) {
-                mostrarMensagem(
-                    "Não foi possível entrar agora. Verifique sua conexão e tente novamente."
-                );
-            } finally {
-                botaoEntrar.disabled = false;
-                botaoEntrar.querySelector("span").textContent = "Entrar";
-            }
-        });
+                botaoEntrar.innerHTML =
+                    '<span>Entrando...</span>' +
+                    '<i data-lucide="loader-circle" class="login-carregando"></i>';
 
-        botaoGoogle.addEventListener("click", async () => {
-            const supabase = obterClienteSupabase();
+                atualizarIcones();
 
-            if (!supabase) {
-                mostrarMensagem("Não foi possível conectar ao sistema. Confira o config.js.");
-                return;
-            }
+                try {
+                    const { error } = await supabase.auth.signInWithPassword({
+                        email: emailDigitado,
+                        password: senhaDigitada
+                    });
 
-            botaoGoogle.disabled = true;
-            mostrarMensagem("");
-
-            try {
-                const caminhoAtual = window.location.pathname;
-                const caminhoIndex = caminhoAtual.replace(
-                    /login\.html$/i,
-                    "index.html"
-                );
-
-                const redirectTo =
-                    window.location.origin + caminhoIndex;
-
-                const { error } = await supabase.auth.signInWithOAuth({
-                    provider: "google",
-                    options: {
-                        redirectTo
+                    if (error) {
+                        throw error;
                     }
-                });
 
-                if (error) {
-                    mostrarMensagem(error.message);
+                    mostrarMensagem(
+                        "Login realizado! Abrindo o RunWorld...",
+                        "sucesso"
+                    );
+
+                    window.location.replace("./index.html");
+
+                } catch (erro) {
+                    console.error("Erro no login:", erro);
+
+                    const texto = (erro.message || "").toLowerCase();
+
+                    if (
+                        texto.includes("invalid login credentials") ||
+                        texto.includes("invalid_credentials")
+                    ) {
+                        mostrarMensagem(
+                            "E-mail ou senha incorretos. Confira os dados ou recupere sua senha."
+                        );
+                    } else if (
+                        texto.includes("email not confirmed")
+                    ) {
+                        mostrarMensagem(
+                            "Confirme seu e-mail antes de entrar. Confira sua caixa de entrada."
+                        );
+                    } else {
+                        mostrarMensagem(
+                            erro.message ||
+                            "Não foi possível entrar. Tente novamente."
+                        );
+                    }
+
+                    botaoEntrar.disabled = false;
                     botaoGoogle.disabled = false;
+
+                    botaoEntrar.innerHTML =
+                        '<span>Entrar</span>' +
+                        '<i data-lucide="arrow-right"></i>';
+
+                    atualizarIcones();
+                }
+            });
+
+            // LOGIN COM GOOGLE
+            botaoGoogle.addEventListener("click", async () => {
+                limparMensagem();
+
+                const supabase = obterSupabase();
+
+                if (!supabase) {
+                    mostrarMensagem(
+                        "Não foi possível conectar ao Supabase. Confira o config.js."
+                    );
+                    return;
                 }
 
-            } catch (erro) {
-                mostrarMensagem("Não foi possível iniciar o acesso com Google.");
+                botaoGoogle.disabled = true;
+                botaoEntrar.disabled = true;
+
+                botaoGoogle.innerHTML =
+                    '<span>Conectando ao Google...</span>';
+
+                try {
+                    const destino = new URL(
+                        "./index.html",
+                        window.location.href
+                    ).href;
+
+                    const { error } =
+                        await supabase.auth.signInWithOAuth({
+                            provider: "google",
+                            options: {
+                                redirectTo: destino
+                            }
+                        });
+
+                    if (error) {
+                        throw error;
+                    }
+
+                } catch (erro) {
+                    console.error("Erro no login com Google:", erro);
+
+                    mostrarMensagem(
+                        "Não foi possível entrar com o Google. Verifique se o provedor Google está configurado no Supabase."
+                    );
+
+                    botaoGoogle.disabled = false;
+                    botaoEntrar.disabled = false;
+
+                    botaoGoogle.innerHTML =
+                        '<svg class="google-icone" viewBox="0 0 48 48" aria-hidden="true">' +
+                        '<path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.76 7.18l7.73 6C44.42 37.95 46.98 31.7 46.98 24.55z"/>' +
+                        '<path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.8l-7.73-6c-2.14 1.44-4.89 2.3-8.17 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>' +
+                        '<path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.2A23.9 23.9 0 0 0 0 24c0 3.87.93 7.52 2.56 10.78l7.97-6.19z"/>' +
+                        '<path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>' +
+                        '</svg><span>Continuar com Google</span>';
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>
+           mostrarMensagem("Não foi possível iniciar o acesso com Google.");
                 botaoGoogle.disabled = false;
             }
         });
