@@ -1,2 +1,292 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050807"><title>Entrar — RunWorld</title><link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="login.css"><script src="https://unpkg.com/@supabase/supabase-js@2"></script><script src="config.js"></script></head><body class="pagina-auth"><main class="auth-card"><a class="auth-marca" href="index.html">R <span>RunWorld</span></a><h1>Bem-vindo de volta</h1><p>Entre para continuar sua jornada.</p><form id="formLogin"><label>E-mail<input id="email" type="email" autocomplete="email" required placeholder="voce@email.com"></label><label>Senha<input id="senha" type="password" autocomplete="current-password" required placeholder="Sua senha"></label><button class="botao-principal" type="submit">Entrar</button><p id="mensagem" class="auth-msg"></p></form><p class="auth-link">Ainda não tem conta? <a href="cadastro.html">Criar conta</a></p><a class="auth-link" href="index.html">Continuar em modo demonstração</a></main><style>.pagina-auth{overflow:auto;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at top,#172b1d,#050807 70%)}.auth-card{width:min(430px,100%);background:#101812;border:1px solid #2b3930;border-radius:25px;padding:28px;box-shadow:var(--sombra)}.auth-marca{color:var(--verde);font-weight:900;text-decoration:none;font-size:24px}.auth-marca span{color:#fff}.auth-card h1{margin:32px 0 8px}.auth-card>p,.auth-msg{color:var(--suave);font-size:13px}.auth-card label{display:grid;gap:7px;margin:17px 0;font-size:12px;color:var(--suave)}.auth-card input{padding:13px;border-radius:12px;border:1px solid var(--borda);background:#080d09;color:#fff}.auth-card .botao-principal{margin-top:22px}.auth-link{display:block;text-align:center;font-size:12px;color:var(--suave);margin-top:20px}.auth-link a{color:var(--verde)}.auth-msg{line-height:1.5}</style><script>document.getElementById('formLogin').addEventListener('submit',async e=>{e.preventDefault();const msg=document.getElementById('mensagem');if(!window.supabaseClient){msg.textContent='Configure as credenciais do Supabase em config.js.';return;}msg.textContent='Entrando…';const {error}=await window.supabaseClient.auth.signInWithPassword({email:document.getElementById('email').value.trim(),password:document.getElementById('senha').value});if(error){msg.textContent=error.message;return;}location.href='index.html';});</script></body></html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#050807">
+
+    <title>Entrar — RunWorld</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+</head>
+
+<body class="login-page">
+
+    <main class="login-screen">
+
+        <!-- CABEÇALHO COM VÍDEO -->
+        <header class="login-hero">
+
+            <video
+                class="login-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-hidden="true"
+            >
+                <source src="VID-20261001-WA7966.mp4" type="video/mp4">
+            </video>
+
+            <div class="login-video-overlay"></div>
+
+            <!-- LOGO NO CANTO SUPERIOR ESQUERDO -->
+            <a class="login-brand" href="inicio.html" aria-label="RunWorld - Início">
+                <img
+                    src="IMG-20260923-WA4190.jpg"
+                    alt="Logo RunWorld"
+                    class="login-logo"
+                >
+
+                <span>RunWorld</span>
+            </a>
+
+            <div class="login-hero-text">
+                <p class="login-eyebrow">SUA JORNADA COMEÇA AQUI</p>
+                <h1>Explore. Corra.<br>Conquiste.</h1>
+                <p>Supere seus limites. Conquiste seu mundo.</p>
+            </div>
+
+        </header>
+
+        <!-- CARD DE LOGIN -->
+        <section class="login-card">
+
+            <div class="login-heading">
+                <h2>Bem-vindo de volta</h2>
+                <p>Entre para continuar sua jornada.</p>
+            </div>
+
+            <form id="formLogin">
+
+                <label class="login-field">
+                    <span>E-mail</span>
+
+                    <span class="login-input-wrap">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="3" y="5" width="18" height="14" rx="3"></rect>
+                            <path d="m4 7 8 6 8-6"></path>
+                        </svg>
+
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            autocomplete="email"
+                            placeholder="voce@email.com"
+                            required
+                        >
+                    </span>
+                </label>
+
+                <label class="login-field">
+                    <span>Senha</span>
+
+                    <span class="login-input-wrap">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="4" y="10" width="16" height="11" rx="3"></rect>
+                            <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                        </svg>
+
+                        <input
+                            id="senha"
+                            name="senha"
+                            type="password"
+                            autocomplete="current-password"
+                            placeholder="Sua senha"
+                            required
+                        >
+
+                        <button
+                            class="login-eye"
+                            type="button"
+                            id="toggleSenha"
+                            aria-label="Mostrar senha"
+                            aria-pressed="false"
+                        >
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </span>
+                </label>
+
+                <div class="login-options">
+                    <label class="login-remember">
+                        <input type="checkbox" id="lembrar">
+                        <span>Lembrar de mim</span>
+                    </label>
+
+                    <a href="recuperar-senha.html">
+                        Esqueci minha senha
+                    </a>
+                </div>
+
+                <button
+                    class="login-submit"
+                    id="botaoEntrar"
+                    type="submit"
+                >
+                    <span>Entrar</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+
+                <p id="mensagem" class="login-message" role="status" aria-live="polite"></p>
+
+            </form>
+
+            <div class="login-divider">
+                <span>OU CONTINUE COM</span>
+            </div>
+
+            <button class="login-google" id="entrarGoogle" type="button">
+                <svg viewBox="0 0 48 48" aria-hidden="true">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z" transform="translate(0 4)"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.72 7.18l7.64 5.93c4.46-4.12 7.12-10.2 7.12-17.58Z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.88.93 7.55 2.56 10.78l7.97-6.19Z" transform="translate(0 0)"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.87l-7.64-5.93c-2.12 1.42-4.84 2.27-8.27 2.27-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48Z"/>
+                </svg>
+
+                <span>Continuar com Google</span>
+            </button>
+
+            <p class="login-create">
+                Ainda não tem conta?
+                <a href="cadastro.html">Criar minha conta</a>
+            </p>
+
+        </section>
+
+        <footer class="login-footer">
+            RUNWORLD <span>•</span> EXPLORE SEU MUNDO
+        </footer>
+
+    </main>
+
+    <script>
+    (() => {
+        "use strict";
+
+        const form = document.getElementById("formLogin");
+        const email = document.getElementById("email");
+        const senha = document.getElementById("senha");
+        const mensagem = document.getElementById("mensagem");
+        const botaoEntrar = document.getElementById("botaoEntrar");
+        const botaoGoogle = document.getElementById("entrarGoogle");
+        const toggleSenha = document.getElementById("toggleSenha");
+
+        function mostrarMensagem(texto, tipo = "erro") {
+            mensagem.textContent = texto;
+            mensagem.dataset.tipo = tipo;
+        }
+
+        function obterClienteSupabase() {
+            return window.supabaseClient || null;
+        }
+
+        toggleSenha.addEventListener("click", () => {
+            const mostrar = senha.type === "password";
+
+            senha.type = mostrar ? "text" : "password";
+            toggleSenha.setAttribute("aria-pressed", String(mostrar));
+            toggleSenha.setAttribute(
+                "aria-label",
+                mostrar ? "Ocultar senha" : "Mostrar senha"
+            );
+        });
+
+        form.addEventListener("submit", async (evento) => {
+            evento.preventDefault();
+
+            const supabase = obterClienteSupabase();
+
+            if (!supabase) {
+                mostrarMensagem(
+                    "Não foi possível conectar ao sistema. Confira o config.js e o carregamento do Supabase."
+                );
+                return;
+            }
+
+            botaoEntrar.disabled = true;
+            botaoEntrar.querySelector("span").textContent = "Entrando...";
+            mostrarMensagem("");
+
+            try {
+                const { error } = await supabase.auth.signInWithPassword({
+                    email: email.value.trim(),
+                    password: senha.value
+                });
+
+                if (error) {
+                    mostrarMensagem(
+                        error.message === "Invalid login credentials"
+                            ? "E-mail ou senha incorretos. Confira os dados e tente novamente."
+                            : error.message
+                    );
+                    return;
+                }
+
+                window.location.href = "index.html";
+
+            } catch (erro) {
+                mostrarMensagem(
+                    "Não foi possível entrar agora. Verifique sua conexão e tente novamente."
+                );
+            } finally {
+                botaoEntrar.disabled = false;
+                botaoEntrar.querySelector("span").textContent = "Entrar";
+            }
+        });
+
+        botaoGoogle.addEventListener("click", async () => {
+            const supabase = obterClienteSupabase();
+
+            if (!supabase) {
+                mostrarMensagem("Não foi possível conectar ao sistema. Confira o config.js.");
+                return;
+            }
+
+            botaoGoogle.disabled = true;
+            mostrarMensagem("");
+
+            try {
+                const caminhoAtual = window.location.pathname;
+                const caminhoIndex = caminhoAtual.replace(
+                    /login\.html$/i,
+                    "index.html"
+                );
+
+                const redirectTo =
+                    window.location.origin + caminhoIndex;
+
+                const { error } = await supabase.auth.signInWithOAuth({
+                    provider: "google",
+                    options: {
+                        redirectTo
+                    }
+                });
+
+                if (error) {
+                    mostrarMensagem(error.message);
+                    botaoGoogle.disabled = false;
+                }
+
+            } catch (erro) {
+                mostrarMensagem("Não foi possível iniciar o acesso com Google.");
+                botaoGoogle.disabled = false;
+            }
+        });
+    })();
+    </script>
+
+</body>
+</html>
