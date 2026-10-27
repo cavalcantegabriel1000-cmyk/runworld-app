@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#050807">
+    <title>RunWorld</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #050807;
+        }
+
+        .tela-animacao {
+            position: fixed;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            background: #050807;
+        }
+
+        .video-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #050807;
+        }
+
+        .carregamento {
+            position: absolute;
+            bottom: max(28px, env(safe-area-inset-bottom));
+            left: 50%;
+            width: 34px;
+            height: 34px;
+            border: 3px solid rgba(0, 230, 118, .22);
+            border-top-color: #00e676;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            animation: girar .8s linear infinite;
+        }
+
+        @keyframes girar {
+            to { transform: translateX(-50%) rotate(360deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .carregamento { animation-duration: 2s; }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="tela-animacao">
+        <video
+            id="videoLogo"
+            class="video-logo"
+            autoplay
+            muted
+            playsinline
+            preload="auto"
+            aria-label="Animação de entrada do RunWorld"
+        >
+            <source src="./logo_animacao.mp4" type="video/mp4">
+        </video>
+
+        <div class="carregamento" aria-hidden="true"></div>
+    </main>
+
+    <script>
+        (() => {
+            "use strict";
+
+            const video = document.getElementById("videoLogo");
+            let redirecionando = false;
+
+            function abrirAplicativo() {
+                if (redirecionando) return;
+                redirecionando = true;
+                window.location.replace("./index.html");
+            }
+
+            video.addEventListener("ended", abrirAplicativo);
+            video.addEventListener("error", abrirAplicativo);
+
+            video.play().catch(() => {
+                // Alguns navegadores podem bloquear a reprodução.
+                // Nesse caso, permite continuar tocando na tela.
+                video.controls = true;
+            });
+        })();
+    </script>
+</body>
+</html>
