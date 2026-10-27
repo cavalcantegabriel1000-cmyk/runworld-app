@@ -379,9 +379,9 @@
                 try {
                     // ALTERAÇÃO: O GOOGLE RETORNA PARA A ANIMAÇÃO
                     const destino = new URL(
-                        "./animacao.html",
-                        window.location.href
-                    ).href;
+    "./index.html",
+    window.location.href
+).href;
 
                     const { error } =
                         await supabase.auth.signInWithOAuth({
