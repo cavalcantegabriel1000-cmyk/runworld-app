@@ -383,17 +383,26 @@
     window.location.href
 ).href;
 
-                    const { error } =
-                        await supabase.auth.signInWithOAuth({
-                            provider: "google",
-                            options: {
-                                redirectTo: destino
-                            }
-                        });
+                    const { data, error } =
+    await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+            redirectTo: destino,
+            skipBrowserRedirect: true
+        }
+    });
 
-                    if (error) {
-                        throw error;
-                    }
+if (error) {
+    throw error;
+}
+
+if (!data || !data.url) {
+    throw new Error(
+        "O Supabase não retornou o endereço de acesso do Google."
+    );
+}
+
+window.location.assign(data.url);
 
                 } catch (erro) {
                     console.error("Erro no login com Google:", erro);
