@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -189,7 +188,7 @@
                     <span>Continuar com Google</span>
                 </button>
 
-                <!-- CRIAR CONTA: LINK INCLUÍDO -->
+                <!-- CRIAR CONTA -->
                 <div class="login-cadastro">
                     <span>Não tem uma conta?</span>
                     <a href="./cadastro.html">Criar conta</a>
@@ -208,6 +207,7 @@
 
     </main>
 
+    <!-- SCRIPT DO LOGIN -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
 
@@ -303,10 +303,11 @@
                 atualizarIcones();
 
                 try {
-                    const { error } = await supabase.auth.signInWithPassword({
-                        email: emailDigitado,
-                        password: senhaDigitada
-                    });
+                    const { error } =
+                        await supabase.auth.signInWithPassword({
+                            email: emailDigitado,
+                            password: senhaDigitada
+                        });
 
                     if (error) {
                         throw error;
@@ -317,7 +318,8 @@
                         "sucesso"
                     );
 
-                    window.location.replace("./index.html");
+                    // ALTERAÇÃO: ABRIR A ANIMAÇÃO APÓS O LOGIN
+                    window.location.replace("./animacao.html");
 
                 } catch (erro) {
                     console.error("Erro no login:", erro);
@@ -375,8 +377,9 @@
                     '<span>Conectando ao Google...</span>';
 
                 try {
+                    // ALTERAÇÃO: O GOOGLE RETORNA PARA A ANIMAÇÃO
                     const destino = new URL(
-                        "./index.html",
+                        "./animacao.html",
                         window.location.href
                     ).href;
 
@@ -409,19 +412,12 @@
                         '<path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.2A23.9 23.9 0 0 0 0 24c0 3.87.93 7.52 2.56 10.78l7.97-6.19z"/>' +
                         '<path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>' +
                         '</svg><span>Continuar com Google</span>';
+
+                    atualizarIcones();
                 }
             });
 
         });
-    </script>
-
-</body>
-</html>
-           mostrarMensagem("Não foi possível iniciar o acesso com Google.");
-                botaoGoogle.disabled = false;
-            }
-        });
-    })();
     </script>
 
 </body>
