@@ -1,13 +1,13 @@
 
 /* =========================================================
    RUNWORLD SHOP — SHOP.JS
-   Versão corrigida e integrada ao RunWorld
-   - Ícone da loja no topo e no menu
-   - Vitrine de produtos
-   - Busca e categorias
+   Versão corrigida para o index.html, style.css e shop.css
+   - Atalho no topo e no menu
+   - Categorias e pesquisa
+   - Links individuais do Mercado Livre
+   - Preço consultado diretamente no vendedor
    - Carrinho salvo no navegador
-   - Validação de links externos
-   - Integração com abrirTela() e voltarParaMapa()
+   - Integração com a navegação existente do RunWorld
    ========================================================= */
 
 (() => {
@@ -19,848 +19,673 @@
     const SHOP_ID = "telaShop";
     const CART_KEY = "runworld-shop-carrinho-v1";
 
-    const ALLOWED_HOSTS = [
-        "lista.mercadolivre.com.br",
-        "www.mercadolivre.com.br",
-        "www.amazon.com.br",
-        "www.magazineluiza.com.br",
-        "www.netshoes.com.br",
-        "www.decathlon.com.br",
-        "www.centauro.com.br"
-    ];
-
-    /* =====================================================
-       PRODUTOS
-       Os preços são consultados no site do vendedor.
-       ===================================================== */
-
-    const PRODUCTS = [
+    const PRODUTOS = [
         {
             id: "tenis-01",
-            name: "Tênis para corrida",
-            category: "calcados",
-            description: "Opções de tênis para corrida e caminhada.",
-            seller: "Mercado Livre",
-            url: "https://lista.mercadolivre.com.br/tenis-corrida"
+            nome: "Tênis para corrida",
+            categoria: "calcados",
+            descricao: "Tênis esportivo para corrida e caminhada.",
+            vendedor: "Mercado Livre",
+            url: "https://produto.mercadolivre.com.br/MLB-5328448952-tnis-new-speed-esporte-masculino-ideal-para-corridas-_JM",
+            emoji: "👟",
+            etiqueta: "Corrida"
         },
         {
             id: "tenis-02",
-            name: "Tênis esportivo",
-            category: "calcados",
-            description: "Confira modelos para seus treinos.",
-            seller: "Netshoes",
-            url: "https://www.netshoes.com.br/"
+            nome: "Tênis esportivo",
+            categoria: "calcados",
+            descricao: "Outra opção de calçado para seus treinos.",
+            vendedor: "Mercado Livre",
+            url: "https://produto.mercadolivre.com.br/MLB-3846022930-tnis-masculino-esportivo-leve-corrida-academia-caminhada-_JM",
+            emoji: "👟",
+            etiqueta: "Treino"
         },
         {
             id: "roupa-01",
-            name: "Camiseta esportiva",
-            category: "roupas",
-            description: "Camisetas para atividades físicas.",
-            seller: "Decathlon",
-            url: "https://www.decathlon.com.br/"
+            nome: "Camiseta esportiva",
+            categoria: "roupas",
+            descricao: "Camiseta dry-fit para atividades físicas.",
+            vendedor: "Mercado Livre",
+            url: "https://produto.mercadolivre.com.br/MLB-3164227093-camiseta-dryfit-masculina-treino-academia-esporte-fitness-_JM",
+            emoji: "👕",
+            etiqueta: "Vestuário"
         },
         {
             id: "roupa-02",
-            name: "Short esportivo",
-            category: "roupas",
-            description: "Opções de shorts para corrida e caminhada.",
-            seller: "Centauro",
-            url: "https://www.centauro.com.br/"
+            nome: "Short esportivo",
+            categoria: "roupas",
+            descricao: "Short dry-fit para corrida e treinamento.",
+            vendedor: "Mercado Livre",
+            url: "https://produto.mercadolivre.com.br/MLB-3788452003-short-esportivo-masculino-dry-fit-para-musculaco-e-corrida-_JM",
+            emoji: "🩳",
+            etiqueta: "Vestuário"
         },
         {
             id: "acessorio-01",
-            name: "Relógio esportivo",
-            category: "acessorios",
-            description: "Confira relógios e acessórios para acompanhar seus treinos.",
-            seller: "Amazon Brasil",
-            url: "https://www.amazon.com.br/s?k=relogio+esportivo"
+            nome: "Relógio esportivo",
+            categoria: "acessorios",
+            descricao: "Relógio digital com cronômetro para acompanhar o tempo.",
+            vendedor: "Mercado Livre",
+            url: "https://produto.mercadolivre.com.br/MLB-1643803277-relogio-skmei-digital-esportivo-cronmetro-corrida-academia-_JM",
+            emoji: "⌚",
+            etiqueta: "Acessório"
         },
         {
             id: "acessorio-02",
-            name: "Pochete para corrida",
-            category: "acessorios",
-            description: "Acessórios para levar pequenos objetos durante o treino.",
-            seller: "Mercado Livre",
-            url: "https://lista.mercadolivre.com.br/pochete-corrida"
+            nome: "Pochete para corrida",
+            categoria: "acessorios",
+            descricao: "Para levar pequenos objetos durante a atividade.",
+            vendedor: "Mercado Livre",
+            url: "https://produto.mercadolivre.com.br/MLB-1655795254-pochete-corrida-celular-exercicios-academia-impermeavel-slim-_JM",
+            emoji: "🎒",
+            etiqueta: "Acessório"
         },
         {
             id: "hidratacao-01",
-            name: "Garrafa esportiva",
-            category: "hidratacao",
-            description: "Garrafas para levar água durante suas atividades.",
-            seller: "Amazon Brasil",
-            url: "https://www.amazon.com.br/s?k=garrafa+esportiva"
+            nome: "Garrafa esportiva",
+            categoria: "hidratacao",
+            descricao: "Garrafa para levar água durante seus treinos.",
+            vendedor: "Mercado Livre",
+            url: "https://produto.mercadolivre.com.br/MLB-4011842647-garrafa-aluminio-agua-gelada-esportiva-650ml-_JM",
+            emoji: "🧴",
+            etiqueta: "Hidratação"
         },
         {
             id: "hidratacao-02",
-            name: "Cinto de hidratação",
-            category: "hidratacao",
-            description: "Confira opções para seus treinos ao ar livre.",
-            seller: "Mercado Livre",
-            url: "https://lista.mercadolivre.com.br/cinto-hidratacao-corrida"
+            nome: "Cinto de hidratação",
+            categoria: "hidratacao",
+            descricao: "Cinto com garrafinhas para atividades ao ar livre.",
+            vendedor: "Mercado Livre",
+            url: "https://produto.mercadolivre.com.br/MLB-4018952355-cinto-de-hidrataco-com-2x-garrafinhas-para-corrida-pochete-_JM",
+            emoji: "💧",
+            etiqueta: "Hidratação"
         }
     ];
 
-    let categoriaAtual = "todos";
-    let buscaAtual = "";
+    const CATEGORIAS = [
+        { id: "todas", nome: "Todos" },
+        { id: "calcados", nome: "Calçados" },
+        { id: "roupas", nome: "Roupas" },
+        { id: "acessorios", nome: "Acessórios" },
+        { id: "hidratacao", nome: "Hidratação" }
+    ];
+
+    let categoriaAtual = "todas";
+    let pesquisaAtual = "";
+    let mostrarCarrinho = false;
     let telaShop = null;
 
-    /* =====================================================
-       FUNÇÕES DE SEGURANÇA E UTILITÁRIOS
-       ===================================================== */
+    const porId = id => document.getElementById(id);
 
-    function escapeHtml(value) {
-        return String(value == null ? "" : value).replace(
-            /[&<>"']/g,
-            char => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;"
-            })[char]
-        );
+    function escapar(valor) {
+        return String(valor ?? "").replace(/[&<>"']/g, caractere => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[caractere]);
     }
 
-    function validarUrl(value) {
-        try {
-            const url = new URL(value);
+    function normalizar(texto) {
+        return String(texto ?? "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .trim();
+    }
 
-            return (
-                url.protocol === "https:" &&
-                ALLOWED_HOSTS.includes(url.hostname)
-            );
+    function validarUrl(valor) {
+        try {
+            const url = new URL(valor);
+
+            return url.protocol === "https:" &&
+                (
+                    url.hostname === "produto.mercadolivre.com.br" ||
+                    url.hostname === "www.mercadolivre.com.br" ||
+                    url.hostname === "mercadolivre.com.br"
+                );
         } catch {
             return false;
         }
     }
 
-    function abrirLinkSeguro(value) {
-        if (!validarUrl(value)) {
-            alert("Este link de vendedor não é permitido.");
+    function abrirLinkSeguro(valor) {
+        if (!validarUrl(valor)) {
+            mostrarFeedback("Este link não está disponível.");
             return;
         }
 
         const novaAba = window.open(
-            value,
+            valor,
             "_blank",
             "noopener,noreferrer"
         );
 
-        if (novaAba) {
-            novaAba.opener = null;
+        if (!novaAba) {
+            mostrarFeedback("Permita abrir o link para consultar o produto.");
         }
     }
 
-    function refreshIcons() {
-        if (
-            window.lucide &&
-            typeof window.lucide.createIcons === "function"
-        ) {
-            window.lucide.createIcons();
-        }
-    }
-
-    function lerCarrinho() {
+    function carregarCarrinho() {
         try {
-            const dados = localStorage.getItem(CART_KEY);
-            const carrinho = dados ? JSON.parse(dados) : {};
+            const dados = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
 
-            if (
-                !carrinho ||
-                typeof carrinho !== "object" ||
-                Array.isArray(carrinho)
-            ) {
-                return {};
-            }
+            if (!Array.isArray(dados)) return [];
 
-            const seguro = {};
-
-            for (const produto of PRODUCTS) {
-                const quantidade = Number(carrinho[produto.id]);
-
-                if (
-                    Number.isInteger(quantidade) &&
-                    quantidade > 0 &&
-                    quantidade <= 99
-                ) {
-                    seguro[produto.id] = quantidade;
-                }
-            }
-
-            return seguro;
+            return dados
+                .filter(item =>
+                    item &&
+                    PRODUTOS.some(produto => produto.id === item.id)
+                )
+                .map(item => ({
+                    id: item.id,
+                    quantidade: Math.max(
+                        1,
+                        Math.min(99, Math.floor(Number(item.quantidade) || 1))
+                    )
+                }));
         } catch {
-            return {};
+            return [];
         }
     }
 
     function salvarCarrinho(carrinho) {
         try {
-            localStorage.setItem(
-                CART_KEY,
-                JSON.stringify(carrinho)
-            );
-
-            atualizarContador();
+            localStorage.setItem(CART_KEY, JSON.stringify(carrinho));
             return true;
         } catch {
-            alert(
-                "Não foi possível salvar o carrinho neste navegador."
-            );
-
+            mostrarFeedback("Não foi possível salvar o carrinho neste navegador.");
             return false;
         }
     }
 
+    function obterProduto(id) {
+        return PRODUTOS.find(produto => produto.id === id);
+    }
+
     function quantidadeCarrinho() {
-        return Object.values(lerCarrinho()).reduce(
-            (total, quantidade) => total + quantidade,
+        return carregarCarrinho().reduce(
+            (total, item) => total + item.quantidade,
             0
         );
     }
 
-    function atualizarContador() {
-        const quantidade = quantidadeCarrinho();
-
-        document
-            .querySelectorAll("[data-rw-shop-count]")
-            .forEach(elemento => {
-                elemento.textContent = quantidade > 99
-                    ? "99+"
-                    : String(quantidade);
-
-                elemento.hidden = quantidade === 0;
-            });
-
-        const botaoCarrinho = document.getElementById(
-            "rwShopCartButton"
-        );
-
-        if (botaoCarrinho) {
-            botaoCarrinho.setAttribute(
-                "aria-label",
-                `Carrinho de compras, ${quantidade} itens`
-            );
-        }
-    }
-
-    /* =====================================================
-       CRIAR A TELA DA LOJA
-       ===================================================== */
-
-    function ensureScreen() {
-        let tela = document.getElementById(SHOP_ID);
+    function criarTela() {
+        let tela = porId(SHOP_ID);
 
         if (!tela) {
             tela = document.createElement("section");
             tela.id = SHOP_ID;
             tela.className = "tela tela-interna rw-shop";
             tela.hidden = true;
-
             document.body.appendChild(tela);
-        } else {
-            tela.classList.add("tela-interna", "rw-shop");
         }
 
+        tela.classList.add("rw-shop");
         telaShop = tela;
 
-        if (!tela.querySelector(".rw-shop-header")) {
-            tela.innerHTML = `
-                <div class="rw-shop-container">
+        if (tela.dataset.shopMontada === "true") return tela;
 
-                    <header class="rw-shop-header">
-                        <button
-                            type="button"
-                            class="rw-shop-back"
-                            data-shop-action="back"
-                            aria-label="Voltar ao RunWorld"
-                        >
-                            <i data-lucide="arrow-left"></i>
-                        </button>
+        tela.innerHTML = `
+            <div class="rw-shop-shell rw-shop-container">
 
-                        <div class="rw-shop-heading">
-                            <span class="rw-shop-eyebrow">
-                                RUNWORLD
-                            </span>
+                <header class="rw-shop-header">
+                    <button type="button"
+                        class="rw-shop-back"
+                        data-shop-action="voltar">
+                        ← <span>Voltar</span>
+                    </button>
 
-                            <h1>RunWorld Shop</h1>
-
-                            <p>
-                                Equipamentos para acompanhar
-                                suas atividades.
-                            </p>
-                        </div>
-
-                        <button
-                            type="button"
-                            id="rwShopCartButton"
-                            class="rw-shop-cart-button"
-                            data-shop-action="cart"
-                            aria-label="Abrir carrinho"
-                        >
-                            <i data-lucide="shopping-cart"></i>
-                            <span
-                                class="rw-shop-count"
-                                data-rw-shop-count
-                                hidden
-                            >0</span>
-                        </button>
-                    </header>
-
-                    <section class="rw-shop-banner">
-                        <span class="rw-shop-banner-icon">
-                            <i data-lucide="footprints"></i>
-                        </span>
-
-                        <div>
-                            <span class="rw-shop-eyebrow">
-                                SEU PRÓXIMO TREINO
-                            </span>
-
-                            <h2>Prepare-se para ir mais longe.</h2>
-
-                            <p>
-                                Encontre produtos para corrida,
-                                caminhada e atividades ao ar livre.
-                            </p>
-                        </div>
-                    </section>
-
-                    <section class="rw-shop-tools">
-                        <label
-                            class="rw-shop-search"
-                            for="rwShopSearch"
-                        >
-                            <i data-lucide="search"></i>
-
-                            <input
-                                id="rwShopSearch"
-                                type="search"
-                                placeholder="Buscar produtos..."
-                                autocomplete="off"
-                            >
-                        </label>
-
-                        <div
-    class="rw-shop-filters"
-    role="group"
-    aria-label="Categorias de produtos"
->
-                            <button
-                                type="button"
-                                data-shop-category="todos"
-                                class="active"
-                                aria-pressed="true"
-                            >
-                                Todos
-                            </button>
-
-                            <button
-                                type="button"
-                                data-shop-category="calcados"
-                                aria-pressed="false"
-                            >
-                                Calçados
-                            </button>
-
-                            <button
-                                type="button"
-                                data-shop-category="roupas"
-                                aria-pressed="false"
-                            >
-                                Roupas
-                            </button>
-
-                            <button
-                                type="button"
-                                data-shop-category="acessorios"
-                                aria-pressed="false"
-                            >
-                                Acessórios
-                            </button>
-
-                            <button
-                                type="button"
-                                data-shop-category="hidratacao"
-                                aria-pressed="false"
-                            >
-                                Hidratação
-                            </button>
-                        </div>
-                    </section>
-
-                    <section class="rw-shop-products-section">
-                        <div class="rw-shop-section-heading">
-                            <div>
-                                <span class="rw-shop-eyebrow">
-                                    VITRINE
-                                </span>
-
-                                <h2>Produtos</h2>
-                            </div>
-
-                            <span
-                                id="rwShopProductCount"
-                                class="rw-shop-product-count"
-                            ></span>
-                        </div>
-
-                        <div
-                            id="rwShopProducts"
-                            class="rw-shop-products"
-                        ></div>
-
-                        <p
-                            id="rwShopEmpty"
-                            class="rw-shop-empty"
-                            hidden
-                        >
-                            Nenhum produto encontrado.
-                            Tente outra busca ou categoria.
+                    <div class="rw-shop-heading">
+                        <p class="rw-shop-eyebrow">RUNWORLD • EQUIPAMENTOS</p>
+                        <h1>RunWorld <span>Shop</span></h1>
+                        <p class="rw-shop-subtitle">
+                            Equipamentos para acompanhar sua jornada.
                         </p>
-                    </section>
+                    </div>
 
-                    <section
-                        id="rwShopCart"
-                        class="rw-shop-cart"
-                        hidden
-                    >
-                        <div class="rw-shop-section-heading">
-                            <div>
-                                <span class="rw-shop-eyebrow">
-                                    SEUS PRODUTOS
-                                </span>
+                    <button type="button"
+                        class="rw-shop-cart-button"
+                        data-shop-action="carrinho"
+                        aria-label="Abrir carrinho">
+                        <i data-lucide="shopping-cart"></i>
+                        <span class="rw-shop-cart-count" id="rwShopCartCount">0</span>
+                    </button>
+                </header>
 
-                                <h2>Meu carrinho</h2>
-                            </div>
-
-                            <button
-                                type="button"
-                                class="rw-shop-text-button"
-                                data-shop-action="close-cart"
-                            >
-                                Continuar comprando
-                            </button>
-                        </div>
-
-                        <div id="rwShopCartItems"></div>
-
-                        <p
-                            id="rwShopCartEmpty"
-                            class="rw-shop-empty"
-                            hidden
-                        >
-                            Seu carrinho está vazio.
-                        </p>
-
-                        <p class="rw-shop-cart-note">
-                            Os produtos são vendidos por lojas externas.
-                            O preço, o frete e a disponibilidade são
-                            confirmados no site do vendedor.
-                        </p>
-                    </section>
-
-                    <footer class="rw-shop-footer">
+                <section class="rw-shop-banner">
+                    <div class="rw-shop-banner-icon">
+                        <i data-lucide="footprints"></i>
+                    </div>
+                    <div>
+                        <p class="rw-shop-eyebrow">SUA PRÓXIMA CONQUISTA</p>
+                        <h2>Prepare-se para ir mais longe.</h2>
                         <p>
-                            RunWorld Shop · Explore. Corra. Conquiste.
+                            Explore produtos esportivos e confira os detalhes
+                            diretamente no Mercado Livre.
                         </p>
-                    </footer>
+                    </div>
+                </section>
 
+                <div class="rw-shop-tools">
+                    <label class="rw-shop-search">
+                        <span aria-hidden="true">⌕</span>
+                        <input
+                            id="rwShopSearch"
+                            type="search"
+                            placeholder="Buscar produtos..."
+                            autocomplete="off"
+                            aria-label="Buscar produtos">
+                    </label>
+
+                    <nav class="rw-shop-categories rw-shop-filters"
+                        aria-label="Categorias da loja"
+                        id="rwShopCategories">
+                        ${CATEGORIAS.map(categoria => `
+                            <button type="button"
+                                class="rw-shop-filter ${categoria.id === categoriaAtual ? "active" : ""}"
+                                data-shop-category="${categoria.id}">
+                                ${escapar(categoria.nome)}
+                            </button>
+                        `).join("")}
+                    </nav>
                 </div>
-            `;
-        }
 
+                <section id="rwShopCatalog">
+                    <div class="rw-shop-section-heading">
+                        <div>
+                            <h2>Produtos em destaque</h2>
+                            <p>Confira preço, disponibilidade e entrega no anúncio.</p>
+                        </div>
+                        <span id="rwShopProductCount" class="rw-shop-result-count">
+                            0 produtos
+                        </span>
+                    </div>
+
+                    <div id="rwShopProducts" class="rw-shop-grid"></div>
+
+                    <div id="rwShopEmpty" class="rw-shop-empty" hidden>
+                        <strong>Nenhum produto encontrado</strong>
+                        <p>Tente outro nome ou selecione outra categoria.</p>
+                    </div>
+                </section>
+
+                <section id="rwShopCart" hidden>
+                    <div class="rw-shop-section-heading">
+                        <div>
+                            <h2>Meu carrinho</h2>
+                            <p>Organize os produtos que deseja consultar.</p>
+                        </div>
+                    </div>
+
+                    <div id="rwShopCartItems" class="rw-shop-cart-list"></div>
+
+                    <div id="rwShopCartEmpty" class="rw-shop-empty" hidden>
+                        <strong>Seu carrinho está vazio</strong>
+                        <p>Adicione produtos para encontrá-los aqui.</p>
+                    </div>
+
+                    <div class="rw-shop-cart-summary">
+                        <div>
+                            <span>Itens no carrinho</span>
+                            <strong id="rwShopCartTotal">0</strong>
+                        </div>
+                        <p>
+                            Os preços não são calculados neste carrinho.
+                            Consulte o valor atualizado em cada anúncio.
+                        </p>
+                        <button type="button"
+                            class="rw-shop-button"
+                            data-shop-action="consultar-carrinho">
+                            Consultar produtos
+                        </button>
+                        <button type="button"
+                            class="rw-shop-button rw-shop-button-secondary"
+                            data-shop-action="continuar-comprando">
+                            Continuar comprando
+                        </button>
+                    </div>
+                </section>
+
+                <p class="rw-shop-disclaimer">
+                    A RunWorld Shop apresenta links para anúncios externos.
+                    Os preços, a disponibilidade, o frete e as condições de
+                    compra são definidos pelo vendedor e podem mudar.
+                    A RunWorld não processa pagamentos nesta tela.
+                </p>
+
+                <div id="rwShopFeedback"
+                    class="rw-shop-feedback"
+                    role="status"
+                    aria-live="polite"
+                    hidden></div>
+            </div>
+        `;
+
+        tela.dataset.shopMontada = "true";
+        atualizarIcones();
         return tela;
     }
 
-    /* =====================================================
-       ATALHOS NO TOPO E NO MENU
-       ===================================================== */
-
-    function criarBotaoTopo() {
-        const areaTopo = document.querySelector(".topo-acoes");
-
-        if (!areaTopo) return;
-
-        let botao = document.getElementById(
-            "abrirRunWorldShop"
-        );
-
-        if (!botao) {
-            botao = document.createElement("button");
-            botao.id = "abrirRunWorldShop";
-            botao.type = "button";
-            botao.className = "icone-btn rw-shop-shortcut";
-            botao.setAttribute(
-                "aria-label",
-                "Abrir RunWorld Shop"
-            );
-            botao.title = "RunWorld Shop";
-
-            botao.innerHTML = `
-                <i data-lucide="shopping-cart"></i>
-            `;
-
-            const perfil = document.getElementById("abrirPerfil");
-
-            if (perfil && perfil.parentElement === areaTopo) {
-                areaTopo.insertBefore(botao, perfil);
-            } else {
-                areaTopo.appendChild(botao);
+    function atualizarIcones() {
+        try {
+            if (window.lucide && typeof window.lucide.createIcons === "function") {
+                window.lucide.createIcons();
             }
+        } catch (erro) {
+            console.warn("RunWorld Shop: não foi possível atualizar os ícones.", erro);
         }
     }
 
-    function criarBotaoMenu() {
-        const menu = document.getElementById("menuFlutuante");
+    function mostrarFeedback(mensagem) {
+        const feedback = porId("rwShopFeedback");
+        if (!feedback) return;
 
-        if (!menu) return;
+        feedback.textContent = mensagem;
+        feedback.hidden = false;
 
-        let botao = document.getElementById("abrirShopMenu");
-
-        if (!botao) {
-            botao = document.createElement("button");
-            botao.id = "abrirShopMenu";
-            botao.type = "button";
-            botao.className = "item-menu rw-shop-menu-shortcut";
-
-            botao.innerHTML = `
-                <i data-lucide="shopping-cart"></i>
-                <span>
-                    <strong>RunWorld Shop</strong>
-                    <small>Produtos para seus treinos</small>
-                </span>
-            `;
-
-            const configuracoes = document.getElementById(
-                "abrirConfiguracoes"
-            );
-
-            if (
-                configuracoes &&
-                configuracoes.parentElement === menu
-            ) {
-                menu.insertBefore(botao, configuracoes);
-            } else {
-                menu.appendChild(botao);
-            }
+        if (feedback._shopTimeout) {
+            clearTimeout(feedback._shopTimeout);
         }
+
+        feedback._shopTimeout = setTimeout(() => {
+            feedback.hidden = true;
+        }, 2800);
     }
 
-    function instalarAtalhos() {
-        criarBotaoTopo();
-        criarBotaoMenu();
-        refreshIcons();
-    }
+    function renderizarCategorias() {
+        const area = porId("rwShopCategories");
+        if (!area) return;
 
-    /* =====================================================
-       VITRINE
-       ===================================================== */
-
-   
-    function renderizarProdutos() {
-        const lista = document.getElementById("rwShopProducts");
-        const contador = document.getElementById("rwShopProductCount");
-        const vazio = document.getElementById("rwShopEmpty");
-
-        if (!lista) return;
-
-        const termo = buscaAtual.trim().toLocaleLowerCase("pt-BR");
-
-        const filtrados = PRODUCTS.filter(produto => {
-            const correspondeCategoria =
-                categoriaAtual === "todos" ||
-                produto.category === categoriaAtual;
-
-            const texto = [
-                produto.name,
-                produto.description,
-                produto.seller,
-                produto.category
-            ].join(" ").toLocaleLowerCase("pt-BR");
-
-            return correspondeCategoria && texto.includes(termo);
+        area.querySelectorAll("[data-shop-category]").forEach(botao => {
+            const ativo = botao.dataset.shopCategory === categoriaAtual;
+            botao.classList.toggle("active", ativo);
+            botao.setAttribute("aria-pressed", String(ativo));
         });
-
-        
-lista.innerHTML = filtrados.map(produto => `
-    <article class="rw-shop-card">
-
-        <div class="rw-shop-product-media">
-            <span class="rw-shop-product-placeholder" aria-hidden="true">
-                ${iconeProduto(produto.category)}
-            </span>
-
-            <span class="rw-shop-product-tag">
-                ${escapeHtml(nomeCategoria(produto.category))}
-            </span>
-        </div>
-
-        <div class="rw-shop-card-body">
-
-            <h3>${escapeHtml(produto.name)}</h3>
-
-            <p>${escapeHtml(produto.description)}</p>
-
-            <div class="rw-shop-price">
-                Consultar preço
-            </div>
-
-            <p class="rw-shop-seller">
-                Vendedor: ${escapeHtml(produto.seller)}
-            </p>
-
-            <div class="rw-shop-card-actions">
-
-                <button
-                    type="button"
-                    class="rw-shop-button"
-                    data-shop-action="buy"
-                    data-product-id="${escapeHtml(produto.id)}"
-                >
-                    Ver produto
-                </button>
-
-                <button
-                    type="button"
-                    class="rw-shop-button rw-shop-button-secondary"
-                    data-shop-action="add"
-                    data-product-id="${escapeHtml(produto.id)}"
-                >
-                    <i data-lucide="shopping-cart"></i>
-                    Adicionar
-                </button>
-
-            </div>
-        </div>
-    </article>
-`).join("");
-
-if (contador) {
-    contador.textContent =
-        `${filtrados.length} ${filtrados.length === 1
-            ? "produto"
-            : "produtos"}`;
-}
-
-if (vazio) {
-    vazio.hidden = filtrados.length !== 0;
-}
-
-refreshIcons();
-
     }
 
-    function nomeCategoria(categoria) {
-        const nomes = {
-            calcados: "Calçados",
-            roupas: "Roupas",
-            acessorios: "Acessórios",
-            hidratacao: "Hidratação"
-        };
+    function produtosFiltrados() {
+        const termo = normalizar(pesquisaAtual);
 
-        return nomes[categoria] || "Esportes";
+        return PRODUTOS.filter(produto => {
+            const categoriaOk =
+                categoriaAtual === "todas" ||
+                produto.categoria === categoriaAtual;
+
+            const texto = normalizar(
+                `${produto.nome} ${produto.descricao} ${produto.vendedor} ${produto.etiqueta}`
+            );
+
+            return categoriaOk && (!termo || texto.includes(termo));
+        });
     }
 
-    function iconeProduto(categoria) {
-        const icones = {
-            calcados: "👟",
-            roupas: "👕",
-            acessorios: "⌚",
-            hidratacao: "💧"
-        };
+    function renderizarProdutos() {
+        const area = porId("rwShopProducts");
+        const vazio = porId("rwShopEmpty");
+        const contador = porId("rwShopProductCount");
 
-        return icones[categoria] || "🏃";
-    }
+        if (!area || !vazio || !contador) return;
 
-    function atualizarCategorias() {
-        document.querySelectorAll("[data-shop-category]")
-            .forEach(botao => {
-                const ativo =
-                    botao.dataset.shopCategory === categoriaAtual;
+        const produtos = produtosFiltrados();
 
-                botao.classList.toggle("active", ativo);
-                botao.setAttribute("aria-pressed", String(ativo));
-            });
-    }
+        contador.textContent =
+            `${produtos.length} ${produtos.length === 1 ? "produto" : "produtos"}`;
 
-    /* =====================================================
-       CARRINHO
-       ===================================================== */
+        vazio.hidden = produtos.length !== 0;
 
-    function adicionarAoCarrinho(id) {
-        const produto = PRODUCTS.find(item => item.id === id);
+        area.innerHTML = produtos.map(produto => `
+            <article class="rw-shop-card" data-product-id="${escapar(produto.id)}">
+                <div class="rw-shop-product-media">
+                    <span class="rw-shop-product-placeholder"
+                        role="img"
+                        aria-label="${escapar(produto.nome)}">
+                        ${produto.emoji}
+                    </span>
+                    <span class="rw-shop-product-tag">
+                        ${escapar(produto.etiqueta)}
+                    </span>
+                </div>
 
-        if (!produto) return;
+                <div class="rw-shop-card-body">
+                    <h3>${escapar(produto.nome)}</h3>
+                    <p>${escapar(produto.descricao)}</p>
+                    <p class="rw-shop-seller">
+                        Vendedor: ${escapar(produto.vendedor)}
+                    </p>
 
-        const carrinho = lerCarrinho();
-        const quantidade = Number(carrinho[id] || 0);
+                    <div class="rw-shop-price">Consultar preço</div>
 
-        if (quantidade >= 99) {
-            mostrarAviso("Limite de 99 unidades por produto.");
-            return;
-        }
+                    <div class="rw-shop-card-actions">
+                        <button type="button"
+                            class="rw-shop-button"
+                            data-shop-action="consultar"
+                            data-product-id="${escapar(produto.id)}">
+                            Consultar preço
+                        </button>
 
-        carrinho[id] = quantidade + 1;
+                        <button type="button"
+                            class="rw-shop-button rw-shop-button-secondary"
+                            data-shop-action="adicionar"
+                            data-product-id="${escapar(produto.id)}">
+                            + Adicionar ao carrinho
+                        </button>
+                    </div>
+                </div>
+            </article>
+        `).join("");
 
-        if (salvarCarrinho(carrinho)) {
-            renderizarCarrinho();
-            mostrarAviso(`${produto.name} adicionado ao carrinho.`);
-        }
-    }
-
-    function alterarQuantidade(id, delta) {
-        const carrinho = lerCarrinho();
-
-        if (!PRODUCTS.some(produto => produto.id === id)) return;
-
-        const novaQuantidade = Number(carrinho[id] || 0) + delta;
-
-        if (novaQuantidade <= 0) {
-            delete carrinho[id];
-        } else {
-            carrinho[id] = Math.min(99, novaQuantidade);
-        }
-
-        salvarCarrinho(carrinho);
-        renderizarCarrinho();
-    }
-
-    function removerDoCarrinho(id) {
-        const carrinho = lerCarrinho();
-
-        if (!Object.prototype.hasOwnProperty.call(carrinho, id)) {
-            return;
-        }
-
-        delete carrinho[id];
-        salvarCarrinho(carrinho);
-        renderizarCarrinho();
-        mostrarAviso("Produto removido do carrinho.");
+        atualizarIcones();
     }
 
     function renderizarCarrinho() {
-        const lista = document.getElementById("rwShopCartItems");
-        const vazio = document.getElementById("rwShopCartEmpty");
+        const area = porId("rwShopCartItems");
+        const vazio = porId("rwShopCartEmpty");
+        const total = porId("rwShopCartTotal");
+        const contador = porId("rwShopCartCount");
 
-        if (!lista) return;
+        if (!area || !vazio || !total || !contador) return;
 
-        const carrinho = lerCarrinho();
-        const itens = PRODUCTS.filter(produto =>
-            Number(carrinho[produto.id]) > 0
+        const carrinho = carregarCarrinho();
+        const quantidade = carrinho.reduce(
+            (soma, item) => soma + item.quantidade,
+            0
         );
 
-        lista.className = "rw-shop-cart-list";
+        contador.textContent = String(quantidade);
+        total.textContent = String(quantidade);
+        vazio.hidden = carrinho.length !== 0;
 
-        lista.innerHTML = itens.map(produto => {
-            const quantidade = carrinho[produto.id];
+        area.innerHTML = carrinho.map(item => {
+            const produto = obterProduto(item.id);
+            if (!produto) return "";
 
             return `
                 <article class="rw-shop-cart-item">
-                    <div class="rw-shop-cart-item-info">
-                        <h3>${escapeHtml(produto.name)}</h3>
-                        <p>${escapeHtml(produto.seller)} · Consultar preço</p>
+                    <div>
+                        <h3>${escapar(produto.nome)}</h3>
+                        <p>Consultar preço no Mercado Livre</p>
 
                         <div class="rw-shop-quantity">
-                            <button
-                                type="button"
-                                data-shop-action="quantity"
-                                data-product-id="${escapeHtml(produto.id)}"
-                                data-delta="-1"
-                                aria-label="Diminuir quantidade"
-                            >−</button>
+                            <button type="button"
+                                data-shop-action="diminuir"
+                                data-product-id="${escapar(produto.id)}"
+                                aria-label="Diminuir quantidade">−</button>
 
-                            <span>${quantidade}</span>
+                            <span>${item.quantidade}</span>
 
-                            <button
-                                type="button"
-                                data-shop-action="quantity"
-                                data-product-id="${escapeHtml(produto.id)}"
-                                data-delta="1"
-                                aria-label="Aumentar quantidade"
-                            >+</button>
+                            <button type="button"
+                                data-shop-action="aumentar"
+                                data-product-id="${escapar(produto.id)}"
+                                aria-label="Aumentar quantidade">+</button>
                         </div>
                     </div>
 
-                    <div class="rw-shop-cart-item-actions">
-                        <button
-                            type="button"
-                            class="rw-shop-remove"
-                            data-shop-action="remove"
-                            data-product-id="${escapeHtml(produto.id)}"
-                        >
-                            Remover
-                        </button>
-
-                        <button
-                            type="button"
-                            class="rw-shop-action-primary"
-                            data-shop-action="buy"
-                            data-product-id="${escapeHtml(produto.id)}"
-                        >
-                            Ver produto
-                        </button>
-                    </div>
+                    <button type="button"
+                        class="rw-shop-remove"
+                        data-shop-action="remover"
+                        data-product-id="${escapar(produto.id)}">
+                        Remover
+                    </button>
                 </article>
             `;
         }).join("");
 
-        if (vazio) {
-            vazio.hidden = itens.length > 0;
+        atualizarIcones();
+    }
+
+    function atualizarCarrinhoVisual() {
+        renderizarCarrinho();
+    
+        const area = porId("rwShopCartItems");
+        const vazio = porId("rwShopCartEmpty");
+        const total = porId("rwShopCartTotal");
+        const contador = porId("rwShopCartCount");
+
+        if (!area || !vazio || !total || !contador) return;
+
+        const carrinho = carregarCarrinho();
+        const quantidade = carrinho.reduce(
+            (soma, item) => soma + item.quantidade,
+            0
+        );
+
+        contador.textContent = quantidade > 99 ? "99+" : String(quantidade);
+        contador.hidden = quantidade === 0;
+        total.textContent = String(quantidade);
+        vazio.hidden = carrinho.length > 0;
+
+        area.innerHTML = carrinho.map(item => {
+            const produto = obterProduto(item.id);
+            if (!produto) return "";
+
+            return `
+                <article class="rw-shop-cart-item">
+                    <div class="rw-shop-cart-item-icon">
+                        ${produto.emoji}
+                    </div>
+
+                    <div class="rw-shop-cart-item-info">
+                        <strong>${escapar(produto.nome)}</strong>
+                        <span>Consultar preço no Mercado Livre</span>
+                        <div class="rw-shop-cart-quantity">
+                            <button type="button"
+                                data-shop-action="diminuir"
+                                data-product-id="${escapar(produto.id)}"
+                                aria-label="Diminuir quantidade">
+                                −
+                            </button>
+
+                            <span>${item.quantidade}</span>
+
+                            <button type="button"
+                                data-shop-action="aumentar"
+                                data-product-id="${escapar(produto.id)}"
+                                aria-label="Aumentar quantidade">
+                                +
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="button"
+                        class="rw-shop-remove"
+                        data-shop-action="remover"
+                        data-product-id="${escapar(produto.id)}"
+                        aria-label="Remover ${escapar(produto.nome)}">
+                        <i data-lucide="trash-2"></i>
+                    </button>
+                </article>
+            `;
+        }).join("");
+
+        atualizarIcones();
+    }
+
+    function atualizarLoja() {
+        renderizarCategorias();
+        renderizarProdutos();
+        renderizarCarrinho();
+    }
+
+    function adicionarAoCarrinho(id) {
+        const produto = obterProduto(id);
+        if (!produto) return;
+
+        const carrinho = carregarCarrinho();
+        const existente = carrinho.find(item => item.id === id);
+
+        if (existente) {
+            if (existente.quantidade >= 99) {
+                mostrarFeedback("Limite de 99 unidades por produto.");
+                return;
+            }
+
+            existente.quantidade += 1;
+        } else {
+            carrinho.push({ id, quantidade: 1 });
         }
 
-        atualizarContador();
-        refreshIcons();
+        if (!salvarCarrinho(carrinho)) return;
+
+        renderizarCarrinho();
+        mostrarFeedback(`${produto.nome} adicionado ao carrinho.`);
+    }
+
+    function alterarQuantidade(id, variacao) {
+        const carrinho = carregarCarrinho();
+        const item = carrinho.find(produto => produto.id === id);
+
+        if (!item) return;
+
+        item.quantidade += variacao;
+
+        if (item.quantidade <= 0) {
+            const atualizado = carrinho.filter(produto => produto.id !== id);
+            if (!salvarCarrinho(atualizado)) return;
+        } else {
+            item.quantidade = Math.min(99, item.quantidade);
+            if (!salvarCarrinho(carrinho)) return;
+        }
+
+        renderizarCarrinho();
+    }
+
+    function removerDoCarrinho(id) {
+        const carrinho = carregarCarrinho().filter(item => item.id !== id);
+
+        if (!salvarCarrinho(carrinho)) return;
+
+        renderizarCarrinho();
+        mostrarFeedback("Produto removido do carrinho.");
     }
 
     function abrirCarrinho() {
-        const carrinho = document.getElementById("rwShopCart");
+        mostrarCarrinho = true;
 
-        if (!carrinho) return;
+        const catalogo = porId("rwShopCatalog");
+        const carrinho = porId("rwShopCart");
 
-        carrinho.hidden = false;
+        if (catalogo) catalogo.hidden = true;
+        if (carrinho) carrinho.hidden = false;
+
         renderizarCarrinho();
-
-        carrinho.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
     }
 
-    function fecharCarrinho() {
-        const carrinho = document.getElementById("rwShopCart");
+    function abrirCatalogo() {
+        mostrarCarrinho = false;
 
-        if (carrinho) {
-            carrinho.hidden = true;
-        }
-    }
+        const catalogo = porId("rwShopCatalog");
+        const carrinho = porId("rwShopCart");
 
-    /* =====================================================
-       NAVEGAÇÃO E AVISOS
-       ===================================================== */
+        if (catalogo) catalogo.hidden = false;
+        if (carrinho) carrinho.hidden = true;
 
-    function mostrarAviso(mensagem) {
-        let aviso = document.getElementById("rwShopFeedback");
-
-        if (!aviso) {
-            aviso = document.createElement("div");
-            aviso.id = "rwShopFeedback";
-            aviso.className = "rw-shop-feedback";
-            aviso.setAttribute("role", "status");
-            aviso.setAttribute("aria-live", "polite");
-
-            const tela = ensureScreen();
-            tela.appendChild(aviso);
-        }
-
-        aviso.textContent = mensagem;
-        aviso.hidden = false;
+        atualizarLoja();
     }
 
     function abrirLoja() {
-        const tela = ensureScreen();
-
-        instalarAtalhos();
+        const tela = criarTela();
 
         if (typeof window.abrirTela === "function") {
             window.abrirTela(SHOP_ID);
@@ -870,124 +695,211 @@ refreshIcons();
         tela.classList.add("active");
         document.body.classList.add("tela-interna-aberta");
 
-        fecharCarrinho();
-        atualizarCategorias();
-        renderizarProdutos();
-        renderizarCarrinho();
-        refreshIcons();
+        [
+            "menuFlutuante",
+            "painelMensagens",
+            "painelCamadas"
+        ].forEach(id => {
+            const painel = porId(id);
+            if (painel) {
+                painel.classList.remove("active");
+                painel.hidden = true;
+            }
+        });
+
+        abrirCatalogo();
+        atualizarLoja();
     }
 
     function voltarDaLoja() {
-        const tela = document.getElementById(SHOP_ID);
-
-        if (tela) {
-            tela.hidden = true;
-            tela.classList.remove("active");
+        if (telaShop) {
+            telaShop.classList.remove("active");
+            telaShop.hidden = true;
         }
 
         document.body.classList.remove("tela-interna-aberta");
 
         if (typeof window.voltarParaMapa === "function") {
             window.voltarParaMapa();
+        } else {
+            const mapa = porId("telaMapa");
+            if (mapa) {
+                mapa.hidden = false;
+                mapa.classList.add("active");
+            }
+        }
+    }
+
+    function consultarCarrinho() {
+        const carrinho = carregarCarrinho();
+
+        if (carrinho.length === 0) {
+            mostrarFeedback("Adicione algum produto ao carrinho primeiro.");
+            return;
+        }
+
+        const primeiroProduto = obterProduto(carrinho[0].id);
+
+        if (primeiroProduto) {
+            abrirLinkSeguro(primeiroProduto.url);
+        }
+
+        if (carrinho.length > 1) {
+            mostrarFeedback(
+                "Consulte os outros produtos individualmente no carrinho."
+            );
         }
     }
 
     function tratarClique(evento) {
-        const alvo = evento.target instanceof Element
-            ? evento.target.closest(
-                "[data-shop-action], [data-shop-category], #abrirRunWorldShop, #abrirShopMenu"
-            )
-            : null;
+        const botao = evento.target.closest(
+            "[data-shop-action], #abrirRunWorldShop, #abrirShopMenu"
+        );
 
-        if (!alvo) return;
+        if (!botao) return;
 
         if (
-            alvo.id === "abrirRunWorldShop" ||
-            alvo.id === "abrirShopMenu"
+            botao.id === "abrirRunWorldShop" ||
+            botao.id === "abrirShopMenu"
         ) {
             evento.preventDefault();
             abrirLoja();
             return;
         }
 
-        if (alvo.hasAttribute("data-shop-category")) {
-            categoriaAtual = alvo.dataset.shopCategory || "todos";
-            atualizarCategorias();
-            renderizarProdutos();
-            return;
-        }
-
-        const acao = alvo.dataset.shopAction;
-        const id = alvo.dataset.productId;
+        const acao = botao.dataset.shopAction;
+        const id = botao.dataset.productId;
 
         switch (acao) {
-            case "back":
+            case "voltar":
+                evento.preventDefault();
                 voltarDaLoja();
                 break;
 
-            case "cart":
+            case "carrinho":
+                evento.preventDefault();
                 abrirCarrinho();
                 break;
 
-            case "close-cart":
-                fecharCarrinho();
+            case "continuar-comprando":
+                evento.preventDefault();
+                abrirCatalogo();
                 break;
 
-            case "buy": {
-                const produto = PRODUCTS.find(item => item.id === id);
-
-                if (produto) {
-                    abrirLinkSeguro(produto.url);
-                }
+            case "consultar":
+                evento.preventDefault();
+                abrirLinkSeguro(obterProduto(id)?.url);
                 break;
-            }
 
-            case "add":
+            case "adicionar":
+                evento.preventDefault();
                 adicionarAoCarrinho(id);
                 break;
 
-            case "quantity":
-                alterarQuantidade(id, Number(alvo.dataset.delta || 0));
+            case "aumentar":
+                evento.preventDefault();
+                alterarQuantidade(id, 1);
                 break;
 
-            case "remove":
+            case "diminuir":
+                evento.preventDefault();
+                alterarQuantidade(id, -1);
+                break;
+
+            case "remover":
+                evento.preventDefault();
                 removerDoCarrinho(id);
                 break;
+
+            case "consultar-carrinho":
+                evento.preventDefault();
+                consultarCarrinho();
+                break;
         }
+    }
+
+    function tratarPesquisa(evento) {
+        if (evento.target.id !== "rwShopSearch") return;
+
+        pesquisaAtual = evento.target.value || "";
+
+        if (mostrarCarrinho) abrirCatalogo();
+
+        renderizarProdutos();
+    }
+
+    function tratarCategoria(evento) {
+        const botao = evento.target.closest("[data-shop-category]");
+        if (!botao) return;
+
+        categoriaAtual = botao.dataset.shopCategory || "todas";
+
+        if (mostrarCarrinho) abrirCatalogo();
+
+        renderizarCategorias();
+        renderizarProdutos();
+    }
+
+    function instalarAtalhos() {
+        const topo = document.querySelector(".topo-acoes");
+        const perfil = porId("abrirPerfil");
+
+        if (topo && !porId("abrirRunWorldShop")) {
+            const botao = document.createElement("button");
+
+            botao.id = "abrirRunWorldShop";
+            botao.type = "button";
+            botao.className = "rw-shop-top-shortcut";
+            botao.setAttribute("aria-label", "Abrir RunWorld Shop");
+            botao.title = "RunWorld Shop";
+            botao.innerHTML = '<i data-lucide="shopping-cart"></i>';
+
+            if (perfil && perfil.parentElement === topo) {
+                topo.insertBefore(botao, perfil);
+            } else {
+                topo.appendChild(botao);
+            }
+        }
+
+        const configuracoes = porId("abrirConfiguracoes");
+        const menu = configuracoes?.parentElement;
+
+        if (menu && !porId("abrirShopMenu")) {
+            const botaoMenu = document.createElement("button");
+
+            botaoMenu.id = "abrirShopMenu";
+            botaoMenu.type = "button";
+            botaoMenu.className = "rw-shop-menu-shortcut";
+            botaoMenu.innerHTML =
+                '<i data-lucide="shopping-cart"></i><span>RunWorld Shop</span>';
+
+            menu.insertBefore(botaoMenu, configuracoes);
+        }
+
+        atualizarIcones();
     }
 
     function iniciar() {
-        ensureScreen();
+        criarTela();
         instalarAtalhos();
-        atualizarContador();
-        renderizarProdutos();
-        renderizarCarrinho();
+        atualizarLoja();
 
-        const busca = document.getElementById("rwShopSearch");
+        if (!document.body.dataset.rwShopListeners) {
+            document.body.dataset.rwShopListeners = "true";
 
-        if (busca) {
-            busca.addEventListener("input", () => {
-                buscaAtual = busca.value || "";
-                renderizarProdutos();
-            });
+            document.addEventListener("click", tratarClique);
+            document.addEventListener("input", tratarPesquisa);
+            document.addEventListener("click", tratarCategoria);
         }
-
-        document.addEventListener("click", tratarClique);
-
-        window.abrirRunWorldShop = abrirLoja;
-        window.abrirCarrinhoRunWorldShop = abrirCarrinho;
-        window.atualizarContadorRunWorldShop = atualizarContador;
-
-        refreshIcons();
     }
 
+    window.abrirRunWorldShop = abrirLoja;
+    window.voltarDaLoja = voltarDaLoja;
+    window.atualizarRunWorldShop = atualizarLoja;
+
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", iniciar, {
-            once: true
-        });
+        document.addEventListener("DOMContentLoaded", iniciar, { once: true });
     } else {
         iniciar();
     }
 })();
-               
-    
