@@ -557,100 +557,126 @@
        VITRINE
        ===================================================== */
 
-        function obterProdutosFiltrados() {
-        const termo = buscaAtual.trim().toLocaleLowerCase("pt-BR");
-
-        return PRODUCTS.filter(produto => {
-            const categoriaCorreta =
-                categoriaAtual === "todos" ||
-                produto.category === categoriaAtual;
-
-            const textoProduto = [
-                produto.name,
-                produto.description,
-                produto.seller
-            ].join(" ").toLocaleLowerCase("pt-BR");
-
-            const buscaCorreta =
-                !termo || textoProduto.includes(termo);
-
-            return categoriaCorreta && buscaCorreta;
-        });
-    }
-
-    function renderProducts() {
-        const container = document.getElementById("rwShopProducts");
+   
+    function renderizarProdutos() {
+        const lista = document.getElementById("rwShopProducts");
         const contador = document.getElementById("rwShopProductCount");
         const vazio = document.getElementById("rwShopEmpty");
 
-        if (!container || !contador || !vazio) return;
+        if (!lista) return;
 
-        const produtos = obterProdutosFiltrados();
+        const termo = buscaAtual.trim().toLocaleLowerCase("pt-BR");
 
-        contador.textContent = `${produtos.length} ${
-            produtos.length === 1 ? "produto" : "produtos"
-        }`;
+        const filtrados = PRODUCTS.filter(produto => {
+            const correspondeCategoria =
+                categoriaAtual === "todos" ||
+                produto.category === categoriaAtual;
 
-        vazio.hidden = produtos.length !== 0;
+            const texto = [
+                produto.name,
+                produto.description,
+                produto.seller,
+                produto.category
+            ].join(" ").toLocaleLowerCase("pt-BR");
 
-        container.innerHTML = produtos.map(produto => {
-            const icone =
-                produto.category === "calcados" ? "footprints" :
-                produto.category === "roupas" ? "shirt" :
-                produto.category === "hidratacao" ? "droplets" :
-                "watch";
+            return correspondeCategoria && texto.includes(termo);
+        });
 
-            return `
-                <article class="rw-shop-product">
-                    <div class="rw-shop-product-image">
-                        <span class="rw-shop-product-icon">
-                            <i data-lucide="${icone}"></i>
-                        </span>
-                    </div>
+        lista.innerHTML = filtrados.map(produto => `
+            <article class="rw-shop-product">
+                <div class="rw-shop-product-visual">
+                    <span aria-hidden="true">
+                        ${iconeProduto(produto.category)}
+                    </span>
+                </div>
 
-                    <div class="rw-shop-product-info">
-                        <span class="rw-shop-product-category">
-                            ${escapeHtml(produto.category)}
-                        </span>
+                <div class="rw-shop-product-body">
+                    <span class="rw-shop-product-category">
+                        ${escapeHtml(nomeCategoria(produto.category))}
+                    </span>
 
-                        <h3>${escapeHtml(produto.name)}</h3>
-                        <p>${escapeHtml(produto.description)}</p>
+                    <h3>${escapeHtml(produto.name)}</h3>
 
-                        <div class="rw-shop-product-price">
+                    <p>${escapeHtml(produto.description)}</p>
+
+                    <div class="rw-shop-product-bottom">
+                        <span class="rw-shop-price">
                             Consultar preço
-                        </div>
-
-                        <span class="rw-shop-seller">
-                            Vendedor: ${escapeHtml(produto.seller)}
                         </span>
-
-                        <div class="rw-shop-product-actions">
-                            <button
-                                type="button"
-                                class="rw-shop-add"
-                                data-shop-action="add"
-                                data-product-id="${escapeHtml(produto.id)}"
-                            >
-                                <i data-lucide="plus"></i>
-                                Adicionar
-                            </button>
-
-                            <button
-                                type="button"
-                                class="rw-shop-buy"
-                                data-shop-action="buy"
-                                data-product-id="${escapeHtml(produto.id)}"
-                            >
-                                Ver produto
-                                <i data-lucide="external-link"></i>
-                            </button>
-                        </div>
+                        <span class="rw-shop-seller">
+                            ${escapeHtml(produto.seller)}
+                        </span>
                     </div>
-                </article>
-            `;
-        }).join("");
+
+                    <div class="rw-shop-product-actions">
+                        <button
+                            type="button"
+                            class="rw-shop-action-primary"
+                            data-shop-action="buy"
+                            data-product-id="${escapeHtml(produto.id)}"
+                        >
+                            Ver produto
+                        </button>
+
+                        <button
+                            type="button"
+                            class="rw-shop-action-secondary"
+                            data-shop-action="add"
+                            data-product-id="${escapeHtml(produto.id)}"
+                        >
+                            <i data-lucide="shopping-cart"></i>
+                            Adicionar
+                        </button>
+                    </div>
+                </div>
+            </article>
+        `).join("");
+
+        if (contador) {
+            contador.textContent =
+                `${filtrados.length} ${filtrados.length === 1
+                    ? "produto"
+                    : "produtos"}`;
+        }
+
+        if (vazio) {
+            vazio.hidden = filtrados.length !== 0;
+        }
 
         refreshIcons();
+    }
+
+    function nomeCategoria(categoria) {
+        const nomes = {
+            calcados: "Calçados",
+            roupas: "Roupas",
+            acessorios: "Acessórios",
+            hidratacao: "Hidratação"
+        };
+
+        return nomes[categoria] || "Esportes";
+    }
+
+    function iconeProduto(categoria) {
+        const icones = {
+            calcados: "👟",
+            roupas: "👕",
+            acessorios: "⌚",
+            hidratacao: "💧"
+        };
+
+        return icones[categoria] || "🏃";
+    }
+
+    function atualizarCategorias() {
+        document.querySelectorAll("[data-shop-category]")
+            .forEach(botao => {
+                const ativo =
+                    botao.dataset.shopCategory === categoriaAtual;
+
+                botao.classList.toggle("active", ativo);
+                botao.setAttribute("aria-pressed", String(ativo));
+            });
     }
 
     /* =====================================================
@@ -659,130 +685,172 @@
 
     function adicionarAoCarrinho(id) {
         const produto = PRODUCTS.find(item => item.id === id);
+
         if (!produto) return;
 
         const carrinho = lerCarrinho();
-        const atual = Number(carrinho[id] || 0);
+        const quantidade = Number(carrinho[id] || 0);
 
-        if (atual >= 99) {
-            alert("Você já atingiu o limite deste produto no carrinho.");
+        if (quantidade >= 99) {
+            mostrarAviso("Limite de 99 unidades por produto.");
             return;
         }
 
-        carrinho[id] = atual + 1;
+        carrinho[id] = quantidade + 1;
 
         if (salvarCarrinho(carrinho)) {
-            renderCart();
+            renderizarCarrinho();
+            mostrarAviso(`${produto.name} adicionado ao carrinho.`);
         }
     }
 
     function alterarQuantidade(id, delta) {
         const carrinho = lerCarrinho();
-        if (!carrinho[id]) return;
 
-        const novaQuantidade = carrinho[id] + delta;
+        if (!PRODUCTS.some(produto => produto.id === id)) return;
+
+        const novaQuantidade = Number(carrinho[id] || 0) + delta;
 
         if (novaQuantidade <= 0) {
             delete carrinho[id];
         } else {
-            carrinho[id] = Math.min(novaQuantidade, 99);
+            carrinho[id] = Math.min(99, novaQuantidade);
         }
 
         salvarCarrinho(carrinho);
-        renderCart();
+        renderizarCarrinho();
     }
 
     function removerDoCarrinho(id) {
         const carrinho = lerCarrinho();
-        delete carrinho[id];
 
+        if (!Object.prototype.hasOwnProperty.call(carrinho, id)) {
+            return;
+        }
+
+        delete carrinho[id];
         salvarCarrinho(carrinho);
-        renderCart();
+        renderizarCarrinho();
+        mostrarAviso("Produto removido do carrinho.");
     }
 
-    function renderCart() {
-        const container = document.getElementById("rwShopCartItems");
+    function renderizarCarrinho() {
+        const lista = document.getElementById("rwShopCartItems");
         const vazio = document.getElementById("rwShopCartEmpty");
+
+        if (!lista) return;
+
         const carrinho = lerCarrinho();
-
-        if (!container || !vazio) return;
-
-        const itens = PRODUCTS.filter(
-            produto => Number(carrinho[produto.id]) > 0
+        const itens = PRODUCTS.filter(produto =>
+            Number(carrinho[produto.id]) > 0
         );
 
-        vazio.hidden = itens.length !== 0;
+        lista.className = "rw-shop-cart-list";
 
-        container.innerHTML = itens.map(produto => `
-            <article class="rw-shop-cart-item">
-                <div class="rw-shop-cart-item-info">
-                    <strong>${escapeHtml(produto.name)}</strong>
-                    <span>${escapeHtml(produto.seller)}</span>
-                    <span>Preço confirmado no site do vendedor</span>
-                </div>
+        lista.innerHTML = itens.map(produto => {
+            const quantidade = carrinho[produto.id];
 
-                <div class="rw-shop-quantity">
-                    <button
-                        type="button"
-                        data-shop-action="decrease"
-                        data-product-id="${escapeHtml(produto.id)}"
-                        aria-label="Diminuir quantidade"
-                    >−</button>
+            return `
+                <article class="rw-shop-cart-item">
+                    <div class="rw-shop-cart-item-info">
+                        <h3>${escapeHtml(produto.name)}</h3>
+                        <p>${escapeHtml(produto.seller)} · Consultar preço</p>
 
-                    <span>${Number(carrinho[produto.id])}</span>
+                        <div class="rw-shop-quantity">
+                            <button
+                                type="button"
+                                data-shop-action="quantity"
+                                data-product-id="${escapeHtml(produto.id)}"
+                                data-delta="-1"
+                                aria-label="Diminuir quantidade"
+                            >−</button>
 
-                    <button
-                        type="button"
-                        data-shop-action="increase"
-                        data-product-id="${escapeHtml(produto.id)}"
-                        aria-label="Aumentar quantidade"
-                    >+</button>
-                </div>
+                            <span>${quantidade}</span>
 
-                <button
-                    type="button"
-                    class="rw-shop-remove"
-                    data-shop-action="remove"
-                    data-product-id="${escapeHtml(produto.id)}"
-                    aria-label="Remover ${escapeHtml(produto.name)}"
-                >
-                    <i data-lucide="trash-2"></i>
-                </button>
+                            <button
+                                type="button"
+                                data-shop-action="quantity"
+                                data-product-id="${escapeHtml(produto.id)}"
+                                data-delta="1"
+                                aria-label="Aumentar quantidade"
+                            >+</button>
+                        </div>
+                    </div>
 
-                <button
-                    type="button"
-                    class="rw-shop-buy"
-                    data-shop-action="buy"
-                    data-product-id="${escapeHtml(produto.id)}"
-                >
-                    Ver vendedor
-                    <i data-lucide="external-link"></i>
-                </button>
-            </article>
-        `).join("");
+                    <div class="rw-shop-cart-item-actions">
+                        <button
+                            type="button"
+                            class="rw-shop-remove"
+                            data-shop-action="remove"
+                            data-product-id="${escapeHtml(produto.id)}"
+                        >
+                            Remover
+                        </button>
+
+                        <button
+                            type="button"
+                            class="rw-shop-action-primary"
+                            data-shop-action="buy"
+                            data-product-id="${escapeHtml(produto.id)}"
+                        >
+                            Ver produto
+                        </button>
+                    </div>
+                </article>
+            `;
+        }).join("");
+
+        if (vazio) {
+            vazio.hidden = itens.length > 0;
+        }
 
         atualizarContador();
         refreshIcons();
     }
 
-    function mostrarCarrinho(mostrar = true) {
+    function abrirCarrinho() {
         const carrinho = document.getElementById("rwShopCart");
+
         if (!carrinho) return;
 
-        carrinho.hidden = !mostrar;
+        carrinho.hidden = false;
+        renderizarCarrinho();
 
-        if (mostrar) {
-            renderCart();
-            carrinho.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
+        carrinho.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+
+    function fecharCarrinho() {
+        const carrinho = document.getElementById("rwShopCart");
+
+        if (carrinho) {
+            carrinho.hidden = true;
         }
     }
 
     /* =====================================================
-       NAVEGAÇÃO
+       NAVEGAÇÃO E AVISOS
        ===================================================== */
+
+    function mostrarAviso(mensagem) {
+        let aviso = document.getElementById("rwShopFeedback");
+
+        if (!aviso) {
+            aviso = document.createElement("div");
+            aviso.id = "rwShopFeedback";
+            aviso.className = "rw-shop-feedback";
+            aviso.setAttribute("role", "status");
+            aviso.setAttribute("aria-live", "polite");
+
+            const tela = ensureScreen();
+            tela.appendChild(aviso);
+        }
+
+        aviso.textContent = mensagem;
+        aviso.hidden = false;
+    }
 
     function abrirLoja() {
         const tela = ensureScreen();
@@ -797,168 +865,116 @@
         tela.classList.add("active");
         document.body.classList.add("tela-interna-aberta");
 
-        renderProducts();
-        renderCart();
-        atualizarContador();
+        fecharCarrinho();
+        atualizarCategorias();
+        renderizarProdutos();
+        renderizarCarrinho();
         refreshIcons();
-
-        return true;
     }
 
     function voltarDaLoja() {
         const tela = document.getElementById(SHOP_ID);
 
         if (tela) {
-            tela.classList.remove("active");
             tela.hidden = true;
+            tela.classList.remove("active");
         }
 
         document.body.classList.remove("tela-interna-aberta");
 
         if (typeof window.voltarParaMapa === "function") {
             window.voltarParaMapa();
-        } else {
-            const mapa = document.getElementById("telaMapa");
-
-            if (mapa) {
-                mapa.classList.add("active");
-                mapa.hidden = false;
-            }
         }
-
-        refreshIcons();
     }
 
-    /* =====================================================
-       EVENTOS
-       ===================================================== */
+    function tratarClique(evento) {
+        const alvo = evento.target instanceof Element
+            ? evento.target.closest(
+                "[data-shop-action], [data-shop-category], #abrirRunWorldShop, #abrirShopMenu"
+            )
+            : null;
 
-    function handleClick(event) {
-        const alvo = event.target;
-        if (!(alvo instanceof Element)) return;
-
-        const botao = alvo.closest("button");
-        if (!botao) return;
+        if (!alvo) return;
 
         if (
-            botao.id === "abrirRunWorldShop" ||
-            botao.id === "abrirShopMenu"
+            alvo.id === "abrirRunWorldShop" ||
+            alvo.id === "abrirShopMenu"
         ) {
-            event.preventDefault();
+            evento.preventDefault();
             abrirLoja();
             return;
         }
 
-        if (botao.hasAttribute("data-shop-category")) {
-            event.preventDefault();
-
-            categoriaAtual = botao.dataset.shopCategory || "todos";
-
-            document.querySelectorAll("[data-shop-category]").forEach(item => {
-                const ativo = item.dataset.shopCategory === categoriaAtual;
-                item.classList.toggle("active", ativo);
-                item.setAttribute("aria-pressed", String(ativo));
-            });
-
-            renderProducts();
+        if (alvo.hasAttribute("data-shop-category")) {
+            categoriaAtual = alvo.dataset.shopCategory || "todos";
+            atualizarCategorias();
+            renderizarProdutos();
             return;
         }
 
-        const action = botao.dataset.shopAction;
-        const productId = botao.dataset.productId;
+        const acao = alvo.dataset.shopAction;
+        const id = alvo.dataset.productId;
 
-        if (!action) return;
-
-        switch (action) {
+        switch (acao) {
             case "back":
-                event.preventDefault();
                 voltarDaLoja();
                 break;
 
             case "cart":
-                event.preventDefault();
-                mostrarCarrinho(true);
+                abrirCarrinho();
                 break;
 
             case "close-cart":
-                event.preventDefault();
-                mostrarCarrinho(false);
-                break;
-
-            case "add":
-                event.preventDefault();
-                adicionarAoCarrinho(productId);
-                break;
-
-            case "increase":
-                event.preventDefault();
-                alterarQuantidade(productId, 1);
-                break;
-
-            case "decrease":
-                event.preventDefault();
-                alterarQuantidade(productId, -1);
-                break;
-
-            case "remove":
-                event.preventDefault();
-                removerDoCarrinho(productId);
+                fecharCarrinho();
                 break;
 
             case "buy": {
-                event.preventDefault();
+                const produto = PRODUCTS.find(item => item.id === id);
 
-                const produto = PRODUCTS.find(
-                    item => item.id === productId
-                );
-
-                if (produto) abrirLinkSeguro(produto.url);
+                if (produto) {
+                    abrirLinkSeguro(produto.url);
+                }
                 break;
             }
+
+            case "add":
+                adicionarAoCarrinho(id);
+                break;
+
+            case "quantity":
+                alterarQuantidade(id, Number(alvo.dataset.delta || 0));
+                break;
+
+            case "remove":
+                removerDoCarrinho(id);
+                break;
         }
     }
-
-    function handleInput(event) {
-        const alvo = event.target;
-
-        if (
-            alvo instanceof HTMLInputElement &&
-            alvo.id === "rwShopSearch"
-        ) {
-            buscaAtual = alvo.value || "";
-            renderProducts();
-        }
-    }
-
-    /* =====================================================
-       INICIALIZAÇÃO
-       ===================================================== */
 
     function iniciar() {
         ensureScreen();
         instalarAtalhos();
         atualizarContador();
-        renderProducts();
-        renderCart();
+        renderizarProdutos();
+        renderizarCarrinho();
 
-        document.addEventListener("click", handleClick);
-        document.addEventListener("input", handleInput);
+        const busca = document.getElementById("rwShopSearch");
+
+        if (busca) {
+            busca.addEventListener("input", () => {
+                buscaAtual = busca.value || "";
+                renderizarProdutos();
+            });
+        }
+
+        document.addEventListener("click", tratarClique);
+
+        window.abrirRunWorldShop = abrirLoja;
+        window.abrirCarrinhoRunWorldShop = abrirCarrinho;
+        window.atualizarContadorRunWorldShop = atualizarContador;
 
         refreshIcons();
     }
-
-    /* =====================================================
-       FUNÇÕES PÚBLICAS
-       ===================================================== */
-
-    window.abrirRunWorldShop = abrirLoja;
-
-    window.abrirCarrinhoRunWorldShop = () => {
-        abrirLoja();
-        mostrarCarrinho(true);
-    };
-
-    window.atualizarContadorRunWorldShop = atualizarContador;
 
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", iniciar, {
@@ -967,5 +983,6 @@
     } else {
         iniciar();
     }
-
 })();
+               
+    
