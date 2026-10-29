@@ -59,3 +59,137 @@ body.tema-claro #telaShop .rw-shop-back, body.tema-claro #telaShop .rw-shop-cart
 #abrirShopMenu small {
     color: #b8beb9 !important;
 }
+
+/* RUNWORLD SHOP — CORREÇÃO DO LAYOUT */
+
+#telaShop .rw-shop-container {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto 24px;
+    min-width: 0;
+}
+
+#telaShop .rw-shop-heading {
+    min-width: 0;
+}
+
+#telaShop .rw-shop-heading h1 {
+    margin: 0;
+    font-size: clamp(21px, 5.5vw, 32px);
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+}
+
+#telaShop .rw-shop-heading p {
+    margin: 7px 0 0;
+    color: var(--suave, #a3b0a7);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+#telaShop .rw-shop-banner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 20px;
+    padding: 18px;
+    border: 1px solid rgba(174, 205, 183, .16);
+    border-radius: 20px;
+    background: linear-gradient(135deg, #15291c, #0c130e);
+}
+
+#telaShop .rw-shop-banner-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: #00e67618;
+    color: #00e676;
+}
+
+#telaShop .rw-shop-banner h2 {
+    margin: 5px 0;
+    font-size: clamp(17px, 4.5vw, 23px);
+    line-height: 1.25;
+}
+
+#telaShop .rw-shop-banner p {
+    margin: 0;
+    color: #a3b0a7;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+#telaShop .rw-shop-tools {
+    min-width: 0;
+}
+
+#telaShop .rw-shop-categories {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 1px 1px 9px;
+    margin-bottom: 18px;
+    scrollbar-width: none;
+}
+
+#telaShop .rw-shop-categories::-webkit-scrollbar {
+    display: none;
+}
+
+#telaShop .rw-shop-categories button {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 8px 13px;
+    border: 1px solid rgba(174, 205, 183, .16);
+    border-radius: 999px;
+    background: #111815;
+    color: #a3b0a7;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+#telaShop .rw-shop-categories button.active {
+    border-color: #00e676;
+    background: #00e676;
+    color: #041109;
+}
+
+#telaShop .rw-shop-product-count {
+    color: #a3b0a7;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+#telaShop .rw-shop-seller {
+    overflow-wrap: anywhere;
+}
+
+#telaShop .rw-shop-cart[hidden],
+#telaShop .rw-shop-empty[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 380px) {
+    #telaShop .rw-shop-banner {
+        padding: 13px;
+        gap: 10px;
+    }
+
+    #telaShop .rw-shop-header {
+        gap: 8px;
+    }
+
+    #telaShop .rw-shop-heading h1 {
+        font-size: 21px;
+    }
+}
+
+@media (min-width: 600px) {
+    #telaShop .rw-shop-banner {
+        padding: 24px;
+    }
+}
