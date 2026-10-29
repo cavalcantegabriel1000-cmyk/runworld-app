@@ -582,68 +582,73 @@
             return correspondeCategoria && texto.includes(termo);
         });
 
-        lista.innerHTML = filtrados.map(produto => `
-            <article class="rw-shop-product">
-                <div class="rw-shop-product-visual">
-                    <span aria-hidden="true">
-                        ${iconeProduto(produto.category)}
-                    </span>
-                </div>
+        
+lista.innerHTML = filtrados.map(produto => `
+    <article class="rw-shop-card">
 
-                <div class="rw-shop-product-body">
-                    <span class="rw-shop-product-category">
-                        ${escapeHtml(nomeCategoria(produto.category))}
-                    </span>
+        <div class="rw-shop-product-media">
+            <span class="rw-shop-product-placeholder" aria-hidden="true">
+                ${iconeProduto(produto.category)}
+            </span>
 
-                    <h3>${escapeHtml(produto.name)}</h3>
+            <span class="rw-shop-product-tag">
+                ${escapeHtml(nomeCategoria(produto.category))}
+            </span>
+        </div>
 
-                    <p>${escapeHtml(produto.description)}</p>
+        <div class="rw-shop-card-body">
 
-                    <div class="rw-shop-product-bottom">
-                        <span class="rw-shop-price">
-                            Consultar preço
-                        </span>
-                        <span class="rw-shop-seller">
-                            ${escapeHtml(produto.seller)}
-                        </span>
-                    </div>
+            <h3>${escapeHtml(produto.name)}</h3>
 
-                    <div class="rw-shop-product-actions">
-                        <button
-                            type="button"
-                            class="rw-shop-action-primary"
-                            data-shop-action="buy"
-                            data-product-id="${escapeHtml(produto.id)}"
-                        >
-                            Ver produto
-                        </button>
+            <p>${escapeHtml(produto.description)}</p>
 
-                        <button
-                            type="button"
-                            class="rw-shop-action-secondary"
-                            data-shop-action="add"
-                            data-product-id="${escapeHtml(produto.id)}"
-                        >
-                            <i data-lucide="shopping-cart"></i>
-                            Adicionar
-                        </button>
-                    </div>
-                </div>
-            </article>
-        `).join("");
+            <div class="rw-shop-price">
+                Consultar preço
+            </div>
 
-        if (contador) {
-            contador.textContent =
-                `${filtrados.length} ${filtrados.length === 1
-                    ? "produto"
-                    : "produtos"}`;
-        }
+            <p class="rw-shop-seller">
+                Vendedor: ${escapeHtml(produto.seller)}
+            </p>
 
-        if (vazio) {
-            vazio.hidden = filtrados.length !== 0;
-        }
+            <div class="rw-shop-card-actions">
 
-        refreshIcons();
+                <button
+                    type="button"
+                    class="rw-shop-button"
+                    data-shop-action="buy"
+                    data-product-id="${escapeHtml(produto.id)}"
+                >
+                    Ver produto
+                </button>
+
+                <button
+                    type="button"
+                    class="rw-shop-button rw-shop-button-secondary"
+                    data-shop-action="add"
+                    data-product-id="${escapeHtml(produto.id)}"
+                >
+                    <i data-lucide="shopping-cart"></i>
+                    Adicionar
+                </button>
+
+            </div>
+        </div>
+    </article>
+`).join("");
+
+if (contador) {
+    contador.textContent =
+        `${filtrados.length} ${filtrados.length === 1
+            ? "produto"
+            : "produtos"}`;
+}
+
+if (vazio) {
+    vazio.hidden = filtrados.length !== 0;
+}
+
+refreshIcons();
+
     }
 
     function nomeCategoria(categoria) {
