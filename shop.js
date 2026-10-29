@@ -342,10 +342,10 @@
                         </label>
 
                         <div
-                            class="rw-shop-categories"
-                            role="group"
-                            aria-label="Categorias de produtos"
-                        >
+    class="rw-shop-filters"
+    role="group"
+    aria-label="Categorias de produtos"
+>
                             <button
                                 type="button"
                                 data-shop-category="todos"
