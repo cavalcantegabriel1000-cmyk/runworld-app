@@ -25,3 +25,37 @@ body.tema-claro #telaShop.rw-shop{background:radial-gradient(ellipse at top,#e0f
 #telaShop .rw-shop-cart-button svg { width: 19px; height: 19px; vertical-align: middle; }
 body.tema-claro #telaShop.rw-shop { background: radial-gradient(ellipse at top,#f1faf3 0,#f7faf7 55%,#edf3ee 100%); color: var(--texto,#162219); }
 body.tema-claro #telaShop .rw-shop-back, body.tema-claro #telaShop .rw-shop-cart-button { background: #fff; color: var(--texto,#162219); }
+
+/* RUNWORLD SHOP — ÍCONES CINZA E BRANCOS */
+
+#abrirRunWorldShop {
+    border: 1px solid #454b47 !important;
+    background: #171a18 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+#abrirRunWorldShop svg,
+#abrirRunWorldShop i {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+#abrirShopMenu {
+    border: 1px solid #454b47 !important;
+    background: #171a18 !important;
+}
+
+#abrirShopMenu svg,
+#abrirShopMenu i {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+#abrirShopMenu strong {
+    color: #ffffff !important;
+}
+
+#abrirShopMenu small {
+    color: #b8beb9 !important;
+}
