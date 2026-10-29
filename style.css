@@ -352,3 +352,87 @@ body.tema-claro #abrirShopMenu small {
     color: #52715c;
 }
 
+
+/* =========================================
+   RUNWORLD SHOP — AJUSTE VISUAL DOS ATALHOS
+   Borda cinza e ícones brancos
+   ========================================= */
+
+#abrirRunWorldShop {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    padding: 9px;
+    border: 1px solid var(--borda, #2b3930) !important;
+    border-radius: 13px;
+    background: #18221d !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+#abrirRunWorldShop svg,
+#abrirRunWorldShop i {
+    width: 21px;
+    height: 21px;
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+#abrirShopMenu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    border: 1px solid var(--borda, #2b3930) !important;
+    border-radius: 13px;
+    background: #18221d !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+#abrirShopMenu svg,
+#abrirShopMenu i {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+#abrirShopMenu strong,
+#abrirShopMenu small {
+    color: #ffffff !important;
+}
+
+#abrirRunWorldShop:focus-visible,
+#abrirShopMenu:focus-visible {
+    outline: 2px solid #a3b0a7;
+    outline-offset: 2px;
+}
+
+/* Mantém o estilo neutro no tema claro */
+body.tema-claro #abrirRunWorldShop {
+    background: #ffffff !important;
+    border-color: #d5ddd7 !important;
+    color: #26332a !important;
+}
+
+body.tema-claro #abrirRunWorldShop svg,
+body.tema-claro #abrirRunWorldShop i {
+    color: #26332a !important;
+    stroke: #26332a !important;
+}
+
+body.tema-claro #abrirShopMenu {
+    background: #ffffff !important;
+    border-color: #d5ddd7 !important;
+}
+
+body.tema-claro #abrirShopMenu svg,
+body.tema-claro #abrirShopMenu i,
+body.tema-claro #abrirShopMenu strong,
+body.tema-claro #abrirShopMenu small {
+    color: #26332a !important;
+    stroke: #26332a !important;
+}
