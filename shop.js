@@ -840,44 +840,31 @@
         renderizarProdutos();
     }
 
-    function instalarAtalhos() {
-        const topo = document.querySelector(".topo-acoes");
-        const perfil = porId("abrirPerfil");
+    
+function instalarAtalhos() {
+    // O index.html já contém os dois botões.
+    // Não criar duplicatas: apenas garantir que existam.
 
-        if (topo && !porId("abrirRunWorldShop")) {
-            const botao = document.createElement("button");
+    const botaoTopo = porId("botaoRunWorldShop");
+    const botaoMenu = porId("abrirShopMenu");
 
-            botao.id = "abrirRunWorldShop";
-            botao.type = "button";
-            botao.className = "rw-shop-top-shortcut";
-            botao.setAttribute("aria-label", "Abrir RunWorld Shop");
-            botao.title = "RunWorld Shop";
-            botao.innerHTML = '<i data-lucide="shopping-cart"></i>';
-
-            if (perfil && perfil.parentElement === topo) {
-                topo.insertBefore(botao, perfil);
-            } else {
-                topo.appendChild(botao);
-            }
-        }
-
-        const configuracoes = porId("abrirConfiguracoes");
-        const menu = configuracoes?.parentElement;
-
-        if (menu && !porId("abrirShopMenu")) {
-            const botaoMenu = document.createElement("button");
-
-            botaoMenu.id = "abrirShopMenu";
-            botaoMenu.type = "button";
-            botaoMenu.className = "rw-shop-menu-shortcut";
-            botaoMenu.innerHTML =
-                '<i data-lucide="shopping-cart"></i><span>RunWorld Shop</span>';
-
-            menu.insertBefore(botaoMenu, configuracoes);
-        }
-
-        atualizarIcones();
+    if (botaoTopo) {
+        botaoTopo.addEventListener("click", function (evento) {
+            evento.preventDefault();
+            abrirLoja();
+        });
     }
+
+    if (botaoMenu) {
+        botaoMenu.addEventListener("click", function (evento) {
+            evento.preventDefault();
+            abrirLoja();
+        });
+    }
+
+    atualizarIcones();
+}
+
 
     function iniciar() {
         criarTela();
