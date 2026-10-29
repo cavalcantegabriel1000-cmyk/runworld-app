@@ -193,3 +193,50 @@ body.tema-claro #telaShop .rw-shop-back, body.tema-claro #telaShop .rw-shop-cart
         padding: 24px;
     }
 }
+
+/* RUNWORLD SHOP — CORREÇÃO DOS INPUTS */
+
+#telaShop .rw-shop-search {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+#telaShop .rw-shop-search input,
+#telaShop input[type="search"],
+#telaShop input[type="text"],
+#telaShop input[type="number"] {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: inherit;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+#telaShop .rw-shop-search input {
+    flex: 1 1 auto;
+    height: 46px;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--texto, #f5f7f5);
+    box-shadow: none;
+}
+
+#telaShop .rw-shop-search input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#telaShop button,
+#telaShop input {
+    font-family: inherit;
+}
