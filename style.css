@@ -436,3 +436,38 @@ body.tema-claro #abrirShopMenu small {
     color: #26332a !important;
     stroke: #26332a !important;
 }
+
+/* RUNWORLD SHOP — ÍCONE VERDE NO MENU */
+
+#abrirShopMenu {
+    border: 1px solid #454b47 !important;
+    background: #171a18 !important;
+}
+
+#abrirShopMenu svg,
+#abrirShopMenu i {
+    color: #00e676 !important;
+    stroke: #00e676 !important;
+}
+
+#abrirShopMenu strong {
+    color: #ffffff !important;
+}
+
+#abrirShopMenu small {
+    color: #b8beb9 !important;
+}
+
+/* ÍCONE DO TOPO CONTINUA BRANCO */
+
+#abrirRunWorldShop {
+    border: 1px solid #454b47 !important;
+    background: #171a18 !important;
+    color: #ffffff !important;
+}
+
+#abrirRunWorldShop svg,
+#abrirRunWorldShop i {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
