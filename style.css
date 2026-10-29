@@ -471,3 +471,17 @@ body.tema-claro #abrirShopMenu small {
     color: #ffffff !important;
     stroke: #ffffff !important;
 }
+
+/* ÍCONE DO TOPO: BRANCO */
+#abrirRunWorldShop svg,
+#abrirRunWorldShop i {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+/* ÍCONE NO MENU: VERDE */
+#abrirShopMenu svg,
+#abrirShopMenu i {
+    color: #00e676 !important;
+    stroke: #00e676 !important;
+}
