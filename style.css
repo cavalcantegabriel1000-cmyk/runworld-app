@@ -203,3 +203,152 @@ body.tela-interna-aberta .controles-mapa { display: none !important; }
 
 /* Evita mostrar o mapa antes de confirmar a sessão; visitantes vão para login.html. */
 body.runworld-app:not(.sessao-validada) { visibility: hidden; }
+
+
+/* =====================================================
+   RUNWORLD SHOP — CORREÇÃO VISUAL DOS ÍCONES
+   Cole no final do style.css
+   ===================================================== */
+
+/* Mantém os botões do topo visíveis */
+.topo-acoes {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    flex-shrink: 0;
+    overflow: visible;
+    position: relative;
+    z-index: 1000;
+}
+
+/* Botão da loja no topo */
+#abrirRunWorldShop {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    padding: 9px;
+    border: 1px solid #28543b;
+    border-radius: 13px;
+    background: #10251a;
+    color: #00e676;
+    cursor: pointer;
+    box-shadow: 0 0 12px #00e67618;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Desenho do carrinho */
+#abrirRunWorldShop svg,
+#abrirRunWorldShop i {
+    display: block;
+    width: 22px;
+    height: 22px;
+    color: #00e676;
+    stroke: currentColor;
+    flex-shrink: 0;
+}
+
+/* Efeito ao tocar */
+#abrirRunWorldShop:active {
+    transform: scale(0.94);
+    background: #173b27;
+}
+
+/* Botão da loja dentro do menu */
+#abrirShopMenu {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 54px;
+    padding: 12px;
+    border: 1px solid #244532;
+    border-radius: 13px;
+    background: #102018;
+    color: #f5f7f5;
+    text-align: left;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+/* Ícone do carrinho no menu */
+#abrirShopMenu svg,
+#abrirShopMenu i {
+    display: block;
+    width: 22px;
+    height: 22px;
+    color: #00e676;
+    flex-shrink: 0;
+}
+
+/* Texto da loja no menu */
+#abrirShopMenu span {
+    display: grid;
+    gap: 4px;
+}
+
+#abrirShopMenu strong {
+    color: #f5f7f5;
+    font-size: 14px;
+}
+
+#abrirShopMenu small {
+    color: #a3b0a7;
+    font-size: 12px;
+}
+
+/* Ajuste para telas pequenas */
+@media (max-width: 380px) {
+    .topo-acoes {
+        gap: 5px;
+    }
+
+    #abrirRunWorldShop {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        min-height: 38px;
+        padding: 7px;
+    }
+
+    #abrirRunWorldShop svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Tema claro */
+body.tema-claro #abrirRunWorldShop {
+    background: #e8f7ed;
+    border-color: #a7d9b7;
+    color: #087c42;
+}
+
+body.tema-claro #abrirRunWorldShop svg {
+    color: #087c42;
+}
+
+body.tema-claro #abrirShopMenu {
+    background: #effaf2;
+    border-color: #c7e5d0;
+    color: #163b25;
+}
+
+body.tema-claro #abrirShopMenu strong {
+    color: #163b25;
+}
+
+body.tema-claro #abrirShopMenu small {
+    color: #52715c;
+}
+
