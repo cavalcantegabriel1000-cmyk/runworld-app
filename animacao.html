@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#050807">
+    <title>RunWorld</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { width: 100%; height: 100%; overflow: hidden; background: #050807; }
+        .tela-animacao { position: fixed; inset: 0; display: grid; place-items: center; background: #050807; }
+        .video-logo { width: 100%; height: 100%; object-fit: contain; background: #050807; }
+        .carregamento {
+            position: absolute; bottom: max(28px, env(safe-area-inset-bottom)); left: 50%;
+            width: 34px; height: 34px; border: 3px solid rgba(0, 230, 118, .22);
+            border-top-color: #00e676; border-radius: 50%; transform: translateX(-50%);
+            animation: girar .8s linear infinite;
+        }
+        .mensagem { position: absolute; bottom: max(72px, calc(env(safe-area-inset-bottom) + 72px)); color: #b7c7bf; font: 13px/1.4 system-ui, sans-serif; text-align: center; padding: 0 20px; }
+        @keyframes girar { to { transform: translateX(-50%) rotate(360deg); } }
+        @media (prefers-reduced-motion: reduce) { .carregamento { animation-duration: 2s; } }
+    </style>
+</head>
+<body>
+    <main class="tela-animacao">
+        <video id="videoLogo" class="video-logo" autoplay muted playsinline preload="auto" aria-label="Animação de entrada do RunWorld">
+            <source src="./logo_animacao.mp4" type="video/mp4">
+        </video>
+        <p class="mensagem" id="mensagem">Preparando seu mundo…</p>
+        <div class="carregamento" aria-hidden="true"></div>
+    </main>
+
+    <!-- O Supabase precisa ser carregado antes do config.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./config.js"></script>
+    <script>
+    (() => {
+        "use strict";
+
+        const video = document.getElementById("videoLogo");
+        const mensagem = document.getElementById("mensagem");
+        let redirecionando = false;
+        let destinoResolvido = null;
+        let verificacaoEmAndamento = null;
+
+        function navegar(destino) {
+            if (redirecionando) return;
+            redirecionando = true;
+            window.location.replace(destino);
+        }
+
+        async function resolverDestino() {
+            if (destinoResolvido) return destinoResolvido;
+            if (verificacaoEmAndamento) return verificacaoEmAndamento;
+
+            verificacaoEmAndamento = (async () => {
+                try {
+                    // Usa a inicialização existente do projeto, quando disponível.
+                    if (typeof iniciarSupabase === "function") {
+                        await iniciarSupabase();
+                    }
+
+                    const cliente = (typeof supabaseClient !== "undefined") ? supabaseClient : window.supabaseClient;
+                    if (!cliente || !cliente.auth || typeof cliente.auth.getSession !== "function") {
+                        throw new Error("Cliente Supabase não disponível");
+                    }
+
+                    const { data, error } = await cliente.auth.getSession();
+                    if (error) throw error;
+                    destinoResolvido = data && data.session ? "./index.html" : "./inicio.html";
+                } catch (erro) {
+                    console.error("Não foi possível verificar a sessão do RunWorld:", erro);
+                    // Se a sessão não puder ser confirmada, encaminha à entrada segura.
+                    destinoResolvido = "./inicio.html";
+                }
+                return destinoResolvido;
+            })();
+
+            return verificacaoEmAndamento;
+        }
+
+        async function abrirAplicativo() {
+            const destino = await resolverDestino();
+            navegar(destino);
+        }
+
+        video.addEventListener("ended", abrirAplicativo);
+        video.addEventListener("error", abrirAplicativo);
+
+        // Verifica a sessão enquanto a animação toca, mas só navega quando ela terminar.
+        resolverDestino();
+
+        video.play().catch(() => {
+            // Se o navegador bloquear o autoplay, não deixa a pessoa presa na tela.
+            mensagem.textContent = "Continuando para o RunWorld…";
+            abrirAplicativo();
+        });
+
+        // Proteção caso o vídeo não termine nem dispare erro em algum navegador.
+        window.setTimeout(abrirAplicativo, 20000);
+    })();
+    </script>
+</body>
+</html>
