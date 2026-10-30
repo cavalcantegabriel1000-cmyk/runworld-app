@@ -1,11 +1,11 @@
 
 /* =========================================================
    RUNWORLD SHOP — SHOP.JS
-   Versão corrigida para o index.html, style.css e shop.css
-   - Atalho no topo e no menu
+   Versão corrigida
+   - Ícone Lucide no botão de voltar
+   - Atalho no topo e no menu sem duplicatas
    - Categorias e pesquisa
    - Links individuais do Mercado Livre
-   - Preço consultado diretamente no vendedor
    - Carrinho salvo no navegador
    - Integração com a navegação existente do RunWorld
    ========================================================= */
@@ -169,7 +169,9 @@
 
     function carregarCarrinho() {
         try {
-            const dados = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+            const dados = JSON.parse(
+                localStorage.getItem(CART_KEY) || "[]"
+            );
 
             if (!Array.isArray(dados)) return [];
 
@@ -182,7 +184,10 @@
                     id: item.id,
                     quantidade: Math.max(
                         1,
-                        Math.min(99, Math.floor(Number(item.quantidade) || 1))
+                        Math.min(
+                            99,
+                            Math.floor(Number(item.quantidade) || 1)
+                        )
                     )
                 }));
         } catch {
@@ -192,10 +197,15 @@
 
     function salvarCarrinho(carrinho) {
         try {
-            localStorage.setItem(CART_KEY, JSON.stringify(carrinho));
+            localStorage.setItem(
+                CART_KEY,
+                JSON.stringify(carrinho)
+            );
             return true;
         } catch {
-            mostrarFeedback("Não foi possível salvar o carrinho neste navegador.");
+            mostrarFeedback(
+                "Não foi possível salvar o carrinho neste navegador."
+            );
             return false;
         }
     }
@@ -204,11 +214,20 @@
         return PRODUTOS.find(produto => produto.id === id);
     }
 
-    function quantidadeCarrinho() {
-        return carregarCarrinho().reduce(
-            (total, item) => total + item.quantidade,
-            0
-        );
+    function atualizarIcones() {
+        try {
+            if (
+                window.lucide &&
+                typeof window.lucide.createIcons === "function"
+            ) {
+                window.lucide.createIcons();
+            }
+        } catch (erro) {
+            console.warn(
+                "RunWorld Shop: não foi possível atualizar os ícones.",
+                erro
+            );
+        }
     }
 
     function criarTela() {
@@ -225,21 +244,33 @@
         tela.classList.add("rw-shop");
         telaShop = tela;
 
-        if (tela.dataset.shopMontada === "true") return tela;
+        if (tela.dataset.shopMontada === "true") {
+            return tela;
+        }
 
         tela.innerHTML = `
             <div class="rw-shop-shell rw-shop-container">
 
                 <header class="rw-shop-header">
+
                     <button type="button"
                         class="rw-shop-back"
-                        data-shop-action="voltar">
-                        ← <span>Voltar</span>
+                        data-shop-action="voltar"
+                        aria-label="Voltar ao mapa">
+
+                        <i data-lucide="arrow-left"
+                            aria-hidden="true"></i>
+
+                        <span>Voltar</span>
                     </button>
 
                     <div class="rw-shop-heading">
-                        <p class="rw-shop-eyebrow">RUNWORLD • EQUIPAMENTOS</p>
+                        <p class="rw-shop-eyebrow">
+                            RUNWORLD • EQUIPAMENTOS
+                        </p>
+
                         <h1>RunWorld <span>Shop</span></h1>
+
                         <p class="rw-shop-subtitle">
                             Equipamentos para acompanhar sua jornada.
                         </p>
@@ -249,18 +280,29 @@
                         class="rw-shop-cart-button"
                         data-shop-action="carrinho"
                         aria-label="Abrir carrinho">
-                        <i data-lucide="shopping-cart"></i>
-                        <span class="rw-shop-cart-count" id="rwShopCartCount">0</span>
+
+                        <i data-lucide="shopping-cart"
+                            aria-hidden="true"></i>
+
+                        <span class="rw-shop-cart-count"
+                            id="rwShopCartCount">0</span>
                     </button>
+
                 </header>
 
                 <section class="rw-shop-banner">
                     <div class="rw-shop-banner-icon">
-                        <i data-lucide="footprints"></i>
+                        <i data-lucide="footprints"
+                            aria-hidden="true"></i>
                     </div>
+
                     <div>
-                        <p class="rw-shop-eyebrow">SUA PRÓXIMA CONQUISTA</p>
+                        <p class="rw-shop-eyebrow">
+                            SUA PRÓXIMA CONQUISTA
+                        </p>
+
                         <h2>Prepare-se para ir mais longe.</h2>
+
                         <p>
                             Explore produtos esportivos e confira os detalhes
                             diretamente no Mercado Livre.
@@ -271,6 +313,7 @@
                 <div class="rw-shop-tools">
                     <label class="rw-shop-search">
                         <span aria-hidden="true">⌕</span>
+
                         <input
                             id="rwShopSearch"
                             type="search"
@@ -282,13 +325,20 @@
                     <nav class="rw-shop-categories rw-shop-filters"
                         aria-label="Categorias da loja"
                         id="rwShopCategories">
+
                         ${CATEGORIAS.map(categoria => `
                             <button type="button"
-                                class="rw-shop-filter ${categoria.id === categoriaAtual ? "active" : ""}"
+                                class="rw-shop-filter ${
+                                    categoria.id === categoriaAtual
+                                        ? "active"
+                                        : ""
+                                }"
                                 data-shop-category="${categoria.id}">
+
                                 ${escapar(categoria.nome)}
                             </button>
                         `).join("")}
+
                     </nav>
                 </div>
 
@@ -296,18 +346,29 @@
                     <div class="rw-shop-section-heading">
                         <div>
                             <h2>Produtos em destaque</h2>
-                            <p>Confira preço, disponibilidade e entrega no anúncio.</p>
+                            <p>
+                                Confira preço, disponibilidade e entrega
+                                no anúncio.
+                            </p>
                         </div>
-                        <span id="rwShopProductCount" class="rw-shop-result-count">
+
+                        <span id="rwShopProductCount"
+                            class="rw-shop-result-count">
                             0 produtos
                         </span>
                     </div>
 
-                    <div id="rwShopProducts" class="rw-shop-grid"></div>
+                    <div id="rwShopProducts"
+                        class="rw-shop-grid"></div>
 
-                    <div id="rwShopEmpty" class="rw-shop-empty" hidden>
+                    <div id="rwShopEmpty"
+                        class="rw-shop-empty"
+                        hidden>
+
                         <strong>Nenhum produto encontrado</strong>
-                        <p>Tente outro nome ou selecione outra categoria.</p>
+                        <p>
+                            Tente outro nome ou selecione outra categoria.
+                        </p>
                     </div>
                 </section>
 
@@ -315,15 +376,23 @@
                     <div class="rw-shop-section-heading">
                         <div>
                             <h2>Meu carrinho</h2>
-                            <p>Organize os produtos que deseja consultar.</p>
+                            <p>
+                                Organize os produtos que deseja consultar.
+                            </p>
                         </div>
                     </div>
 
-                    <div id="rwShopCartItems" class="rw-shop-cart-list"></div>
+                    <div id="rwShopCartItems"
+                        class="rw-shop-cart-list"></div>
 
-                    <div id="rwShopCartEmpty" class="rw-shop-empty" hidden>
+                    <div id="rwShopCartEmpty"
+                        class="rw-shop-empty"
+                        hidden>
+
                         <strong>Seu carrinho está vazio</strong>
-                        <p>Adicione produtos para encontrá-los aqui.</p>
+                        <p>
+                            Adicione produtos para encontrá-los aqui.
+                        </p>
                     </div>
 
                     <div class="rw-shop-cart-summary">
@@ -331,15 +400,18 @@
                             <span>Itens no carrinho</span>
                             <strong id="rwShopCartTotal">0</strong>
                         </div>
+
                         <p>
                             Os preços não são calculados neste carrinho.
                             Consulte o valor atualizado em cada anúncio.
                         </p>
+
                         <button type="button"
                             class="rw-shop-button"
                             data-shop-action="consultar-carrinho">
                             Consultar produtos
                         </button>
+
                         <button type="button"
                             class="rw-shop-button rw-shop-button-secondary"
                             data-shop-action="continuar-comprando">
@@ -360,22 +432,15 @@
                     role="status"
                     aria-live="polite"
                     hidden></div>
+
             </div>
         `;
 
         tela.dataset.shopMontada = "true";
-        atualizarIcones();
-        return tela;
-    }
 
-    function atualizarIcones() {
-        try {
-            if (window.lucide && typeof window.lucide.createIcons === "function") {
-                window.lucide.createIcons();
-            }
-        } catch (erro) {
-            console.warn("RunWorld Shop: não foi possível atualizar os ícones.", erro);
-        }
+        atualizarIcones();
+
+        return tela;
     }
 
     function mostrarFeedback(mensagem) {
@@ -398,11 +463,14 @@
         const area = porId("rwShopCategories");
         if (!area) return;
 
-        area.querySelectorAll("[data-shop-category]").forEach(botao => {
-            const ativo = botao.dataset.shopCategory === categoriaAtual;
-            botao.classList.toggle("active", ativo);
-            botao.setAttribute("aria-pressed", String(ativo));
-        });
+        area.querySelectorAll("[data-shop-category]")
+            .forEach(botao => {
+                const ativo =
+                    botao.dataset.shopCategory === categoriaAtual;
+
+                botao.classList.toggle("active", ativo);
+                botao.setAttribute("aria-pressed", String(ativo));
+            });
     }
 
     function produtosFiltrados() {
@@ -414,10 +482,12 @@
                 produto.categoria === categoriaAtual;
 
             const texto = normalizar(
-                `${produto.nome} ${produto.descricao} ${produto.vendedor} ${produto.etiqueta}`
+                `${produto.nome} ${produto.descricao} ` +
+                `${produto.vendedor} ${produto.etiqueta}`
             );
 
-            return categoriaOk && (!termo || texto.includes(termo));
+            return categoriaOk &&
+                (!termo || texto.includes(termo));
         });
     }
 
@@ -431,18 +501,24 @@
         const produtos = produtosFiltrados();
 
         contador.textContent =
-            `${produtos.length} ${produtos.length === 1 ? "produto" : "produtos"}`;
+            `${produtos.length} ${
+                produtos.length === 1 ? "produto" : "produtos"
+            }`;
 
         vazio.hidden = produtos.length !== 0;
 
         area.innerHTML = produtos.map(produto => `
-            <article class="rw-shop-card" data-product-id="${escapar(produto.id)}">
+            <article class="rw-shop-card"
+                data-product-id="${escapar(produto.id)}">
+
                 <div class="rw-shop-product-media">
                     <span class="rw-shop-product-placeholder"
                         role="img"
                         aria-label="${escapar(produto.nome)}">
+
                         ${produto.emoji}
                     </span>
+
                     <span class="rw-shop-product-tag">
                         ${escapar(produto.etiqueta)}
                     </span>
@@ -450,18 +526,23 @@
 
                 <div class="rw-shop-card-body">
                     <h3>${escapar(produto.nome)}</h3>
+
                     <p>${escapar(produto.descricao)}</p>
+
                     <p class="rw-shop-seller">
                         Vendedor: ${escapar(produto.vendedor)}
                     </p>
 
-                    <div class="rw-shop-price">Consultar preço</div>
+                    <div class="rw-shop-price">
+                        Consultar preço
+                    </div>
 
                     <div class="rw-shop-card-actions">
                         <button type="button"
                             class="rw-shop-button"
                             data-shop-action="consultar"
                             data-product-id="${escapar(produto.id)}">
+
                             Consultar preço
                         </button>
 
@@ -469,6 +550,7 @@
                             class="rw-shop-button rw-shop-button-secondary"
                             data-shop-action="adicionar"
                             data-product-id="${escapar(produto.id)}">
+
                             + Adicionar ao carrinho
                         </button>
                     </div>
@@ -488,12 +570,17 @@
         if (!area || !vazio || !total || !contador) return;
 
         const carrinho = carregarCarrinho();
+
         const quantidade = carrinho.reduce(
             (soma, item) => soma + item.quantidade,
             0
         );
 
-        contador.textContent = String(quantidade);
+        contador.textContent = quantidade > 99
+            ? "99+"
+            : String(quantidade);
+
+        contador.hidden = quantidade === 0;
         total.textContent = String(quantidade);
         vazio.hidden = carrinho.length !== 0;
 
@@ -501,65 +588,7 @@
             const produto = obterProduto(item.id);
             if (!produto) return "";
 
-            return `
-                <article class="rw-shop-cart-item">
-                    <div>
-                        <h3>${escapar(produto.nome)}</h3>
-                        <p>Consultar preço no Mercado Livre</p>
-
-                        <div class="rw-shop-quantity">
-                            <button type="button"
-                                data-shop-action="diminuir"
-                                data-product-id="${escapar(produto.id)}"
-                                aria-label="Diminuir quantidade">−</button>
-
-                            <span>${item.quantidade}</span>
-
-                            <button type="button"
-                                data-shop-action="aumentar"
-                                data-product-id="${escapar(produto.id)}"
-                                aria-label="Aumentar quantidade">+</button>
-                        </div>
-                    </div>
-
-                    <button type="button"
-                        class="rw-shop-remove"
-                        data-shop-action="remover"
-                        data-product-id="${escapar(produto.id)}">
-                        Remover
-                    </button>
-                </article>
-            `;
-        }).join("");
-
-        atualizarIcones();
-    }
-
-    function atualizarCarrinhoVisual() {
-        renderizarCarrinho();
-    
-        const area = porId("rwShopCartItems");
-        const vazio = porId("rwShopCartEmpty");
-        const total = porId("rwShopCartTotal");
-        const contador = porId("rwShopCartCount");
-
-        if (!area || !vazio || !total || !contador) return;
-
-        const carrinho = carregarCarrinho();
-        const quantidade = carrinho.reduce(
-            (soma, item) => soma + item.quantidade,
-            0
-        );
-
-        contador.textContent = quantidade > 99 ? "99+" : String(quantidade);
-        contador.hidden = quantidade === 0;
-        total.textContent = String(quantidade);
-        vazio.hidden = carrinho.length > 0;
-
-        area.innerHTML = carrinho.map(item => {
-            const produto = obterProduto(item.id);
-            if (!produto) return "";
-
+            
             return `
                 <article class="rw-shop-cart-item">
                     <div class="rw-shop-cart-item-icon">
@@ -568,7 +597,11 @@
 
                     <div class="rw-shop-cart-item-info">
                         <strong>${escapar(produto.nome)}</strong>
-                        <span>Consultar preço no Mercado Livre</span>
+
+                        <span>
+                            Consultar preço no Mercado Livre
+                        </span>
+
                         <div class="rw-shop-cart-quantity">
                             <button type="button"
                                 data-shop-action="diminuir"
@@ -593,7 +626,8 @@
                         data-shop-action="remover"
                         data-product-id="${escapar(produto.id)}"
                         aria-label="Remover ${escapar(produto.nome)}">
-                        <i data-lucide="trash-2"></i>
+                        <i data-lucide="trash-2"
+                            aria-hidden="true"></i>
                     </button>
                 </article>
             `;
@@ -641,10 +675,14 @@
         item.quantidade += variacao;
 
         if (item.quantidade <= 0) {
-            const atualizado = carrinho.filter(produto => produto.id !== id);
+            const atualizado = carrinho.filter(
+                produto => produto.id !== id
+            );
+
             if (!salvarCarrinho(atualizado)) return;
         } else {
             item.quantidade = Math.min(99, item.quantidade);
+
             if (!salvarCarrinho(carrinho)) return;
         }
 
@@ -652,7 +690,8 @@
     }
 
     function removerDoCarrinho(id) {
-        const carrinho = carregarCarrinho().filter(item => item.id !== id);
+        const carrinho = carregarCarrinho()
+            .filter(item => item.id !== id);
 
         if (!salvarCarrinho(carrinho)) return;
 
@@ -693,6 +732,7 @@
 
         tela.hidden = false;
         tela.classList.add("active");
+
         document.body.classList.add("tela-interna-aberta");
 
         [
@@ -701,6 +741,7 @@
             "painelCamadas"
         ].forEach(id => {
             const painel = porId(id);
+
             if (painel) {
                 painel.classList.remove("active");
                 painel.hidden = true;
@@ -723,6 +764,7 @@
             window.voltarParaMapa();
         } else {
             const mapa = porId("telaMapa");
+
             if (mapa) {
                 mapa.hidden = false;
                 mapa.classList.add("active");
@@ -734,7 +776,9 @@
         const carrinho = carregarCarrinho();
 
         if (carrinho.length === 0) {
-            mostrarFeedback("Adicione algum produto ao carrinho primeiro.");
+            mostrarFeedback(
+                "Adicione algum produto ao carrinho primeiro."
+            );
             return;
         }
 
@@ -752,13 +796,21 @@
     }
 
     function tratarClique(evento) {
-        const botao = evento.target.closest(
-            "[data-shop-action], #abrirRunWorldShop, #abrirShopMenu"
+        const alvo = evento.target;
+
+        if (!(alvo instanceof Element)) return;
+
+        const botao = alvo.closest(
+            "[data-shop-action], " +
+            "#botaoRunWorldShop, " +
+            "#abrirRunWorldShop, " +
+            "#abrirShopMenu"
         );
 
         if (!botao) return;
 
         if (
+            botao.id === "botaoRunWorldShop" ||
             botao.id === "abrirRunWorldShop" ||
             botao.id === "abrirShopMenu"
         ) {
@@ -823,48 +875,53 @@
 
         pesquisaAtual = evento.target.value || "";
 
-        if (mostrarCarrinho) abrirCatalogo();
+        if (mostrarCarrinho) {
+            abrirCatalogo();
+            return;
+        }
 
         renderizarProdutos();
     }
 
     function tratarCategoria(evento) {
-        const botao = evento.target.closest("[data-shop-category]");
+        const alvo = evento.target;
+
+        if (!(alvo instanceof Element)) return;
+
+        const botao = alvo.closest("[data-shop-category]");
         if (!botao) return;
 
         categoriaAtual = botao.dataset.shopCategory || "todas";
 
-        if (mostrarCarrinho) abrirCatalogo();
+        if (mostrarCarrinho) {
+            abrirCatalogo();
+            return;
+        }
 
         renderizarCategorias();
         renderizarProdutos();
     }
 
-    
-function instalarAtalhos() {
-    // O index.html já contém os dois botões.
-    // Não criar duplicatas: apenas garantir que existam.
+    function instalarAtalhos() {
+        const botaoTopo = porId("botaoRunWorldShop");
+        const botaoMenu = porId("abrirShopMenu");
 
-    const botaoTopo = porId("botaoRunWorldShop");
-    const botaoMenu = porId("abrirShopMenu");
+        document.querySelectorAll(".rw-shop-top-shortcut")
+            .forEach(botao => {
+                if (botao !== botaoTopo) {
+                    botao.remove();
+                }
+            });
 
-    if (botaoTopo) {
-        botaoTopo.addEventListener("click", function (evento) {
-            evento.preventDefault();
-            abrirLoja();
-        });
+        document.querySelectorAll(".rw-shop-menu-shortcut")
+            .forEach(botao => {
+                if (botao !== botaoMenu) {
+                    botao.remove();
+                }
+            });
+
+        atualizarIcones();
     }
-
-    if (botaoMenu) {
-        botaoMenu.addEventListener("click", function (evento) {
-            evento.preventDefault();
-            abrirLoja();
-        });
-    }
-
-    atualizarIcones();
-}
-
 
     function iniciar() {
         criarTela();
@@ -885,7 +942,11 @@ function instalarAtalhos() {
     window.atualizarRunWorldShop = atualizarLoja;
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", iniciar, { once: true });
+        document.addEventListener(
+            "DOMContentLoaded",
+            iniciar,
+            { once: true }
+        );
     } else {
         iniciar();
     }
