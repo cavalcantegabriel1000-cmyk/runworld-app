@@ -1,167 +1,119 @@
 
-const CACHE_NAME = "runworld-static-v2";
+const CACHE_NAME = "runworld-static-v3";
 
 const ARQUIVOS = [
     "./",
     "./animacao.html",
     "./inicio.html",
     "./index.html",
+    "./login.html",
+    "./cadastro.html",
     "./style.css",
     "./app.js",
     "./config.js",
     "./notificacoes.js",
+    "./login.css",
+    "./cadastro.css",
     "./manifest.json",
     "./IMG-20260923-WA4190.jpg",
-    "./logo_animacao.mp4"
+    "./logo_animacao.mp4",
+    "./VID-20261001-WA7966.mp4"
 ];
 
-self.addEventListener("install", function (event) {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then(async function (cache) {
-            await Promise.allSettled(
-                ARQUIVOS.map(async function (arquivo) {
-                    try {
-                        const resposta = await fetch(arquivo, {
-                            cache: "no-cache"
-                        });
+self.addEventListener("install", event => {
+    event.waitUntil((async () => {
+        const cache = await caches.open(CACHE_NAME);
 
-                        if (resposta.ok) {
-                            await cache.put(arquivo, resposta);
-                        }
-                    } catch (erro) {
-                        // Um arquivo opcional ausente não impede
-                        // a instalação do service worker.
+        await Promise.allSettled(
+            ARQUIVOS.map(async arquivo => {
+                try {
+                    const resposta = await fetch(arquivo, {
+                        cache: "reload"
+                    });
+
+                    if (resposta.ok) {
+                        await cache.put(arquivo, resposta);
                     }
-                })
-            );
+                } catch (erro) {
+                    // Um arquivo que não existe ou está offline
+                    // não deve impedir a instalação do service worker.
+                    console.warn("Arquivo não armazenado:", arquivo);
+                }
+            })
+        );
 
-            await self.skipWaiting();
-        })
-    );
+        await self.skipWaiting();
+    })());
 });
 
-self.addEventListener("activate", function (event) {
-    event.waitUntil(
-        caches.keys()
-            .then(function (nomes) {
-                return Promise.all(
-                    nomes
-                        .filter(function (nome) {
-                            return (
-                                nome.startsWith("runworld-") &&
-                                nome !== CACHE_NAME
-                            );
-                        })
-                        .map(function (nome) {
-                            return caches.delete(nome);
-                        })
-                );
-            })
-            .then(function () {
-                return self.clients.claim();
-            })
-    );
+self.addEventListener("activate", event => {
+    event.waitUntil((async () => {
+        const nomes = await caches.keys();
+
+        await Promise.all(
+            nomes
+                .filter(nome =>
+                    nome.startsWith("runworld-") &&
+                    nome !== CACHE_NAME
+                )
+                .map(nome => caches.delete(nome))
+        );
+
+        await self.clients.claim();
+    })());
 });
 
-self.addEventListener("fetch", function (event) {
+self.addEventListener("fetch", event => {
     const requisicao = event.request;
 
-    if (requisicao.method !== "GET") {
-        return;
-    }
+    if (requisicao.method !== "GET") return;
 
     const url = new URL(requisicao.url);
 
-    // Não intercepta APIs externas, Supabase ou mapas.
-    if (url.origin !== self.location.origin) {
-        return;
-    }
+    // Não interceptar Supabase, autenticação externa ou mapas.
+    if (url.origin !== self.location.origin) return;
 
-    // Navegações: tenta buscar a página atualizada primeiro.
     if (requisicao.mode === "navigate") {
-        event.respondWith(
-            (async function () {
-                try {
-                    const resposta = await fetch(requisicao);
+        event.respondWith((async () => {
+            try {
+                const resposta = await fetch(requisicao);
 
-                    if (resposta.ok) {
-                        const cache = await caches.open(CACHE_NAME);
-                        await cache.put(requisicao, resposta.clone());
-                    }
-
-                    return resposta;
-                } catch (erro) {
-                    // Sem internet, devolve a página solicitada,
-                    // e não o index.html indiscriminadamente.
-                    const guardada = await caches.match(requisicao);
-
-                    if (guardada) {
-                        return guardada;
-                    }
-
-                    // Alternativas específicas para cada tela.
-                    const caminho = url.pathname;
-
-                    if (caminho.endsWith("/animacao.html")) {
-                        const animacao = await caches.match(
-                            "./animacao.html"
-                        );
-
-                        if (animacao) return animacao;
-                    }
-
-                    if (caminho.endsWith("/inicio.html")) {
-                        const inicio = await caches.match(
-                            "./inicio.html"
-                        );
-
-                        if (inicio) return inicio;
-                    }
-
-                    if (
-                        caminho.endsWith("/index.html") ||
-                        caminho.endsWith("/")
-                    ) {
-                        const principal = await caches.match(
-                            "./index.html"
-                        );
-
-                        if (principal) return principal;
-                    }
-
-                    return new Response(
-                        "Você está sem conexão. Conecte-se à internet e tente novamente.",
-                        {
-                            status: 503,
-                            headers: {
-                                "Content-Type": "text/plain; charset=utf-8"
-                            }
-                        }
-                    );
+                if (resposta.ok) {
+                    const cache = await caches.open(CACHE_NAME);
+                    await cache.put(requisicao, resposta.clone());
                 }
-            })()
-        );
+
+                return resposta;
+            } catch (erro) {
+                const cache = await caches.open(CACHE_NAME);
+
+                return (
+                    await cache.match(requisicao) ||
+                    await cache.match("./animacao.html") ||
+                    await cache.match("./inicio.html")
+                ) || Response.error();
+            }
+        })());
 
         return;
     }
 
-    // Recursos estáticos: usa o cache se disponível.
-    event.respondWith(
-        (async function () {
-            const guardado = await caches.match(requisicao);
+    event.respondWith((async () => {
+        const cache = await caches.open(CACHE_NAME);
+        const guardado = await cache.match(requisicao);
 
-            if (guardado) {
-                return guardado;
-            }
+        if (guardado) return guardado;
 
+        try {
             const resposta = await fetch(requisicao);
 
             if (resposta.ok) {
-                const cache = await caches.open(CACHE_NAME);
                 await cache.put(requisicao, resposta.clone());
             }
 
             return resposta;
-        })()
-    );
+        } catch (erro) {
+            return Response.error();
+        }
+    })());
 });
