@@ -1,12 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#050807">
-
     <title>Entrar • RunWorld</title>
 
     <link rel="stylesheet" href="./style.css">
@@ -16,35 +14,16 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="./config.js"></script>
 </head>
-
 <body>
-
-    <!-- VÍDEO DE FUNDO -->
     <section class="login-hero">
-        <video
-            class="login-video"
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="auto"
-            aria-hidden="true"
-        >
+        <video class="login-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
             <source src="./VID-20261001-WA7966.mp4" type="video/mp4">
         </video>
 
         <div class="login-video-overlay"></div>
 
-        <!-- LOGO ORIGINAL -->
-        <a href="./inicio.html" class="login-brand"
-           aria-label="RunWorld - página inicial">
-
-            <img
-                src="./IMG-20260923-WA4190.jpg"
-                alt="Logo RunWorld"
-                class="login-logo"
-            >
-
+        <a href="./inicio.html" class="login-brand" aria-label="RunWorld - página inicial">
+            <img src="./IMG-20260923-WA4190.jpg" alt="Logo RunWorld" class="login-logo">
             <span class="login-brand-text">
                 <strong>RunWorld</strong>
                 <small>EXPLORE. CORRA. CONQUISTE.</small>
@@ -58,376 +37,258 @@
         </div>
     </section>
 
-    <!-- CONTEÚDO -->
     <main class="login-page">
-
         <section class="login-card">
-
             <div class="login-card-conteudo">
-
                 <header class="login-cabecalho">
                     <span class="login-selo">BEM-VINDO DE VOLTA</span>
-
                     <h2>Entre no RunWorld</h2>
-
-                    <p>
-                        Continue sua jornada e conquiste novos caminhos.
-                    </p>
+                    <p>Continue sua jornada e conquiste novos caminhos.</p>
                 </header>
 
-                <!-- FORMULÁRIO DE LOGIN -->
                 <form id="formLogin">
-
                     <div class="login-campo">
                         <label for="email">E-mail</label>
-
                         <div class="login-input">
                             <i data-lucide="mail"></i>
-
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
+                            <input type="email" id="email" name="email"
                                 placeholder="voce@exemplo.com"
-                                autocomplete="email"
-                                maxlength="254"
-                                required
-                            >
+                                autocomplete="email" maxlength="254" required>
                         </div>
                     </div>
 
                     <div class="login-campo">
                         <label for="senha">Senha</label>
-
                         <div class="login-input">
                             <i data-lucide="lock-keyhole"></i>
-
-                            <input
-                                type="password"
-                                id="senha"
-                                name="senha"
+                            <input type="password" id="senha" name="senha"
                                 placeholder="Digite sua senha"
-                                autocomplete="current-password"
-                                required
-                            >
-
-                            <button
-                                type="button"
-                                class="login-olho"
-                                id="alternarSenha"
-                                aria-label="Mostrar senha"
-                                aria-pressed="false"
-                            >
+                                autocomplete="current-password" required>
+                            <button type="button" class="login-olho" id="alternarSenha"
+                                aria-label="Mostrar senha" aria-pressed="false">
                                 <i data-lucide="eye"></i>
                             </button>
                         </div>
                     </div>
 
-                    <!-- LEMBRAR E RECUPERAR SENHA -->
                     <div class="login-opcoes">
-
                         <label class="login-lembrar">
                             <input type="checkbox" id="lembrar">
                             <span>Lembrar de mim</span>
                         </label>
-
-                        <a href="./recuperar-senha.html"
-                           class="login-esqueci">
+                        <a href="./recuperar-senha.html" class="login-esqueci">
                             Esqueci minha senha
                         </a>
-
                     </div>
 
-                    <!-- MENSAGEM DE ERRO OU SUCESSO -->
-                    <div
-                        id="mensagem"
-                        class="login-mensagem"
-                        role="status"
-                        aria-live="polite"
-                        hidden
-                    ></div>
+                    <div id="mensagem" class="login-mensagem"
+                        role="status" aria-live="polite" hidden></div>
 
-                    <!-- ENTRAR -->
-                    <button
-                        type="submit"
-                        id="botaoEntrar"
-                        class="login-botao-principal"
-                    >
+                    <button type="submit" id="botaoEntrar" class="login-botao-principal">
                         <span>Entrar</span>
                         <i data-lucide="arrow-right"></i>
                     </button>
-
                 </form>
 
-                <!-- SEPARADOR -->
-                <div class="login-divisor">
-                    <span>OU CONTINUE COM</span>
-                </div>
+                <div class="login-divisor"><span>OU CONTINUE COM</span></div>
 
-                <!-- GOOGLE -->
-                <button
-                    type="button"
-                    id="entrarGoogle"
-                    class="login-botao-google"
-                >
-                    <svg
-                        class="google-icone"
-                        viewBox="0 0 48 48"
-                        aria-hidden="true"
-                    >
-                        <path fill="#EA4335"
-                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                        <path fill="#4285F4"
-                            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.76 7.18l7.73 6C44.42 37.95 46.98 31.7 46.98 24.55z"/>
-                        <path fill="#FBBC05"
-                            d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.2A23.9 23.9 0 0 0 0 24c0 3.87.93 7.52 2.56 10.78l7.97-6.19z"/>
-                        <path fill="#34A853"
-                            d="M24 48c6.48 0 11.93-2.13 15.9-5.8l-7.73-6c-2.14 1.44-4.89 2.3-8.17 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                <button type="button" id="entrarGoogle" class="login-botao-google">
+                    <svg class="google-icone" viewBox="0 0 48 48" aria-hidden="true">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.76 7.18l7.73 6C44.42 37.95 46.98 31.7 46.98 24.55z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.2A23.9 23.9 0 0 0 0 24c0 3.87.93 7.52 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.8l-7.73-6c-2.14 1.44-4.89 2.3-8.17 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
                     </svg>
-
                     <span>Continuar com Google</span>
                 </button>
 
-                <!-- CRIAR CONTA -->
                 <div class="login-cadastro">
                     <span>Não tem uma conta?</span>
                     <a href="./cadastro.html">Criar conta</a>
                 </div>
 
-                <p class="login-rodape">
-                    Sua próxima conquista começa aqui.
-                </p>
-
+                <p class="login-rodape">Sua próxima conquista começa aqui.</p>
             </div>
         </section>
 
         <footer class="login-footer">
             RUNWORLD © <span id="anoAtual"></span>
         </footer>
-
     </main>
 
-    <!-- SCRIPT DO LOGIN -->
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", () => {
+        if (window.lucide) lucide.createIcons();
 
-            if (window.lucide) {
-                lucide.createIcons();
-            }
+        document.getElementById("anoAtual").textContent =
+            new Date().getFullYear();
 
-            document.getElementById("anoAtual").textContent =
-                new Date().getFullYear();
+        const form = document.getElementById("formLogin");
+        const email = document.getElementById("email");
+        const senha = document.getElementById("senha");
+        const botaoEntrar = document.getElementById("botaoEntrar");
+        const botaoGoogle = document.getElementById("entrarGoogle");
+        const botaoOlho = document.getElementById("alternarSenha");
+        const mensagem = document.getElementById("mensagem");
 
-            const form = document.getElementById("formLogin");
-            const email = document.getElementById("email");
-            const senha = document.getElementById("senha");
-            const botaoEntrar = document.getElementById("botaoEntrar");
-            const botaoGoogle = document.getElementById("entrarGoogle");
-            const botaoOlho = document.getElementById("alternarSenha");
-            const mensagem = document.getElementById("mensagem");
-
-            function mostrarMensagem(texto, tipo = "erro") {
-                mensagem.textContent = texto;
-                mensagem.className = "login-mensagem " + tipo;
-                mensagem.hidden = false;
-            }
-
-            function limparMensagem() {
-                mensagem.hidden = true;
-                mensagem.textContent = "";
-                mensagem.className = "login-mensagem";
-            }
-
-            function atualizarIcones() {
-                if (window.lucide) {
-                    lucide.createIcons();
-                }
-            }
-
-            function obterSupabase() {
-                return window.supabaseClient || null;
-            }
-
-            // MOSTRAR / OCULTAR SENHA
-            botaoOlho.addEventListener("click", () => {
-                const mostrar = senha.type === "password";
-
-                senha.type = mostrar ? "text" : "password";
-
-                botaoOlho.setAttribute(
-                    "aria-label",
-                    mostrar ? "Ocultar senha" : "Mostrar senha"
-                );
-
-                botaoOlho.setAttribute(
-                    "aria-pressed",
-                    String(mostrar)
-                );
-
-                botaoOlho.innerHTML = mostrar
-                    ? '<i data-lucide="eye-off"></i>'
-                    : '<i data-lucide="eye"></i>';
-
-                atualizarIcones();
-            });
-
-            // LOGIN COM E-MAIL E SENHA
-            form.addEventListener("submit", async (evento) => {
-                evento.preventDefault();
-                limparMensagem();
-
-                const emailDigitado = email.value.trim().toLowerCase();
-                const senhaDigitada = senha.value;
-
-                if (!emailDigitado || !senhaDigitada) {
-                    mostrarMensagem("Preencha seu e-mail e sua senha.");
-                    return;
-                }
-
-                const supabase = obterSupabase();
-
-                if (!supabase) {
-                    mostrarMensagem(
-                        "Não foi possível conectar ao sistema. Confira o config.js e a conexão com o Supabase."
-                    );
-                    return;
-                }
-
-                botaoEntrar.disabled = true;
-                botaoGoogle.disabled = true;
-
-                botaoEntrar.innerHTML =
-                    '<span>Entrando...</span>' +
-                    '<i data-lucide="loader-circle" class="login-carregando"></i>';
-
-                atualizarIcones();
-
-                try {
-                    const { error } =
-                        await supabase.auth.signInWithPassword({
-                            email: emailDigitado,
-                            password: senhaDigitada
-                        });
-
-                    if (error) {
-                        throw error;
-                    }
-
-                    mostrarMensagem(
-                        "Login realizado! Abrindo o RunWorld...",
-                        "sucesso"
-                    );
-
-                    // ALTERAÇÃO: ABRIR A ANIMAÇÃO APÓS O LOGIN
-                    window.location.replace("./animacao.html");
-
-                } catch (erro) {
-                    console.error("Erro no login:", erro);
-
-                    const texto = (erro.message || "").toLowerCase();
-
-                    if (
-                        texto.includes("invalid login credentials") ||
-                        texto.includes("invalid_credentials")
-                    ) {
-                        mostrarMensagem(
-                            "E-mail ou senha incorretos. Confira os dados ou recupere sua senha."
-                        );
-                    } else if (
-                        texto.includes("email not confirmed")
-                    ) {
-                        mostrarMensagem(
-                            "Confirme seu e-mail antes de entrar. Confira sua caixa de entrada."
-                        );
-                    } else {
-                        mostrarMensagem(
-                            erro.message ||
-                            "Não foi possível entrar. Tente novamente."
-                        );
-                    }
-
-                    botaoEntrar.disabled = false;
-                    botaoGoogle.disabled = false;
-
-                    botaoEntrar.innerHTML =
-                        '<span>Entrar</span>' +
-                        '<i data-lucide="arrow-right"></i>';
-
-                    atualizarIcones();
-                }
-            });
-
-            // LOGIN COM GOOGLE
-            botaoGoogle.addEventListener("click", async () => {
-                limparMensagem();
-
-                const supabase = obterSupabase();
-
-                if (!supabase) {
-                    mostrarMensagem(
-                        "Não foi possível conectar ao Supabase. Confira o config.js."
-                    );
-                    return;
-                }
-
-                botaoGoogle.disabled = true;
-                botaoEntrar.disabled = true;
-
-                botaoGoogle.innerHTML =
-                    '<span>Conectando ao Google...</span>';
-
-                try {
-                    // ALTERAÇÃO: O GOOGLE RETORNA PARA A ANIMAÇÃO
-                    const destino = new URL(
-    "./animacao.html",
-    window.location.href
-).href;
-
-                    const { data, error } =
-    await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-            redirectTo: destino,
-            skipBrowserRedirect: true
+        function mostrarMensagem(texto, tipo = "erro") {
+            mensagem.textContent = texto;
+            mensagem.className = "login-mensagem " + tipo;
+            mensagem.hidden = false;
         }
-    });
 
-if (error) {
-    throw error;
-}
+        function limparMensagem() {
+            mensagem.hidden = true;
+            mensagem.textContent = "";
+            mensagem.className = "login-mensagem";
+        }
 
-if (!data || !data.url) {
-    throw new Error(
-        "O Supabase não retornou o endereço de acesso do Google."
-    );
-}
+        function atualizarIcones() {
+            if (window.lucide) lucide.createIcons();
+        }
 
-window.location.assign(data.url);
+        function obterSupabase() {
+            return window.supabaseClient || null;
+        }
 
-                } catch (erro) {
-                    console.error("Erro no login com Google:", erro);
-
-                    mostrarMensagem(
-                        "Não foi possível entrar com o Google. Verifique se o provedor Google está configurado no Supabase."
-                    );
-
-                    botaoGoogle.disabled = false;
-                    botaoEntrar.disabled = false;
-
-                    botaoGoogle.innerHTML =
-                        '<svg class="google-icone" viewBox="0 0 48 48" aria-hidden="true">' +
-                        '<path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.76 7.18l7.73 6C44.42 37.95 46.98 31.7 46.98 24.55z"/>' +
-                        '<path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.8l-7.73-6c-2.14 1.44-4.89 2.3-8.17 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>' +
-                        '<path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.2A23.9 23.9 0 0 0 0 24c0 3.87.93 7.52 2.56 10.78l7.97-6.19z"/>' +
-                        '<path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>' +
-                        '</svg><span>Continuar com Google</span>';
-
-                    atualizarIcones();
-                }
-            });
-
+        botaoOlho.addEventListener("click", () => {
+            const mostrar = senha.type === "password";
+            senha.type = mostrar ? "text" : "password";
+            botaoOlho.setAttribute(
+                "aria-label", mostrar ? "Ocultar senha" : "Mostrar senha"
+            );
+            botaoOlho.setAttribute("aria-pressed", String(mostrar));
+            botaoOlho.innerHTML = mostrar
+                ? '<i data-lucide="eye-off"></i>'
+                : '<i data-lucide="eye"></i>';
+            atualizarIcones();
         });
-    </script>
 
+        form.addEventListener("submit", async (evento) => {
+            evento.preventDefault();
+            limparMensagem();
+
+            const emailDigitado = email.value.trim().toLowerCase();
+            const senhaDigitada = senha.value;
+            const supabase = obterSupabase();
+
+            if (!emailDigitado || !senhaDigitada) {
+                mostrarMensagem("Preencha seu e-mail e sua senha.");
+                return;
+            }
+
+            if (!supabase) {
+                mostrarMensagem(
+                    "Não foi possível conectar ao sistema. Confira o config.js e a conexão com o Supabase."
+                );
+                return;
+            }
+
+            botaoEntrar.disabled = true;
+            botaoGoogle.disabled = true;
+            botaoEntrar.innerHTML =
+                '<span>Entrando...</span><i data-lucide="loader-circle" class="login-carregando"></i>';
+            atualizarIcones();
+
+            try {
+                const { error } = await supabase.auth.signInWithPassword({
+                    email: emailDigitado,
+                    password: senhaDigitada
+                });
+
+                if (error) throw error;
+
+                const { data: sessaoData, error: sessaoErro } =
+                    await supabase.auth.getSession();
+
+                if (sessaoErro) throw sessaoErro;
+
+                if (!sessaoData.session) {
+                    throw new Error(
+                        "O login foi realizado, mas a sessão não foi confirmada."
+                    );
+                }
+
+                window.location.replace("./animacao.html");
+            } catch (erro) {
+                console.error("Erro no login:", erro);
+                const texto = (erro.message || "").toLowerCase();
+
+                if (
+                    texto.includes("invalid login credentials") ||
+                    texto.includes("invalid_credentials")
+                ) {
+                    mostrarMensagem(
+                        "E-mail ou senha incorretos. Confira os dados ou recupere sua senha."
+                    );
+                } else if (texto.includes("email not confirmed")) {
+                    mostrarMensagem(
+                        "Confirme seu e-mail antes de entrar. Confira sua caixa de entrada."
+                    );
+                } else {
+                    mostrarMensagem(
+                        erro.message || "Não foi possível entrar. Tente novamente."
+                    );
+                }
+
+                botaoEntrar.disabled = false;
+                botaoGoogle.disabled = false;
+                botaoEntrar.innerHTML =
+                    '<span>Entrar</span><i data-lucide="arrow-right"></i>';
+                atualizarIcones();
+            }
+        });
+
+        botaoGoogle.addEventListener("click", async () => {
+            limparMensagem();
+
+            const supabase = obterSupabase();
+
+            if (!supabase) {
+                mostrarMensagem(
+                    "Não foi possível conectar ao Supabase. Confira o config.js."
+                );
+                return;
+            }
+
+            botaoGoogle.disabled = true;
+            botaoEntrar.disabled = true;
+            botaoGoogle.innerHTML = "<span>Conectando ao Google...</span>";
+
+            try {
+                const destino = new URL(
+                    "./animacao.html",
+                    window.location.href
+                ).href;
+
+                const { error } = await supabase.auth.signInWithOAuth({
+                    provider: "google",
+                    options: {
+                        redirectTo: destino
+                    }
+                });
+
+                if (error) throw error;
+            } catch (erro) {
+                console.error("Erro no login com Google:", erro);
+
+                mostrarMensagem(
+                    "Não foi possível entrar com o Google. Confira se o provedor Google está configurado no Supabase e se o endereço de retorno está autorizado."
+                );
+
+                botaoGoogle.disabled = false;
+                botaoEntrar.disabled = false;
+                botaoGoogle.innerHTML =
+                    '<svg class="google-icone" viewBox="0 0 48 48" aria-hidden="true">' +
+                    '<path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.76 7.18l7.73 6C44.42 37.95 46.98 31.7 46.98 24.55z"/>' +
+                    '<path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.8l-7.73-6c-2.14 1.44-4.89 2.3-8.17 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>' +
+                    '<path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.2A23.9 23.9 0 0 0 0 24c0 3.87.93 7.52 2.56 10.78l7.97-6.19z"/>' +
+                    '<path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>' +
+                    '</svg><span>Continuar com Google</span>';
+                atualizarIcones();
+            }
+        });
+    });
+    </script>
 </body>
 </html>
