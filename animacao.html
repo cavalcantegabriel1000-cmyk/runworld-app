@@ -5,16 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#050807">
+    <meta name="description" content="RunWorld — Explore. Corra. Conquiste.">
     <title>RunWorld • Carregando</title>
+
+    <link rel="preload" as="image" href="./IMG-20260923-WA4190.jpg">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="./config.js"></script>
 
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
-        html, body {
+        html,
+        body {
             width: 100%;
+            min-width: 100%;
             min-height: 100%;
             margin: 0;
         }
@@ -22,61 +29,71 @@
         body {
             min-height: 100vh;
             min-height: 100dvh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             overflow: hidden;
             background: #050807;
-            color: #fff;
+            color: #ffffff;
             font-family: Arial, Helvetica, sans-serif;
         }
 
         .entrada {
+            position: relative;
+            isolation: isolate;
+            display: flex;
             width: 100%;
             min-height: 100vh;
             min-height: 100dvh;
-            position: relative;
-            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            gap: 22px;
+            gap: 25px;
+            overflow: hidden;
             padding: 24px;
-            isolation: isolate;
+            background: #050807;
         }
 
         .video-fundo {
             position: absolute;
-            inset: 0;
             z-index: -2;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: .28;
+            opacity: 0.28;
+            pointer-events: none;
         }
 
         .fundo-escuro {
             position: absolute;
-            inset: 0;
             z-index: -1;
-            background: radial-gradient(circle, #10221bd9, #050807 72%);
+            inset: 0;
+            background:
+                radial-gradient(
+                    circle at center,
+                    #10221bd9 0%,
+                    #050807eF 68%,
+                    #050807 100%
+                );
+            pointer-events: none;
         }
 
         .marca {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
-            animation: surgir .8s ease both;
+            gap: 16px;
+            text-align: center;
+            animation: surgir 0.9s ease both;
         }
 
         .logo {
+            display: block;
             width: 112px;
             height: 112px;
             object-fit: cover;
-            border-radius: 28px;
             border: 1px solid #00e67680;
+            border-radius: 28px;
             box-shadow: 0 0 50px #00e67630;
+            animation: pulsar 2s ease-in-out infinite;
         }
 
         .nome {
@@ -87,7 +104,7 @@
         }
 
         .frase {
-            margin: 8px 0 0;
+            margin: 9px 0 0;
             color: #00e676;
             font-size: 11px;
             font-weight: 700;
@@ -98,18 +115,21 @@
         .carregamento {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
             color: #d4ded8;
             font-size: 13px;
+            animation: surgir 1s ease both;
         }
 
         .spinner {
             width: 18px;
             height: 18px;
+            flex: 0 0 18px;
             border: 2px solid #ffffff30;
             border-top-color: #00e676;
             border-radius: 50%;
-            animation: girar .8s linear infinite;
+            animation: girar 0.8s linear infinite;
         }
 
         .mensagem {
@@ -118,38 +138,73 @@
             margin: 0;
             color: #aab8b0;
             font-size: 12px;
+            line-height: 1.5;
             text-align: center;
         }
 
         @keyframes girar {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         @keyframes surgir {
-            from { opacity: 0; transform: translateY(12px) scale(.96); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes pulsar {
+            0%, 100% {
+                box-shadow: 0 0 30px #00e67620;
+            }
+
+            50% {
+                box-shadow: 0 0 55px #00e67650;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: .01ms !important;
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
             }
         }
     </style>
 </head>
+
 <body>
     <main class="entrada">
-        <video class="video-fundo" autoplay muted playsinline preload="auto" aria-hidden="true">
+        <video
+            class="video-fundo"
+            autoplay
+            muted
+            playsinline
+            loop
+            preload="auto"
+            aria-hidden="true"
+        >
             <source src="./logo_animacao.mp4" type="video/mp4">
         </video>
 
         <div class="fundo-escuro"></div>
 
         <div class="marca">
-            <img class="logo"
-                 src="./IMG-20260923-WA4190.jpg"
-                 alt="Logo RunWorld">
+            <img
+                class="logo"
+                src="./IMG-20260923-WA4190.jpg"
+                alt="Logo RunWorld"
+                fetchpriority="high"
+            >
+
             <div>
                 <h1 class="nome">RunWorld</h1>
                 <p class="frase">EXPLORE. CORRA. CONQUISTE.</p>
@@ -170,11 +225,10 @@
     (() => {
         "use strict";
 
-        const TEMPO_MINIMO = 2200;
-        const TEMPO_MAXIMO = 12000;
+        const TEMPO_MINIMO = 3000;
         const inicio = Date.now();
 
-        let redirecionando = false;
+        let iniciado = false;
 
         const estado = document.getElementById("estado");
         const detalhe = document.getElementById("detalhe");
@@ -185,55 +239,99 @@
         }
 
         async function obterSessao() {
-            const supabase = window.supabaseClient;
+            // Aguarda a biblioteca e o config.js, se necessário.
+            for (let tentativa = 0; tentativa < 20; tentativa++) {
+                const supabase = window.supabaseClient;
 
-            if (!supabase || !supabase.auth) {
-                return null;
-            }
+                if (supabase && supabase.auth) {
+                    try {
+                        const { data, error } =
+                            await supabase.auth.getSession();
 
-            // O SDK pode precisar de um instante para processar
-            // o retorno da autenticação OAuth.
-            for (let tentativa = 0; tentativa < 8; tentativa++) {
-                try {
-                    const resultado = await supabase.auth.getSession();
+                        if (error) {
+                            console.warn(
+                                "RunWorld: erro ao verificar sessão.",
+                                error.message
+                            );
+                        }
 
-                    if (resultado.data && resultado.data.session) {
-                        return resultado.data.session;
+                        if (data && data.session) {
+                            return {
+                                sessao: data.session,
+                                erro: false
+                            };
+                        }
+
+                        return {
+                            sessao: null,
+                            erro: Boolean(error)
+                        };
+                    } catch (erro) {
+                        console.warn(
+                            "RunWorld: não foi possível verificar a sessão.",
+                            erro
+                        );
+
+                        return {
+                            sessao: null,
+                            erro: true
+                        };
                     }
-                } catch (erro) {
-                    console.warn("Aguardando a sessão do RunWorld:", erro);
                 }
 
-                await esperar(350);
+                await esperar(250);
             }
 
-            return null;
+            return {
+                sessao: null,
+                erro: true
+            };
         }
 
-        async function abrirAplicativo() {
-            if (redirecionando) return;
-            redirecionando = true;
+        async function iniciarEntrada() {
+            if (iniciado) return;
+            iniciado = true;
 
-            estado.textContent = "Verificando sua conta...";
-            detalhe.textContent = "Só mais um instante.";
-
-            const sessao = await obterSessao();
-            const tempoDecorrido = Date.now() - inicio;
-            const esperaRestante = Math.max(0, TEMPO_MINIMO - tempoDecorrido);
-
-            if (esperaRestante > 0) {
-                await esperar(esperaRestante);
+            // O vídeo é decorativo: se falhar, a tela continua funcionando.
+            if (video) {
+                video.play().catch(() => {
+                    console.info(
+                        "RunWorld: o vídeo não iniciou; mantendo a animação."
+                    );
+                });
             }
 
+            estado.textContent = "Preparando sua jornada...";
+            detalhe.textContent = "Bem-vindo ao RunWorld.";
+
+            // Inicia a consulta enquanto a animação permanece visível.
+            const verificacaoPromise = obterSessao();
+
+            // Garante que a animação apareça por pelo menos 3 segundos.
+            const tempoRestante = Math.max(
+                0,
+                TEMPO_MINIMO - (Date.now() - inicio)
+            );
+
+            await esperar(tempoRestante);
+
+            const resultado = await verificacaoPromise;
+            const sessao = resultado.sessao;
+
             if (sessao) {
+                estado.textContent = "Tudo pronto!";
+                detalhe.textContent = "Entrando no RunWorld...";
+
                 window.location.replace("./index.html");
                 return;
             }
 
-            // Se a página foi aberta após o retorno do Google,
-            // não enviar imediatamente para início antes de dar
-            // tempo ao SDK para recuperar a sessão.
-            const parametros = new URLSearchParams(window.location.search);
+            // Não redireciona para o início se houver um erro de
+            // autenticação ou se o retorno do Google estiver em andamento.
+            const parametros = new URLSearchParams(
+                window.location.search
+            );
+
             const hash = new URLSearchParams(
                 window.location.hash.replace(/^#/, "")
             );
@@ -244,40 +342,32 @@
                 hash.has("error") ||
                 hash.has("error_description");
 
-            if (retornoOAuth) {
-                estado.textContent = "Não foi possível confirmar a entrada.";
+            if (retornoOAuth || resultado.erro) {
+                estado.textContent = "Verificando sua entrada...";
                 detalhe.textContent =
-                    "Volte ao login e tente novamente. Confira a configuração OAuth no Supabase.";
+                    "Não foi possível confirmar a sessão. Volte ao login e tente novamente.";
 
-                redirecionando = false;
+                iniciado = false;
                 return;
             }
+
+            // Sem sessão e sem retorno OAuth: segue para a tela de início.
+            estado.textContent = "Vamos começar?";
+            detalhe.textContent = "Preparando a tela inicial...";
 
             window.location.replace("./inicio.html");
         }
 
-        // A animação não depende de o vídeo conseguir tocar.
-        // Se o vídeo falhar, o logo e o indicador continuam visíveis.
-        if (video) {
-            video.play().catch(() => {
-                console.info("Vídeo indisponível; mantendo a tela de entrada.");
-            });
+        // Inicia uma única vez, depois que o HTML estiver pronto.
+        if (document.readyState === "loading") {
+            document.addEventListener(
+                "DOMContentLoaded",
+                iniciarEntrada,
+                { once: true }
+            );
+        } else {
+            iniciarEntrada();
         }
-
-        // Espera a página carregar e então valida a sessão.
-        window.addEventListener("load", () => {
-            abrirAplicativo();
-        }, { once: true });
-
-        // Proteção caso o evento load já tenha ocorrido.
-        if (document.readyState === "complete") {
-            abrirAplicativo();
-        }
-
-        // Evita ficar preso indefinidamente se a conexão falhar.
-        setTimeout(() => {
-            if (!redirecionando) abrirAplicativo();
-        }, TEMPO_MAXIMO);
     })();
     </script>
 </body>
