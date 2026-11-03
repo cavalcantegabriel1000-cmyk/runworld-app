@@ -804,6 +804,136 @@
     });
   }
 </script>
+
+  <!-- RUNWORLD — AVISO DE INSTALAÇÃO -->
+<style>
+#rwInstallAviso {
+    position: fixed;
+    z-index: 10000;
+    left: 16px;
+    right: 16px;
+    bottom: 20px;
+    max-width: 460px;
+    margin: auto;
+    padding: 18px;
+    display: none;
+    color: #fff;
+    background: #101814;
+    border: 1px solid #00e67670;
+    border-radius: 18px;
+    box-shadow: 0 12px 40px #0009;
+    font-family: Arial, sans-serif;
+}
+
+#rwInstallAviso h3 {
+    margin: 0 0 7px;
+    font-size: 17px;
+}
+
+#rwInstallAviso p {
+    color: #c6d5cb;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.rw-install-acoes {
+    display: flex;
+    gap: 10px;
+}
+
+.rw-install-acoes button {
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#rwInstallAgora {
+    flex: 1;
+    color: #04140a;
+    background: #00e676;
+    border: none;
+}
+
+#rwInstallDepois {
+    color: white;
+    background: #26332b;
+    border: 1px solid #ffffff30;
+}
+</style>
+
+<div id="rwInstallAviso">
+    <h3>Leve o RunWorld com você!</h3>
+
+    <p>
+        Instale o RunWorld no seu celular
+        e tenha acesso rápido ao aplicativo.
+    </p>
+
+    <div class="rw-install-acoes">
+        <button id="rwInstallAgora">
+            Instalar agora
+        </button>
+
+        <button id="rwInstallDepois">
+            Agora não
+        </button>
+    </div>
+
+    <p id="rwInstallAjuda" style="display:none">
+        Abra o menu ⋮ do Chrome e procure
+        a opção Instalar app.
+    </p>
+</div>
+
+<script>
+(function () {
+    const aviso = document.getElementById("rwInstallAviso");
+    const instalar = document.getElementById("rwInstallAgora");
+    const depois = document.getElementById("rwInstallDepois");
+    const ajuda = document.getElementById("rwInstallAjuda");
+
+    let eventoInstalacao = null;
+
+    window.addEventListener("beforeinstallprompt", function(evento) {
+        evento.preventDefault();
+        eventoInstalacao = evento;
+    });
+
+    window.addEventListener("appinstalled", function() {
+        aviso.style.display = "none";
+    });
+
+    const instalado =
+        window.matchMedia("(display-mode: standalone)").matches;
+
+    if (!instalado) {
+        setTimeout(function() {
+            if (localStorage.getItem("rw-aviso-dispensado") !== "sim") {
+                aviso.style.display = "block";
+            }
+        }, 4500);
+    }
+
+    instalar.addEventListener("click", async function() {
+        if (!eventoInstalacao) {
+            ajuda.style.display = "block";
+            return;
+        }
+
+        eventoInstalacao.prompt();
+        await eventoInstalacao.userChoice;
+        eventoInstalacao = null;
+        aviso.style.display = "none";
+    });
+
+    depois.addEventListener("click", function() {
+        aviso.style.display = "none";
+        localStorage.setItem("rw-aviso-dispensado", "sim");
+    });
+})();
+</script>
+<!-- FIM DO AVISO DE INSTALAÇÃO -->
   
 
 </body>
