@@ -14,9 +14,15 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "./IMG-20260923-WA4190.jpg",
-      "sizes": "any",
-      "type": "image/jpeg",
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
