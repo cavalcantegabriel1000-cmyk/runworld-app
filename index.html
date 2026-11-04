@@ -805,7 +805,8 @@
   }
 </script>
 
-  <!-- RUNWORLD — AVISO DE INSTALAÇÃO -->
+  
+<!-- RUNWORLD — AVISO DE INSTALAÇÃO -->
 <style>
 #rwInstallAviso {
     position: fixed;
@@ -860,74 +861,111 @@
     background: #26332b;
     border: 1px solid #ffffff30;
 }
+
+#rwInstallAviso button:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
+}
 </style>
 
 <div id="rwInstallAviso">
     <h3>Leve o RunWorld com você!</h3>
-
-    <p>
-        Instale o RunWorld no seu celular
-        e tenha acesso rápido ao aplicativo.
-    </p>
+    <p>Instale o RunWorld no seu celular e tenha acesso rápido ao aplicativo.</p>
 
     <div class="rw-install-acoes">
-        <button id="rwInstallAgora">
-            Instalar agora
-        </button>
-
-        <button id="rwInstallDepois">
-            Agora não
-        </button>
+        <button id="rwInstallAgora" type="button">Instalar agora</button>
+        <button id="rwInstallDepois" type="button">Agora não</button>
     </div>
 
     <p id="rwInstallAjuda" style="display:none">
-        Abra o menu ⋮ do Chrome e procure
-        a opção Instalar app.
+        Para instalar, abra o menu ⋮ do Chrome e escolha
+        "Instalar app" ou "Adicionar à tela inicial".
     </p>
 </div>
 
 <script>
 (function () {
+    "use strict";
+
     const aviso = document.getElementById("rwInstallAviso");
     const instalar = document.getElementById("rwInstallAgora");
     const depois = document.getElementById("rwInstallDepois");
     const ajuda = document.getElementById("rwInstallAjuda");
 
+    if (!aviso || !instalar || !depois || !ajuda) return;
+
     let eventoInstalacao = null;
+    let temporizador = null;
 
-    window.addEventListener("beforeinstallprompt", function(evento) {
-        evento.preventDefault();
-        eventoInstalacao = evento;
-    });
-
-    window.addEventListener("appinstalled", function() {
-        aviso.style.display = "none";
-    });
-
-    const instalado =
-        window.matchMedia("(display-mode: standalone)").matches;
-
-    if (!instalado) {
-        setTimeout(function() {
-            if (localStorage.getItem("rw-aviso-dispensado") !== "sim") {
-                aviso.style.display = "block";
-            }
-        }, 4500);
+    function estaInstalado() {
+        return window.matchMedia("(display-mode: standalone)").matches ||
+            window.matchMedia("(display-mode: fullscreen)").matches ||
+            window.navigator.standalone === true;
     }
 
-    instalar.addEventListener("click", async function() {
+    function mostrarAviso() {
+        if (estaInstalado()) return;
+
+        if (localStorage.getItem("rw-aviso-dispensado") === "sim") {
+            return;
+        }
+
+        aviso.style.display = "block";
+    }
+
+    window.addEventListener("beforeinstallprompt", function (evento) {
+        evento.preventDefault();
+        eventoInstalacao = evento;
+
+        if (temporizador) {
+            clearTimeout(temporizador);
+        }
+
+        mostrarAviso();
+    });
+
+    window.addEventListener("appinstalled", function () {
+        eventoInstalacao = null;
+        aviso.style.display = "none";
+        localStorage.setItem("rw-app-instalado", "sim");
+    });
+
+    if (!estaInstalado() &&
+        localStorage.getItem("rw-app-instalado") !== "sim") {
+        temporizador = setTimeout(mostrarAviso, 4500);
+    }
+
+    instalar.addEventListener("click", async function () {
+        if (estaInstalado()) {
+            aviso.style.display = "none";
+            return;
+        }
+
         if (!eventoInstalacao) {
             ajuda.style.display = "block";
             return;
         }
 
-        eventoInstalacao.prompt();
-        await eventoInstalacao.userChoice;
+        const evento = eventoInstalacao;
         eventoInstalacao = null;
-        aviso.style.display = "none";
+
+        try {
+            await evento.prompt();
+
+            const escolha = await evento.userChoice;
+
+            if (escolha && escolha.outcome === "accepted") {
+                aviso.style.display = "none";
+            } else {
+                ajuda.style.display = "block";
+            }
+        } catch (erro) {
+            console.error("Erro ao solicitar instalação:", erro);
+            ajuda.style.display = "block";
+        }
     });
 
-    depois.addEventListener("click", function() {
+    depois.addEventListener("click", function () {
         aviso.style.display = "none";
         localStorage.setItem("rw-aviso-dispensado", "sim");
     });
