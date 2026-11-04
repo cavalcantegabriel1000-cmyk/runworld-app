@@ -5,18 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#050807">
-  
-<link rel="manifest" href="./manifest.json">
-<meta name="mobile-web-app-capable" content="yes">
-  
+
+  <link rel="manifest" href="./manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+
   <title>RunWorld — Explore. Corra. Conquiste.</title>
 
   <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
   <!-- Estilos do aplicativo -->
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="shop.css">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./shop.css">
 
   <!-- Supabase -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -25,15 +25,12 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Configuração -->
-  <script src="config.js"></script>
+  <script src="./config.js"></script>
 </head>
 
 <body class="runworld-app">
 
-  <!-- =====================================================
-       MAPA PRINCIPAL
-  ====================================================== -->
-
+  <!-- MAPA PRINCIPAL -->
   <main id="telaMapa" class="tela active">
 
     <div id="mapa" aria-label="Mapa do RunWorld"></div>
@@ -41,18 +38,14 @@
     <!-- CABEÇALHO -->
     <header class="topo">
 
-      <button
-        id="botaoMenu"
-        class="icone-btn"
-        aria-label="Abrir menu"
-      >
+      <button id="botaoMenu" class="icone-btn" aria-label="Abrir menu" type="button">
         <i data-lucide="menu"></i>
       </button>
 
       <div class="marca">
         <img
           class="logo-runworld"
-          src="IMG-20260923-WA4190.jpg"
+          src="./IMG-20260923-WA4190.jpg"
           alt="Logo RunWorld"
         >
 
@@ -64,16 +57,15 @@
 
       <div class="topo-acoes">
 
-        <!-- NOTIFICAÇÕES -->
         <button
           id="botaoNotificacoes"
           class="icone-btn"
           aria-label="Notificações"
+          type="button"
         >
           <i data-lucide="bell"></i>
         </button>
 
-        <!-- RUNWORLD SHOP -->
         <button
           id="botaoRunWorldShop"
           class="icone-btn rw-shop-top-shortcut"
@@ -84,19 +76,13 @@
           <i data-lucide="shopping-cart"></i>
         </button>
 
-        <!-- PERFIL -->
         <button
           id="abrirPerfil"
           class="avatar-btn"
           aria-label="Abrir perfil"
           type="button"
         >
-          <img
-            id="avatarTopo"
-            alt="Foto de perfil"
-            hidden
-          >
-
+          <img id="avatarTopo" alt="Foto de perfil" hidden>
           <i data-lucide="user-round"></i>
         </button>
 
@@ -106,50 +92,30 @@
     <!-- CONTROLES DO MAPA -->
     <div class="controles-mapa">
 
-      <button
-        id="minhaLocalizacao"
-        class="mapa-btn"
-        aria-label="Minha localização"
-      >
+      <button id="minhaLocalizacao" class="mapa-btn" aria-label="Minha localização" type="button">
         <i data-lucide="locate-fixed"></i>
       </button>
 
-      <button
-        id="botaoCamada"
-        class="mapa-btn"
-        type="button"
-      >
+      <button id="botaoCamada" class="mapa-btn" type="button">
         <i data-lucide="layers"></i>
         <span>Mapa</span>
       </button>
 
     </div>
 
-    <!-- =====================================================
-         MENU PRINCIPAL
-    ====================================================== -->
-
-    <section
-      id="menuFlutuante"
-      class="painel flutuante menu-painel"
-    >
+    <!-- MENU PRINCIPAL -->
+    <section id="menuFlutuante" class="painel flutuante menu-painel">
 
       <div class="painel-cabecalho">
         <strong>Menu RunWorld</strong>
 
-        <button
-          class="icone-btn"
-          aria-label="Fechar"
-          data-fechar-tela
-          type="button"
-        >
+        <button class="icone-btn" aria-label="Fechar" data-fechar-tela type="button">
           <i data-lucide="x"></i>
         </button>
       </div>
 
       <button id="abrirPerfilMenu" class="item-menu" type="button">
         <i data-lucide="user-round"></i>
-
         <span>
           <b id="nomePerfilMenu">Meu perfil</b>
           <small>Ver suas estatísticas</small>
@@ -158,7 +124,6 @@
 
       <button id="abrirRanking" class="item-menu" type="button">
         <i data-lucide="trophy"></i>
-
         <span>
           <b>Ranking</b>
           <small>Compare seus resultados</small>
@@ -167,7 +132,6 @@
 
       <button id="abrirMissoes" class="item-menu" type="button">
         <i data-lucide="target"></i>
-
         <span>
           <b>Missões</b>
           <small>Ganhe XP e conquistas</small>
@@ -176,21 +140,14 @@
 
       <button id="abrirMensagens" class="item-menu" type="button">
         <i data-lucide="users"></i>
-
         <span>
           <b>Corredores online</b>
           <small>Veja quem está por perto</small>
         </span>
       </button>
 
-      <!-- RUNWORLD SHOP NO MENU -->
-      <button
-        id="abrirShopMenu"
-        class="item-menu rw-shop-menu-shortcut"
-        type="button"
-      >
+      <button id="abrirShopMenu" class="item-menu rw-shop-menu-shortcut" type="button">
         <i data-lucide="shopping-cart"></i>
-
         <span>
           <b>RunWorld Shop</b>
           <small>Equipamentos e acessórios</small>
@@ -199,20 +156,14 @@
 
       <button id="abrirConfiguracoes" class="item-menu" type="button">
         <i data-lucide="settings"></i>
-
         <span>
           <b>Configurações</b>
           <small>Personalize o aplicativo</small>
         </span>
       </button>
 
-      <button
-        id="botaoSairMenu"
-        class="item-menu item-menu-sair"
-        type="button"
-      >
+      <button id="botaoSairMenu" class="item-menu item-menu-sair" type="button">
         <i data-lucide="log-out"></i>
-
         <span>
           <b>Sair da conta</b>
           <small>Encerrar sua sessão</small>
@@ -221,40 +172,21 @@
 
     </section>
 
-    <!-- =====================================================
-         CAMADAS DO MAPA
-    ====================================================== -->
-
-    <section
-      id="painelCamadas"
-      class="painel flutuante camadas-painel"
-    >
+    <!-- CAMADAS DO MAPA -->
+    <section id="painelCamadas" class="painel flutuante camadas-painel">
 
       <div class="painel-cabecalho">
         <strong>Camadas do mapa</strong>
 
-        <button
-          id="fecharCamadas"
-          class="icone-btn"
-          aria-label="Fechar"
-          type="button"
-        >
+        <button id="fecharCamadas" class="icone-btn" aria-label="Fechar" type="button">
           <i data-lucide="x"></i>
         </button>
       </div>
 
       <div class="opcoes-camada">
-        <button class="opcao-camada active" data-camada="padrao" type="button">
-          Padrão
-        </button>
-
-        <button class="opcao-camada" data-camada="satelite" type="button">
-          Satélite
-        </button>
-
-        <button class="opcao-camada" data-camada="relevo" type="button">
-          Relevo
-        </button>
+        <button class="opcao-camada active" data-camada="padrao" type="button">Padrão</button>
+        <button class="opcao-camada" data-camada="satelite" type="button">Satélite</button>
+        <button class="opcao-camada" data-camada="relevo" type="button">Relevo</button>
       </div>
 
       <label class="linha-switch">
@@ -274,76 +206,42 @@
 
     </section>
 
-    <!-- =====================================================
-         CORREDORES ONLINE
-    ====================================================== -->
-
-    <section
-      id="painelMensagens"
-      class="painel flutuante online-painel painel-online"
-    >
+    <!-- CORREDORES ONLINE -->
+    <section id="painelMensagens" class="painel flutuante online-painel painel-online">
 
       <div class="painel-cabecalho">
         <strong>Corredores online</strong>
 
-        <button
-          id="fecharMensagens"
-          class="icone-btn"
-          aria-label="Fechar"
-          type="button"
-        >
+        <button id="fecharMensagens" class="icone-btn" aria-label="Fechar" type="button">
           <i data-lucide="x"></i>
         </button>
       </div>
 
-      <p class="online-resumo">
-        Conecte-se para ver outros corredores.
-      </p>
-
+      <p class="online-resumo">Conecte-se para ver outros corredores.</p>
       <div id="listaCorredoresOnline"></div>
 
     </section>
 
-    <!-- =====================================================
-         PAINEL DE ATIVIDADE
-    ====================================================== -->
-
+    <!-- PAINEL DE ATIVIDADE -->
     <section id="painelAtividade" class="painel-atividade">
 
-      <div
-        class="barra-arraste"
-        tabindex="0"
-        role="button"
-        aria-label="Arraste para abrir ou recolher"
-      >
+      <div class="barra-arraste" tabindex="0" role="button" aria-label="Arraste para abrir ou recolher">
         <span></span>
       </div>
 
       <div class="escolha-atividade">
 
-        <button
-          class="atividade selecionada active"
-          data-atividade="corrida"
-          type="button"
-        >
+        <button class="atividade selecionada active" data-atividade="corrida" type="button">
           <i data-lucide="footprints"></i>
           Corrida
         </button>
 
-        <button
-          class="atividade"
-          data-atividade="caminhada"
-          type="button"
-        >
+        <button class="atividade" data-atividade="caminhada" type="button">
           <i data-lucide="person-standing"></i>
           Caminhada
         </button>
 
-        <button
-          class="atividade"
-          data-atividade="ciclismo"
-          type="button"
-        >
+        <button class="atividade" data-atividade="ciclismo" type="button">
           <i data-lucide="bike"></i>
           Ciclismo
         </button>
@@ -351,7 +249,6 @@
       </div>
 
       <div class="metricas">
-
         <div>
           <small>Distância</small>
           <strong id="distancia">0</strong>
@@ -367,53 +264,38 @@
           <small id="tituloRitmo">Ritmo</small>
           <strong id="ritmo">--:--</strong>
         </div>
-
       </div>
 
-      <p id="statusAtividade" class="status-atividade">
-        Pronto para começar
-      </p>
+      <p id="statusAtividade" class="status-atividade">Pronto para começar</p>
 
       <div class="botoes-atividade">
-
         <button id="botaoComecar" class="botao-principal" type="button">
           <i data-lucide="play"></i>
           Começar
         </button>
 
-        <button
-          id="botaoParar"
-          class="botao-parar"
-          style="display:none"
-          type="button"
-        >
+        <button id="botaoParar" class="botao-parar" style="display:none" type="button">
           <i data-lucide="square"></i>
           Parar
         </button>
-
       </div>
 
     </section>
 
   </main>
 
-  <!-- =====================================================
-       RANKING
-  ====================================================== -->
-
+  <!-- RANKING -->
   <section id="telaRanking" class="tela tela-interna">
 
     <header class="cabecalho-tela">
       <button id="voltarRanking" class="icone-btn" aria-label="Voltar" type="button">
         <i data-lucide="arrow-left"></i>
       </button>
-
       <h1>Classificação</h1>
     </header>
 
     <div class="conteudo-tela">
       <p class="subtitulo">Os corredores em destaque</p>
-
       <div id="listaRanking" class="lista-cartoes">
         <p class="vazio">
           Entre na sua conta e sincronize o perfil para participar do ranking.
@@ -423,17 +305,13 @@
 
   </section>
 
-  <!-- =====================================================
-       MISSÕES
-  ====================================================== -->
-
+  <!-- MISSÕES -->
   <section id="telaMissoes" class="tela tela-interna">
 
     <header class="cabecalho-tela">
       <button id="voltarMissoes" class="icone-btn" aria-label="Voltar" type="button">
         <i data-lucide="arrow-left"></i>
       </button>
-
       <h1>Missões</h1>
     </header>
 
@@ -443,52 +321,40 @@
 
       <article class="cartao-missao" data-missao="primeiros_km">
         <div class="missao-icone">🏃</div>
-
         <div>
           <strong>Primeiros quilômetros</strong>
           <p>Complete 5 km no total</p>
-
           <div class="trilho-progresso">
             <span class="barra-progresso"><span></span></span>
           </div>
-
           <small class="texto-progresso">0 / 5 km</small>
         </div>
-
         <b>+100 XP</b>
       </article>
 
       <article class="cartao-missao" data-missao="constancia">
         <div class="missao-icone">🔥</div>
-
         <div>
           <strong>Constância</strong>
           <p>Complete 5 atividades</p>
-
           <div class="trilho-progresso">
             <span class="barra-progresso"><span></span></span>
           </div>
-
           <small class="texto-progresso">0 / 5 atividades</small>
         </div>
-
         <b>+150 XP</b>
       </article>
 
       <article class="cartao-missao" data-missao="explorador">
         <div class="missao-icone">🧭</div>
-
         <div>
           <strong>Explorador</strong>
           <p>Registre uma atividade</p>
-
           <div class="trilho-progresso">
             <span class="barra-progresso"><span></span></span>
           </div>
-
           <small class="texto-progresso">0 / 1 atividade</small>
         </div>
-
         <b>+50 XP</b>
       </article>
 
@@ -496,29 +362,19 @@
 
   </section>
 
-  <!-- =====================================================
-       PERFIL
-  ====================================================== -->
-
+  <!-- PERFIL -->
   <section id="telaPerfil" class="tela tela-interna">
 
     <header class="cabecalho-tela">
-
       <button id="voltarPerfil" class="icone-btn" aria-label="Voltar" type="button">
         <i data-lucide="arrow-left"></i>
       </button>
 
       <h1>Meu perfil</h1>
 
-      <button
-        id="abrirConfiguracoesPerfil"
-        class="icone-btn"
-        aria-label="Configurações"
-        type="button"
-      >
+      <button id="abrirConfiguracoesPerfil" class="icone-btn" aria-label="Configurações" type="button">
         <i data-lucide="settings"></i>
       </button>
-
     </header>
 
     <div class="conteudo-tela">
@@ -555,7 +411,6 @@
       </div>
 
       <div class="grade-estatisticas">
-
         <div>
           <strong id="perfilDistancia">0 km</strong>
           <small>Distância total</small>
@@ -570,7 +425,6 @@
           <strong id="perfilAtividades">0</strong>
           <small>Atividades</small>
         </div>
-
       </div>
 
       <button id="abrirHistorico" class="linha-config" type="button">
@@ -598,89 +452,64 @@
     </div>
 
   </section>
-  
-<!-- =====================================================
-     CONFIGURAÇÕES
-====================================================== -->
 
-<section id="telaConfiguracoes" class="tela tela-interna">
+  <!-- CONFIGURAÇÕES -->
+  <section id="telaConfiguracoes" class="tela tela-interna">
 
     <header class="cabecalho-tela">
-
-        <button
-            id="voltarConfiguracoes"
-            class="icone-btn"
-            aria-label="Voltar"
-            type="button"
-        >
-            <i data-lucide="arrow-left"></i>
-        </button>
-
-        <h1>Configurações</h1>
-
+      <button id="voltarConfiguracoes" class="icone-btn" aria-label="Voltar" type="button">
+        <i data-lucide="arrow-left"></i>
+      </button>
+      <h1>Configurações</h1>
     </header>
 
     <div class="conteudo-tela">
 
-        <p class="subtitulo">Personalize sua experiência</p>
+      <p class="subtitulo">Personalize sua experiência</p>
 
-        <button id="configLocalizacao" class="linha-config" type="button">
-            <i data-lucide="map-pin"></i>
+      <button id="configLocalizacao" class="linha-config" type="button">
+        <i data-lucide="map-pin"></i>
+        <span class="dados-configuracao">
+          <b>Localização</b>
+          <small>Centralizar no GPS</small>
+        </span>
+      </button>
 
-            <span class="dados-configuracao">
-                <b>Localização</b>
-                <small>Centralizar no GPS</small>
-            </span>
-        </button>
+      <button id="configPrivacidade" class="linha-config" type="button">
+        <i data-lucide="shield-check"></i>
+        <span class="dados-configuracao">
+          <b>Privacidade</b>
+          <small>Gerenciar suas preferências</small>
+        </span>
+      </button>
 
-        <button id="configPrivacidade" class="linha-config" type="button">
-            <i data-lucide="shield-check"></i>
+      <button id="configSobre" class="linha-config" type="button">
+        <i data-lucide="info"></i>
+        <span class="dados-configuracao">
+          <b>Sobre o RunWorld</b>
+          <small>Explore. Corra. Conquiste.</small>
+        </span>
+      </button>
 
-            <span class="dados-configuracao">
-                <b>Privacidade</b>
-                <small>Gerenciar suas preferências</small>
-            </span>
-        </button>
+      <!-- INSTALAR RUNWORLD -->
+      <button id="botaoInstalarRunWorld" class="linha-config" type="button">
+        <i data-lucide="download"></i>
+        <span class="dados-configuracao">
+          <b>Instalar RunWorld</b>
+          <small>Instalar aplicativo no celular</small>
+        </span>
+        <i data-lucide="chevron-right"></i>
+      </button>
 
-        <button id="configSobre" class="linha-config" type="button">
-            <i data-lucide="info"></i>
-
-            <span class="dados-configuracao">
-                <b>Sobre o RunWorld</b>
-                <small>Explore. Corra. Conquiste.</small>
-            </span>
-        </button>
-
-        <!-- INSTALAR RUNWORLD -->
-        <button
-            id="botaoInstalarRunWorld"
-            class="linha-config"
-            type="button"
-        >
-            <i data-lucide="download"></i>
-
-            <span class="dados-configuracao">
-                <b>Instalar RunWorld</b>
-                <small>Baixar aplicativo no celular</small>
-            </span>
-
-            <i data-lucide="chevron-right"></i>
-        </button>
-
-        <button id="botaoSairTela" class="botao-perigo" type="button">
-            Sair da conta
-        </button>
+      <button id="botaoSairTela" class="botao-perigo" type="button">
+        Sair da conta
+      </button>
 
     </div>
 
-</section>
-  
+  </section>
 
-
-  <!-- =====================================================
-       NOTIFICAÇÕES
-  ====================================================== -->
-
+  <!-- NOTIFICAÇÕES -->
   <div id="fundoNotificacoes" class="sobreposicao" aria-hidden="true">
 
     <section id="painelNotificacoes" class="painel-notificacoes">
@@ -688,12 +517,7 @@
       <div class="painel-cabecalho">
         <strong>Notificações</strong>
 
-        <button
-          id="fecharNotificacoes"
-          class="icone-btn"
-          aria-label="Fechar"
-          type="button"
-        >
+        <button id="fecharNotificacoes" class="icone-btn" aria-label="Fechar" type="button">
           <i data-lucide="x"></i>
         </button>
       </div>
@@ -708,10 +532,7 @@
 
   </div>
 
-  <!-- =====================================================
-       AJUSTE DA FOTO DE PERFIL
-  ====================================================== -->
-
+  <!-- AJUSTE DA FOTO DE PERFIL -->
   <div
     id="modalCorteFoto"
     class="modal-corte-foto"
@@ -726,12 +547,7 @@
       <div class="painel-cabecalho">
         <strong id="tituloCorteFoto">Ajustar foto de perfil</strong>
 
-        <button
-          id="cancelarCorteFotoX"
-          class="icone-btn"
-          aria-label="Fechar ajuste"
-          type="button"
-        >
+        <button id="cancelarCorteFotoX" class="icone-btn" aria-label="Fechar ajuste" type="button">
           <i data-lucide="x"></i>
         </button>
       </div>
@@ -746,18 +562,10 @@
 
       <label class="zoom-corte-foto" for="zoomCorteFoto">
         Zoom
-        <input
-          id="zoomCorteFoto"
-          type="range"
-          min="1"
-          max="3"
-          step="0.05"
-          value="1"
-        >
+        <input id="zoomCorteFoto" type="range" min="1" max="3" step="0.05" value="1">
       </label>
 
       <div class="acoes-corte-foto">
-
         <button id="cancelarCorteFoto" class="botao-secundario" type="button">
           Cancelar
         </button>
@@ -765,17 +573,13 @@
         <button id="aplicarCorteFoto" class="botao-principal" type="button">
           Usar esta foto
         </button>
-
       </div>
 
     </div>
 
   </div>
 
-  <!-- =====================================================
-       MENSAGEM DE CONQUISTA
-  ====================================================== -->
-
+  <!-- MENSAGEM DE CONQUISTA -->
   <div id="parabens" class="toast-conquista" hidden>
 
     <span>🏆</span>
@@ -791,18 +595,14 @@
 
   </div>
 
-  <!-- =====================================================
-       BIBLIOTECAS E SCRIPTS
-       Manter a ordem para preservar as dependências.
-  ====================================================== -->
-
+  <!-- BIBLIOTECAS E SCRIPTS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <script src="notificacoes.js"></script>
-  <script src="app.js"></script>
-  <script src="shop.js"></script>
+  <script src="./notificacoes.js"></script>
+  <script src="./app.js"></script>
+  <script src="./shop.js"></script>
 
-  <!-- Inicializar os ícones Lucide sem substituir os scripts do app -->
+  <!-- ÍCONES LUCIDE -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       if (window.lucide && typeof window.lucide.createIcons === "function") {
@@ -810,331 +610,207 @@
       }
     });
   </script>
-  
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function () {
-      navigator.serviceWorker
-        .register("./service-worker.js")
-        .catch(function (erro) {
-          console.error("Erro ao registrar o RunWorld:", erro);
-        });
-    });
-  }
-</script>
 
-  
-<!-- RUNWORLD — AVISO DE INSTALAÇÃO -->
-<style>
-#rwInstallAviso {
-    position: fixed;
-    z-index: 10000;
-    left: 16px;
-    right: 16px;
-    bottom: 20px;
-    max-width: 460px;
-    margin: auto;
-    padding: 18px;
-    display: none;
-    color: #fff;
-    background: #101814;
-    border: 1px solid #00e67670;
-    border-radius: 18px;
-    box-shadow: 0 12px 40px #0009;
-    font-family: Arial, sans-serif;
-}
+  <!-- SERVICE WORKER -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker
+          .register("./service-worker.js")
+          .catch(function (erro) {
+            console.error("Erro ao registrar o RunWorld:", erro);
+          });
+      });
+    }
+  </script>
 
-#rwInstallAviso h3 {
-    margin: 0 0 7px;
-    font-size: 17px;
-}
+  <!-- AVISO DE INSTALAÇÃO PWA -->
+  <style>
+    #rwInstallAviso {
+      position: fixed;
+      z-index: 10000;
+      left: 16px;
+      right: 16px;
+      bottom: 20px;
+      max-width: 460px;
+      margin: auto;
+      padding: 18px;
+      display: none;
+      color: #fff;
+      background: #101814;
+      border: 1px solid #00e67670;
+      border-radius: 18px;
+      box-shadow: 0 12px 40px #0009;
+      font-family: Arial, sans-serif;
+    }
 
-#rwInstallAviso p {
-    color: #c6d5cb;
-    font-size: 13px;
-    line-height: 1.5;
-}
+    #rwInstallAviso h3 {
+      margin: 0 0 7px;
+      font-size: 17px;
+    }
 
-.rw-install-acoes {
-    display: flex;
-    gap: 10px;
-}
+    #rwInstallAviso p {
+      color: #c6d5cb;
+      font-size: 13px;
+      line-height: 1.5;
+    }
 
-.rw-install-acoes button {
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-}
+    .rw-install-acoes {
+      display: flex;
+      gap: 10px;
+    }
 
-#rwInstallAgora {
-    flex: 1;
-    color: #04140a;
-    background: #00e676;
-    border: none;
-}
+    .rw-install-acoes button {
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-#rwInstallDepois {
-    color: white;
-    background: #26332b;
-    border: 1px solid #ffffff30;
-}
+    #rwInstallAgora {
+      flex: 1;
+      color: #04140a;
+      background: #00e676;
+      border: none;
+    }
 
-#rwInstallAviso button:focus-visible {
-    outline: 2px solid white;
-    outline-offset: 3px;
-}
-</style>
+    #rwInstallDepois {
+      color: white;
+      background: #26332b;
+      border: 1px solid #ffffff30;
+    }
 
-<div id="rwInstallAviso">
+    #rwInstallAviso button:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 3px;
+    }
+  </style>
+
+  <div id="rwInstallAviso">
     <h3>Leve o RunWorld com você!</h3>
-    <p>Instale o RunWorld no seu celular e tenha acesso rápido ao aplicativo.</p>
+
+    <p>
+      Instale o RunWorld no seu celular
+      e tenha acesso rápido ao aplicativo.
+    </p>
 
     <div class="rw-install-acoes">
-        <button id="rwInstallAgora" type="button">Instalar agora</button>
-        <button id="rwInstallDepois" type="button">Agora não</button>
+      <button id="rwInstallAgora" type="button">Instalar agora</button>
+      <button id="rwInstallDepois" type="button">Agora não</button>
     </div>
 
     <p id="rwInstallAjuda" style="display:none">
-        Para instalar, abra o menu ⋮ do Chrome e escolha
-        "Instalar app" ou "Adicionar à tela inicial".
+      Para instalar, abra o menu ⋮ do Chrome e escolha
+      "Instalar app" ou "Adicionar à tela inicial".
     </p>
-</div>
+  </div>
 
-<script>
-(function () {
-    "use strict";
+  <!-- CONTROLE DA INSTALAÇÃO -->
+  <script>
+    (function () {
+      "use strict";
 
-    const aviso = document.getElementById("rwInstallAviso");
-    const instalar = document.getElementById("rwInstallAgora");
-    const depois = document.getElementById("rwInstallDepois");
-    const ajuda = document.getElementById("rwInstallAjuda");
+      const aviso = document.getElementById("rwInstallAviso");
+      const instalar = document.getElementById("rwInstallAgora");
+      const depois = document.getElementById("rwInstallDepois");
+      const ajuda = document.getElementById("rwInstallAjuda");
+      const botaoConfiguracoes = document.getElementById("botaoInstalarRunWorld");
 
-    if (!aviso || !instalar || !depois || !ajuda) return;
+      if (!aviso || !instalar || !depois || !ajuda) return;
 
-    let eventoInstalacao = null;
-    let temporizador = null;
+      let eventoInstalacao = null;
+      let temporizador = null;
 
-    function estaInstalado() {
+      function estaInstalado() {
         return window.matchMedia("(display-mode: standalone)").matches ||
-            window.matchMedia("(display-mode: fullscreen)").matches ||
-            window.navigator.standalone === true;
-    }
+          window.matchMedia("(display-mode: fullscreen)").matches ||
+          window.navigator.standalone === true;
+      }
 
-    function mostrarAviso() {
+      function mostrarAviso() {
         if (estaInstalado()) return;
 
         if (localStorage.getItem("rw-aviso-dispensado") === "sim") {
-            return;
+          return;
         }
 
         aviso.style.display = "block";
-    }
+      }
 
-    window.addEventListener("beforeinstallprompt", function (evento) {
+      function esconderAviso() {
+        aviso.style.display = "none";
+      }
+
+      window.addEventListener("beforeinstallprompt", function (evento) {
         evento.preventDefault();
         eventoInstalacao = evento;
 
         if (temporizador) {
-            clearTimeout(temporizador);
+          clearTimeout(temporizador);
+          temporizador = null;
         }
 
         mostrarAviso();
-    });
+      });
 
-    window.addEventListener("appinstalled", function () {
+      window.addEventListener("appinstalled", function () {
         eventoInstalacao = null;
-        aviso.style.display = "none";
+        esconderAviso();
         localStorage.setItem("rw-app-instalado", "sim");
-    });
+      });
 
-    if (!estaInstalado() &&
+      if (
+        !estaInstalado() &&
+        localStorage.getItem("rw-app-instalado") !== "sim"
+      ) {
+        temporizador = setTimeout(mostrarAviso, 4500);
+      }
 
-<!-- =====================================================
-     RUNWORLD — SISTEMA DE INSTALAÇÃO PWA
-====================================================== -->
-
-<style>
-#rwInstallAviso {
-    position: fixed;
-    z-index: 10000;
-    left: 16px;
-    right: 16px;
-    bottom: 20px;
-    max-width: 460px;
-    margin: auto;
-    padding: 18px;
-    display: none;
-    color: #fff;
-    background: #101814;
-    border: 1px solid #00e67670;
-    border-radius: 18px;
-    box-shadow: 0 12px 40px #0009;
-    font-family: Arial, sans-serif;
-}
-
-#rwInstallAviso h3 {
-    margin: 0 0 7px;
-    font-size: 17px;
-}
-
-#rwInstallAviso p {
-    color: #c6d5cb;
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.rw-install-acoes {
-    display: flex;
-    gap: 10px;
-}
-
-.rw-install-acoes button {
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-#rwInstallAgora {
-    flex: 1;
-    color: #04140a;
-    background: #00e676;
-    border: none;
-}
-
-#rwInstallDepois {
-    color: white;
-    background: #26332b;
-    border: 1px solid #ffffff30;
-}
-</style>
-
-<div id="rwInstallAviso">
-    <h3>Leve o RunWorld com você!</h3>
-
-    <p>
-        Instale o RunWorld no seu celular
-        e tenha acesso rápido ao aplicativo.
-    </p>
-
-    <div class="rw-install-acoes">
-        <button id="rwInstallAgora" type="button">
-            Instalar agora
-        </button>
-
-        <button id="rwInstallDepois" type="button">
-            Agora não
-        </button>
-    </div>
-
-    <p id="rwInstallAjuda" style="display:none">
-        Para instalar, abra o menu ⋮ do Chrome e escolha
-        "Instalar app" ou "Adicionar à tela inicial".
-    </p>
-</div>
-
-<script>
-(function () {
-    "use strict";
-
-    const aviso = document.getElementById("rwInstallAviso");
-    const instalar = document.getElementById("rwInstallAgora");
-    const depois = document.getElementById("rwInstallDepois");
-    const ajuda = document.getElementById("rwInstallAjuda");
-
-    if (!aviso || !instalar || !depois || !ajuda) return;
-
-    let eventoInstalacao = null;
-
-    function estaInstalado() {
-        return window.matchMedia("(display-mode: standalone)").matches ||
-            window.matchMedia("(display-mode: fullscreen)").matches ||
-            window.navigator.standalone === true;
-    }
-
-    function mostrarAviso() {
-        if (estaInstalado()) return;
-
-        if (localStorage.getItem("rw-aviso-dispensado") === "sim") {
-            return;
-        }
-
-        aviso.style.display = "block";
-    }
-
-    window.addEventListener("beforeinstallprompt", function (evento) {
-        evento.preventDefault();
-        eventoInstalacao = evento;
-    });
-
-    window.addEventListener("appinstalled", function () {
-        eventoInstalacao = null;
-        aviso.style.display = "none";
-        localStorage.setItem("rw-app-instalado", "sim");
-    });
-
-    if (!estaInstalado() &&
-        localStorage.getItem("rw-app-instalado") !== "sim") {
-        setTimeout(mostrarAviso, 4500);
-    }
-
-    async function solicitarInstalacao() {
+      async function solicitarInstalacao() {
         if (estaInstalado()) {
-            aviso.style.display = "none";
-            return;
+          esconderAviso();
+          return;
         }
 
         if (!eventoInstalacao) {
-            aviso.style.display = "block";
-            ajuda.style.display = "block";
-            return;
+          ajuda.style.display = "block";
+          mostrarAviso();
+          return;
         }
 
         const evento = eventoInstalacao;
         eventoInstalacao = null;
 
         try {
-            await evento.prompt();
+          await evento.prompt();
 
-            const escolha = await evento.userChoice;
+          const escolha = await evento.userChoice;
 
-            if (escolha && escolha.outcome === "accepted") {
-                aviso.style.display = "none";
-            } else {
-                ajuda.style.display = "block";
-            }
-        } catch (erro) {
-            console.error("Erro ao solicitar instalação:", erro);
-            aviso.style.display = "block";
+          if (escolha && escolha.outcome === "accepted") {
+            esconderAviso();
+          } else {
             ajuda.style.display = "block";
+          }
+        } catch (erro) {
+          console.error("Erro ao solicitar instalação:", erro);
+          ajuda.style.display = "block";
+          mostrarAviso();
         }
-    }
+      }
 
-    instalar.addEventListener("click", solicitarInstalacao);
+      instalar.addEventListener("click", solicitarInstalacao);
 
-    const botaoConfiguracoes = document.getElementById(
-        "botaoInstalarRunWorld"
-    );
+      if (botaoConfiguracoes) {
+        botaoConfiguracoes.addEventListener("click", solicitarInstalacao);
+      }
 
-    if (botaoConfiguracoes) {
-        botaoConfiguracoes.addEventListener(
-            "click",
-            solicitarInstalacao
-        );
-    }
-
-    depois.addEventListener("click", function () {
-        aviso.style.display = "none";
+      depois.addEventListener("click", function () {
+        esconderAviso();
         localStorage.setItem("rw-aviso-dispensado", "sim");
-    });
+      });
 
-})();
-</script>
-
-<!-- FIM DO SISTEMA DE INSTALAÇÃO -->
-  
+    })();
+  </script>
 
 </body>
-      </html>
-      
+</html>
