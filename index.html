@@ -949,17 +949,144 @@
     });
 
     if (!estaInstalado() &&
-        localStorage.getItem("rw-app-instalado") !== "sim") {
-        temporizador = setTimeout(mostrarAviso, 4500);
+
+<!-- =====================================================
+     RUNWORLD — SISTEMA DE INSTALAÇÃO PWA
+====================================================== -->
+
+<style>
+#rwInstallAviso {
+    position: fixed;
+    z-index: 10000;
+    left: 16px;
+    right: 16px;
+    bottom: 20px;
+    max-width: 460px;
+    margin: auto;
+    padding: 18px;
+    display: none;
+    color: #fff;
+    background: #101814;
+    border: 1px solid #00e67670;
+    border-radius: 18px;
+    box-shadow: 0 12px 40px #0009;
+    font-family: Arial, sans-serif;
+}
+
+#rwInstallAviso h3 {
+    margin: 0 0 7px;
+    font-size: 17px;
+}
+
+#rwInstallAviso p {
+    color: #c6d5cb;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.rw-install-acoes {
+    display: flex;
+    gap: 10px;
+}
+
+.rw-install-acoes button {
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#rwInstallAgora {
+    flex: 1;
+    color: #04140a;
+    background: #00e676;
+    border: none;
+}
+
+#rwInstallDepois {
+    color: white;
+    background: #26332b;
+    border: 1px solid #ffffff30;
+}
+</style>
+
+<div id="rwInstallAviso">
+    <h3>Leve o RunWorld com você!</h3>
+
+    <p>
+        Instale o RunWorld no seu celular
+        e tenha acesso rápido ao aplicativo.
+    </p>
+
+    <div class="rw-install-acoes">
+        <button id="rwInstallAgora" type="button">
+            Instalar agora
+        </button>
+
+        <button id="rwInstallDepois" type="button">
+            Agora não
+        </button>
+    </div>
+
+    <p id="rwInstallAjuda" style="display:none">
+        Para instalar, abra o menu ⋮ do Chrome e escolha
+        "Instalar app" ou "Adicionar à tela inicial".
+    </p>
+</div>
+
+<script>
+(function () {
+    "use strict";
+
+    const aviso = document.getElementById("rwInstallAviso");
+    const instalar = document.getElementById("rwInstallAgora");
+    const depois = document.getElementById("rwInstallDepois");
+    const ajuda = document.getElementById("rwInstallAjuda");
+
+    if (!aviso || !instalar || !depois || !ajuda) return;
+
+    let eventoInstalacao = null;
+
+    function estaInstalado() {
+        return window.matchMedia("(display-mode: standalone)").matches ||
+            window.matchMedia("(display-mode: fullscreen)").matches ||
+            window.navigator.standalone === true;
     }
 
-    instalar.addEventListener("click", async function () {
+    function mostrarAviso() {
+        if (estaInstalado()) return;
+
+        if (localStorage.getItem("rw-aviso-dispensado") === "sim") {
+            return;
+        }
+
+        aviso.style.display = "block";
+    }
+
+    window.addEventListener("beforeinstallprompt", function (evento) {
+        evento.preventDefault();
+        eventoInstalacao = evento;
+    });
+
+    window.addEventListener("appinstalled", function () {
+        eventoInstalacao = null;
+        aviso.style.display = "none";
+        localStorage.setItem("rw-app-instalado", "sim");
+    });
+
+    if (!estaInstalado() &&
+        localStorage.getItem("rw-app-instalado") !== "sim") {
+        setTimeout(mostrarAviso, 4500);
+    }
+
+    async function solicitarInstalacao() {
         if (estaInstalado()) {
             aviso.style.display = "none";
             return;
         }
 
         if (!eventoInstalacao) {
+            aviso.style.display = "block";
             ajuda.style.display = "block";
             return;
         }
@@ -979,17 +1106,33 @@
             }
         } catch (erro) {
             console.error("Erro ao solicitar instalação:", erro);
+            aviso.style.display = "block";
             ajuda.style.display = "block";
         }
-    });
+    }
+
+    instalar.addEventListener("click", solicitarInstalacao);
+
+    const botaoConfiguracoes = document.getElementById(
+        "botaoInstalarRunWorld"
+    );
+
+    if (botaoConfiguracoes) {
+        botaoConfiguracoes.addEventListener(
+            "click",
+            solicitarInstalacao
+        );
+    }
 
     depois.addEventListener("click", function () {
         aviso.style.display = "none";
         localStorage.setItem("rw-aviso-dispensado", "sim");
     });
+
 })();
 </script>
-<!-- FIM DO AVISO DE INSTALAÇÃO -->
+
+<!-- FIM DO SISTEMA DE INSTALAÇÃO -->
   
 
 </body>
