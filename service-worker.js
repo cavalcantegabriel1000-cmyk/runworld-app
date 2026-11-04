@@ -1,4 +1,4 @@
-const CACHE_NAME = "runworld-static-v4";
+const CACHE_NAME = "runworld-static-v5";
 
 const ARQUIVOS = [
     "./",
@@ -23,72 +23,105 @@ const ARQUIVOS = [
     "./VID-20261001-WA7966.mp4"
 ];
 
+// INSTALAÇÃO
 self.addEventListener("install", event => {
     event.waitUntil((async () => {
         const cache = await caches.open(CACHE_NAME);
-        await Promise.allSettled(
-            ARQUIVOS.map(async arquivo => {
-                try {
-                    const resposta = await fetch(arquivo, { cache: "reload" });
-                    if (resposta.ok) await cache.put(arquivo, resposta);
-                } catch (erro) {
-                    console.warn("Arquivo não armazenado:", arquivo);
+
+        for (const arquivo of ARQUIVOS) {
+            try {
+                const resposta = await fetch(arquivo, {
+                    cache: "reload"
+                });
+
+                if (resposta.ok) {
+                    await cache.put(arquivo, resposta);
                 }
-            })
-        );
+            } catch (erro) {
+                console.warn("Não foi possível armazenar:", arquivo);
+            }
+        }
+
         await self.skipWaiting();
     })());
 });
 
+// ATIVAÇÃO E LIMPEZA DE CACHE ANTIGO
 self.addEventListener("activate", event => {
     event.waitUntil((async () => {
         const nomes = await caches.keys();
+
         await Promise.all(
             nomes
-                .filter(nome => nome.startsWith("runworld-static-") && nome !== CACHE_NAME)
+                .filter(nome =>
+                    nome.startsWith("runworld-static-") &&
+                    nome !== CACHE_NAME
+                )
                 .map(nome => caches.delete(nome))
         );
+
         await self.clients.claim();
     })());
 });
 
+// REQUISIÇÕES
 self.addEventListener("fetch", event => {
     const requisicao = event.request;
+
     if (requisicao.method !== "GET") return;
 
     const url = new URL(requisicao.url);
+
+    // Não interfere em serviços externos.
     if (url.origin !== self.location.origin) return;
 
+    // PÁGINAS
     if (requisicao.mode === "navigate") {
         event.respondWith((async () => {
             try {
                 const resposta = await fetch(requisicao);
+
                 if (resposta.ok) {
                     const cache = await caches.open(CACHE_NAME);
                     await cache.put(requisicao, resposta.clone());
                 }
+
                 return resposta;
+
             } catch (erro) {
                 const cache = await caches.open(CACHE_NAME);
-                return (await cache.match(requisicao)) ||
-                    (await cache.match("./animacao.html")) ||
-                    (await cache.match("./inicio.html")) ||
-                    (await cache.match("./")) ||
-                    Response.error();
+
+                return (
+                    await cache.match(requisicao) ||
+                    await cache.match("./animacao.html") ||
+                    await cache.match("./inicio.html") ||
+                    await cache.match("./")
+                ) || Response.error();
             }
         })());
+
         return;
     }
 
+    // CSS, JS, IMAGENS E OUTROS ARQUIVOS
     event.respondWith((async () => {
         const cache = await caches.open(CACHE_NAME);
+
         const guardado = await cache.match(requisicao);
-        if (guardado) return guardado;
+
+        if (guardado) {
+            return guardado;
+        }
 
         try {
             const resposta = await fetch(requisicao);
-            if (resposta.ok) await cache.put(requisicao, resposta.clone());
+
+            if (resposta.ok) {
+                await cache.put(requisicao, resposta.clone());
+            }
+
             return resposta;
+
         } catch (erro) {
             return Response.error();
         }
