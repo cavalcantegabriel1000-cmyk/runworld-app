@@ -1,4 +1,11 @@
-const CACHE_NAME = "runworld-static-v5";
+
+/*
+ * RUNWORLD — SERVICE WORKER
+ * Cache da versão PWA.
+ * O aplicativo nativo Capacitor não depende deste arquivo.
+ */
+
+const CACHE_NAME = "runworld-static-v6";
 
 const ARQUIVOS = [
     "./",
@@ -7,6 +14,9 @@ const ARQUIVOS = [
     "./index.html",
     "./login.html",
     "./cadastro.html",
+    "./recuperar-senha.html",
+    "./redefinir-senha.html",
+
     "./style.css",
     "./app.js",
     "./config.js",
@@ -15,10 +25,15 @@ const ARQUIVOS = [
     "./shop.css",
     "./login.css",
     "./cadastro.css",
+
     "./manifest.json",
+
     "./icon-192.png",
     "./icon-512.png",
+
     "./IMG-20260923-WA4190.jpg",
+    "./IMG-20261022-WA2582.jpg",
+
     "./logo_animacao.mp4",
     "./VID-20261001-WA7966.mp4"
 ];
@@ -37,8 +52,12 @@ self.addEventListener("install", event => {
                 if (resposta.ok) {
                     await cache.put(arquivo, resposta);
                 }
+
             } catch (erro) {
-                console.warn("Não foi possível armazenar:", arquivo);
+                console.warn(
+                    "Não foi possível armazenar:",
+                    arquivo
+                );
             }
         }
 
@@ -83,7 +102,11 @@ self.addEventListener("fetch", event => {
 
                 if (resposta.ok) {
                     const cache = await caches.open(CACHE_NAME);
-                    await cache.put(requisicao, resposta.clone());
+
+                    await cache.put(
+                        requisicao,
+                        resposta.clone()
+                    );
                 }
 
                 return resposta;
@@ -117,7 +140,10 @@ self.addEventListener("fetch", event => {
             const resposta = await fetch(requisicao);
 
             if (resposta.ok) {
-                await cache.put(requisicao, resposta.clone());
+                await cache.put(
+                    requisicao,
+                    resposta.clone()
+                );
             }
 
             return resposta;
