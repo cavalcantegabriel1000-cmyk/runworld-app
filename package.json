@@ -1,0 +1,22 @@
+
+{
+  "name": "runworld",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RunWorld — Explore. Corra. Conquiste.",
+  "scripts": {
+    "build:web": "node scripts/copy-web.js",
+    "cap:sync": "npm run build:web && cap sync",
+    "cap:add:android": "npm run build:web && cap add android",
+    "cap:add:ios": "npm run build:web && cap add ios",
+    "cap:doctor": "cap doctor"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/core": "^8.6.0",
+    "@capacitor/ios": "^8.6.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.6.0"
+  }
+}
