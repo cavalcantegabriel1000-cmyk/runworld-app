@@ -1,0 +1,9 @@
+
+{
+  "appId": "com.runworld.app",
+  "appName": "RunWorld",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
