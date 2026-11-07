@@ -19,7 +19,20 @@
     {id:"roupa-02",nome:"Camiseta Nike Dri-FIT Run Energy",categoria:"roupas",descricao:"Camiseta esportiva para corrida e treino.",vendedor:"Centauro",preco:"R$ 94,99*",nota:"4,3",avaliacoes:"12 avaliações",url:"https://www.centauro.com.br/",imagem:"https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=900&q=85",etiqueta:"Vestuário"},
     {id:"acessorio-01",nome:"Suporte adidas 2-Way Running",categoria:"acessorios",descricao:"Acessório para levar o celular durante a corrida.",vendedor:"Centauro",preco:"R$ 99,74*",nota:"3,7",avaliacoes:"196 avaliações",url:"https://www.centauro.com.br/",imagem:"https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=85",etiqueta:"Acessório"},
     {id:"acessorio-02",nome:"Pochete para corrida",categoria:"acessorios",descricao:"Opção compacta para pequenos objetos.",vendedor:"Mercado Livre",preco:"R$ 28,22*",nota:"4,7",avaliacoes:"118 avaliações",url:"https://www.mercadolivre.com.br/",imagem:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=85",etiqueta:"Acessório"},
-    {id:"hidratacao-01",nome:"Garrafa térmica esportiva",categoria:"hidratacao",descricao:"Garrafa para levar água durante os treinos.",vendedor:"Mercado Livre",preco:"R$ 45,90*",nota:null,avaliacoes:null,url:"https://www.mercadolivre.com.br/",imagem:"https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=900&q=85",etiqueta:"Hidratação"},
+   {
+  id: "acessorio-03",
+  nome: "Braçadeira fechada para celular",
+  categoria: "acessorios",
+  descricao: "Braçadeira esportiva com compartimento fechado por zíper para guardar o celular durante a atividade.",
+  vendedor: "Mercado Livre — pesquisa",
+  preco: "Consultar opções",
+  nota: null,
+  avaliacoes: null,
+  url: "https://lista.mercadolivre.com.br/bra%C3%A7adeira-celular-corrida",
+  imagem: "",
+  etiqueta: "Acessório"
+},
+     {id:"hidratacao-01",nome:"Garrafa térmica esportiva",categoria:"hidratacao",descricao:"Garrafa para levar água durante os treinos.",vendedor:"Mercado Livre",preco:"R$ 45,90*",nota:null,avaliacoes:null,url:"https://www.mercadolivre.com.br/",imagem:"https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=900&q=85",etiqueta:"Hidratação"},
     {id:"hidratacao-02",nome:"Caramanhola CamelBak Podium Chill",categoria:"hidratacao",descricao:"Garrafa esportiva para atividades ao ar livre.",vendedor:"Ponto da Bike Sports",preco:"R$ 139,50*",nota:"5,0",avaliacoes:"2.400 avaliações",url:"https://www.pontodabike.com.br/",imagem:"https://images.unsplash.com/photo-1523362628745-0c100150b4e3?auto=format&fit=crop&w=900&q=85",etiqueta:"Hidratação"}
   ];
   const CATEGORIAS = [{id:"todas",nome:"Todos"},{id:"calcados",nome:"Calçados"},{id:"roupas",nome:"Roupas"},{id:"acessorios",nome:"Acessórios"},{id:"hidratacao",nome:"Hidratação"}];
@@ -27,7 +40,7 @@
   const porId=id=>document.getElementById(id);
   function escapar(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);}
   function normalizar(v){return String(v??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();}
-  function validarUrl(valor){try{const u=new URL(valor);return u.protocol==="https:"&&["netshoes.com.br","www.netshoes.com.br","decathlon.com.br","www.decathlon.com.br","centauro.com.br","www.centauro.com.br","mercadolivre.com.br","www.mercadolivre.com.br","produto.mercadolivre.com.br","pontodabike.com.br","www.pontodabike.com.br","amazon.com.br","www.amazon.com.br"].includes(u.hostname);}catch{return false;}}
+  function validarUrl(valor){try{const u=new URL(valor);return u.protocol==="https:"&&["netshoes.com.br","www.netshoes.com.br","decathlon.com.br","www.decathlon.com.br","centauro.com.br","www.centauro.com.br","mercadolivre.com.br","www.mercadolivre.com.br","produto.mercadolivre.com.br","pontodabike.com.br","www.pontodabike.com.br","amazon.com.br","www.amazon.com.br""lista.mercadolivre.com.br",].includes(u.hostname);}catch{return false;}}
   function abrirLinkSeguro(url){if(!validarUrl(url)){feedback("Este link não está disponível.");return;}const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.click();}
   function carregarCarrinho(){try{const d=JSON.parse(localStorage.getItem(CART_KEY)||"[]");return Array.isArray(d)?d.filter(x=>x&&PRODUTOS.some(p=>p.id===x.id)).map(x=>({id:x.id,quantidade:Math.max(1,Math.min(99,Math.floor(Number(x.quantidade)||1)))})):[]}catch{return[];}}
   function salvarCarrinho(c){try{localStorage.setItem(CART_KEY,JSON.stringify(c));return true;}catch{feedback("Não foi possível salvar o carrinho neste navegador.");return false;}}
