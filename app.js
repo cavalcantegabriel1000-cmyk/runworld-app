@@ -1457,29 +1457,78 @@ function configurarOpcoesExtras() {
 /* ===================== SAIR DA CONTA ===================== */
 
 async function sairDaConta() {
-    if (atividadeIniciada) await pararAtividade();
-    pararRastreamentoGPS();
+    if (window.__runworldSaindo) return;
 
-    if (canalPresenca) {
-        try { await canalPresenca.unsubscribe(); }
-        catch (erro) { console.warn(erro); }
+    window.__runworldSaindo = true;
+
+    const botoes = [
+        elemento("botaoSair"),
+        elemento("botaoSairTela"),
+        elemento("botaoSairMenu")
+    ];
+
+    botoes.forEach(botao => {
+        if (botao) botao.disabled = true;
+    });
+
+    try {
+        // Finaliza e salva a atividade em andamento.
+        if (atividadeIniciada) {
+            try {
+                await pararAtividade();
+            } catch (erro) {
+                console.error("Erro ao finalizar atividade:", erro);
+            }
+        }
+
+        // Encerra o GPS.
+        try {
+            pararRastreamentoGPS();
+        } catch (erro) {
+            console.warn("Erro ao encerrar GPS:", erro);
+        }
+
+        // Encerra a presença online.
+        if (canalPresenca) {
+            try {
+                await canalPresenca.untrack();
+            } catch (erro) {
+                console.warn("Erro ao encerrar presença:", erro);
+            }
+
+            try {
+                await canalPresenca.unsubscribe();
+            } catch (erro) {
+                console.warn("Erro ao desconectar presença:", erro);
+            }
+
+            canalPresenca = null;
+        }
+
+        const supabase = window.supabaseClient;
+
+        if (supabase) {
+            const { error } = await supabase.auth.signOut({
+                scope: "local"
+            });
+
+            if (error) throw error;
+        }
+
+        window.location.replace("inicio.html");
+
+    } catch (erro) {
+        console.error("Erro ao sair da conta:", erro);
+
+        window.__runworldSaindo = false;
+
+        botoes.forEach(botao => {
+            if (botao) botao.disabled = false;
+        });
+
+        mostrarAviso("Não foi possível sair da conta. Tente novamente.");
     }
-
-    const supabase = window.supabaseClient;
-    if (!supabase) {
-        window.location.href = "inicio.html";
-        return;
-    }
-
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-        console.error(error);
-        mostrarAviso("Não foi possível sair da conta.");
-        return;
-    }
-
-    window.location.href = "inicio.html";
-}
+                             }
 
 /* ===================== NOTIFICAÇÕES ===================== */
 
