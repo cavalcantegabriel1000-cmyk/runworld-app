@@ -1568,7 +1568,10 @@ function configurarNotificacoes() {
 function configurarBotoesAtividade() {
     elemento("botaoComecar")?.addEventListener("click", iniciarAtividade);
     elemento("botaoParar")?.addEventListener("click", pararAtividade);
-    elemento("botaoSair")?.addEventListener("click", sairDaConta);
+    elemento("botaoSair")?.addEventListener("click", () => {
+    console.log("Botão Sair da conta clicado!");
+    sairDaConta();
+});
     elemento("botaoSairTela")?.addEventListener("click", sairDaConta);
     elemento("botaoSairMenu")?.addEventListener("click", sairDaConta);
 }
