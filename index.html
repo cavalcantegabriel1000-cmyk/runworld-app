@@ -707,143 +707,127 @@
   </div>
 
   <!-- CONTROLE ÚNICO DA INSTALAÇÃO -->
-  <script>
-    (() => {
-      "use strict";
+  
+<script>
+  (() => {
+    "use strict";
 
-      const aviso = document.getElementById("rwInstallAviso");
-      const instalar = document.getElementById("rwInstallAgora");
-      const depois = document.getElementById("rwInstallDepois");
-      const ajuda = document.getElementById("rwInstallAjuda");
-      const botaoConfiguracoes =
-        document.getElementById("botaoInstalarRunWorld");
+    const aviso = document.getElementById("rwInstallAviso");
+    const instalar = document.getElementById("rwInstallAgora");
+    const depois = document.getElementById("rwInstallDepois");
+    const ajuda = document.getElementById("rwInstallAjuda");
 
-      let eventoInstalacao = null;
-      let temporizador = null;
+    let eventoInstalacao = null;
 
-      function estaInstalado() {
-        return window.matchMedia("(display-mode: standalone)").matches ||
-          window.matchMedia("(display-mode: fullscreen)").matches ||
-          window.navigator.standalone === true;
+    function estaNoCapacitor() {
+      return !!(
+        window.Capacitor &&
+        typeof window.Capacitor.isNativePlatform === "function" &&
+        window.Capacitor.isNativePlatform()
+      );
+    }
+
+    function esconderAviso() {
+      if (aviso) aviso.style.display = "none";
+    }
+
+    function mostrarAviso() {
+      if (!aviso || estaNoCapacitor()) return;
+
+      aviso.style.display = "block";
+    }
+
+    function mostrarAjuda() {
+      if (estaNoCapacitor()) {
+        esconderAviso();
+        return;
       }
 
-      function esconderAviso() {
-        aviso.style.display = "none";
-      }
+      if (ajuda) ajuda.style.display = "block";
+      mostrarAviso();
+    }
 
-      function mostrarAviso() {
-        if (estaInstalado()) return;
+    window.addEventListener("beforeinstallprompt", evento => {
+      evento.preventDefault();
+      eventoInstalacao = evento;
+    });
 
-        if (localStorage.getItem("rw-app-instalado") === "sim") {
-          return;
-        }
+    window.addEventListener("appinstalled", () => {
+      eventoInstalacao = null;
+      esconderAviso();
+      localStorage.setItem("rw-app-instalado", "sim");
+    });
 
-        aviso.style.display = "block";
-      }
-
-      function mostrarAjuda() {
-        ajuda.style.display = "block";
-        mostrarAviso();
-      }
-
-      // Captura a autorização de instalação oferecida pelo Chrome.
-      window.addEventListener("beforeinstallprompt", (evento) => {
-        evento.preventDefault();
-
-        eventoInstalacao = evento;
-
-        if (temporizador) {
-          clearTimeout(temporizador);
-          temporizador = null;
-        }
-
-        mostrarAviso();
-      });
-
-      // Detecta quando a instalação foi concluída.
-      window.addEventListener("appinstalled", () => {
-        eventoInstalacao = null;
-
+    async function solicitarInstalacao() {
+      if (estaNoCapacitor()) {
         esconderAviso();
 
-        localStorage.setItem("rw-app-instalado", "sim");
+        if (typeof window.mostrarFeedback === "function") {
+          window.mostrarFeedback("O RunWorld já está instalado!");
+        } else {
+          alert("O RunWorld já está instalado neste dispositivo!");
+        }
 
-        console.log("RunWorld instalado com sucesso.");
-      });
-
-      // Mostra o banner depois de 4,5 segundos.
-      if (!estaInstalado()) {
-        temporizador = setTimeout(() => {
-          mostrarAviso();
-        }, 4500);
+        return;
       }
 
-      // Função usada pelo banner e pelas Configurações.
-      async function solicitarInstalacao() {
-        if (estaInstalado()) {
+      if (!eventoInstalacao) {
+        mostrarAjuda();
+        return;
+      }
+
+      const evento = eventoInstalacao;
+      eventoInstalacao = null;
+
+      try {
+        await evento.prompt();
+
+        const escolha = await evento.userChoice;
+
+        if (escolha?.outcome === "accepted") {
           esconderAviso();
-          return;
-        }
-
-        if (!eventoInstalacao) {
-          mostrarAjuda();
-          return;
-        }
-
-        const evento = eventoInstalacao;
-
-        eventoInstalacao = null;
-
-        try {
-          await evento.prompt();
-
-          const escolha = await evento.userChoice;
-
-          if (escolha && escolha.outcome === "accepted") {
-            esconderAviso();
-          } else {
-            mostrarAjuda();
-          }
-
-        } catch (erro) {
-          console.error(
-            "Erro ao solicitar instalação do RunWorld:",
-            erro
-          );
-
+        } else {
           mostrarAjuda();
         }
+      } catch (erro) {
+        console.error("Erro na instalação:", erro);
+        mostrarAjuda();
       }
+    }
 
-      // Botão do banner.
+    if (instalar) {
       instalar.addEventListener("click", solicitarInstalacao);
+    }
 
-      // Botão das Configurações.
-      if (botaoConfiguracoes) {
-        botaoConfiguracoes.addEventListener(
-          "click",
-          solicitarInstalacao
-        );
-      }
-
-      // Botão Agora não.
+    if (depois) {
       depois.addEventListener("click", () => {
         esconderAviso();
-
-        localStorage.setItem(
-          "rw-aviso-dispensado",
-          "sim"
-        );
+        localStorage.setItem("rw-aviso-dispensado", "sim");
       });
+    }
 
-      // Permite que outras partes do aplicativo solicitem a instalação.
-      document.addEventListener(
-        "runworld-instalar",
+    const botaoConfiguracoes =
+      document.getElementById("botaoInstalarRunWorld");
+
+    if (botaoConfiguracoes) {
+      botaoConfiguracoes.addEventListener(
+        "click",
         solicitarInstalacao
       );
+    }
 
-    })();
-  </script>
+    document.addEventListener(
+      "runworld-instalar",
+      solicitarInstalacao
+    );
+
+    if (!estaNoCapacitor()) {
+      setTimeout(mostrarAviso, 4500);
+    } else {
+      esconderAviso();
+    }
+  })();
+</script>
 
 </body>
 </html>
