@@ -1469,6 +1469,7 @@ async function sairDaConta() {
 
     botoes.forEach(botao => {
         if (botao) botao.disabled = true;
+       window.sairDaConta = sairDaConta;
     });
 
     try {
