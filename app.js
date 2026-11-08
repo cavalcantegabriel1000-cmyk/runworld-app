@@ -1509,7 +1509,7 @@ async function sairDaConta() {
         const supabase = window.supabaseClient;
 
         if (!supabase) {
-            window.location.replace("inicio.html");
+            window.location.replace("./inicio.html");
             return;
         }
 
@@ -1520,7 +1520,7 @@ async function sairDaConta() {
         if (error) throw error;
 
         // Volta para a tela inicial.
-        window.location.replace("inicio.html");
+        window.location.replace("./inicio.html");
 
     } catch (erro) {
         console.error("Erro ao sair da conta:", erro);
