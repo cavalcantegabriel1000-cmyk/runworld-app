@@ -1469,7 +1469,6 @@ async function sairDaConta() {
 
     botoes.forEach(botao => {
         if (botao) botao.disabled = true;
-       window.sairDaConta = sairDaConta;
     });
 
     try {
@@ -1506,16 +1505,21 @@ async function sairDaConta() {
             canalPresenca = null;
         }
 
+        // Encerra a sessão do Supabase.
         const supabase = window.supabaseClient;
 
-        if (supabase) {
-            const { error } = await supabase.auth.signOut({
-                scope: "local"
-            });
-
-            if (error) throw error;
+        if (!supabase) {
+            window.location.replace("inicio.html");
+            return;
         }
 
+        const { error } = await supabase.auth.signOut({
+            scope: "local"
+        });
+
+        if (error) throw error;
+
+        // Volta para a tela inicial.
         window.location.replace("inicio.html");
 
     } catch (erro) {
@@ -1529,7 +1533,10 @@ async function sairDaConta() {
 
         mostrarAviso("Não foi possível sair da conta. Tente novamente.");
     }
-                             }
+}
+
+// Disponibiliza a função para o HTML.
+window.sairDaConta = sairDaConta;
 
 /* ===================== NOTIFICAÇÕES ===================== */
 
