@@ -1457,55 +1457,29 @@ function configurarOpcoesExtras() {
 /* ===================== SAIR DA CONTA ===================== */
 
 async function sairDaConta() {
-    if (window.__runworldSaindo) return;
+    if (atividadeIniciada) await pararAtividade();
+    pararRastreamentoGPS();
 
-    window.__runworldSaindo = true;
-
-    try {
-        // Encerra a sessão do Supabase primeiro.
-        const supabase = window.supabaseClient;
-
-        if (supabase) {
-            const { error } = await supabase.auth.signOut({
-                scope: "local"
-            });
-
-            if (error) {
-                throw error;
-            }
-        }
-
-        // Encerra o GPS sem bloquear a saída.
-        try {
-            pararRastreamentoGPS();
-        } catch (erro) {
-            console.warn("Erro ao encerrar GPS:", erro);
-        }
-
-        // Encerra a presença online.
-        if (canalPresenca) {
-            try {
-                canalPresenca.unsubscribe();
-            } catch (erro) {
-                console.warn("Erro ao encerrar presença:", erro);
-            }
-
-            canalPresenca = null;
-        }
-
-        // Vai para a tela inicial.
-        window.location.href = "inicio.html";
-
-    } catch (erro) {
-        console.error("Erro ao sair:", erro);
-
-        window.__runworldSaindo = false;
-
-        mostrarAviso("Não foi possível sair da conta. Tente novamente.");
+    if (canalPresenca) {
+        try { await canalPresenca.unsubscribe(); }
+        catch (erro) { console.warn(erro); }
     }
-}
 
-window.sairDaConta = sairDaConta;
+    const supabase = window.supabaseClient;
+    if (!supabase) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+        console.error(error);
+        mostrarAviso("Não foi possível sair da conta.");
+        return;
+    }
+
+    window.location.href = "login.html";
+}
 
 /* ===================== NOTIFICAÇÕES ===================== */
 
