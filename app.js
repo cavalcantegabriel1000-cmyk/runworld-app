@@ -1461,45 +1461,59 @@ async function sairDaConta() {
 
     window.__runworldSaindo = true;
 
+    const botoes = [
+        elemento("botaoSair"),
+        elemento("botaoSairTela"),
+        elemento("botaoSairMenu")
+    ];
+
+    botoes.forEach(botao => {
+        if (botao) botao.disabled = true;
+    });
+
     try {
-        // Encerra a sessão do Supabase primeiro.
         const supabase = window.supabaseClient;
 
-        if (supabase) {
-            const { error } = await supabase.auth.signOut({
-                scope: "local"
-            });
-
-            if (error) {
-                throw error;
-            }
+        if (!supabase) {
+            throw new Error("Cliente Supabase não encontrado.");
         }
 
-        // Encerra o GPS sem bloquear a saída.
+        // Encerra a sessão da conta neste dispositivo.
+        const { error } = await supabase.auth.signOut({
+            scope: "local"
+        });
+
+        if (error) throw error;
+
+        // Encerra o GPS.
         try {
             pararRastreamentoGPS();
         } catch (erro) {
             console.warn("Erro ao encerrar GPS:", erro);
         }
 
-        // Encerra a presença online.
+        // Desconecta a presença online.
         if (canalPresenca) {
             try {
-                canalPresenca.unsubscribe();
+                await canalPresenca.unsubscribe();
             } catch (erro) {
-                console.warn("Erro ao encerrar presença:", erro);
+                console.warn("Erro ao desconectar presença:", erro);
             }
 
             canalPresenca = null;
         }
 
-        // Vai para a tela inicial.
-        window.location.href = "inicio.html";
+        // Retorna à tela inicial.
+        window.location.replace("inicio.html");
 
     } catch (erro) {
-        console.error("Erro ao sair:", erro);
+        console.error("Erro ao sair da conta:", erro);
 
         window.__runworldSaindo = false;
+
+        botoes.forEach(botao => {
+            if (botao) botao.disabled = false;
+        });
 
         mostrarAviso("Não foi possível sair da conta. Tente novamente.");
     }
