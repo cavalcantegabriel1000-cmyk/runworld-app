@@ -1570,9 +1570,16 @@ function configurarNotificacoes() {
 /* ===================== BOTÕES E INICIALIZAÇÃO ===================== */
 
 function configurarBotoesAtividade() {
+    elemento("botaoComecar")?.addEventListener("click", iniciarAtividade);
+    elemento("botaoParar")?.addEventListener("click", pararAtividade);
+
     elemento("botaoSair")?.addEventListener("click", sairDaConta);
-elemento("botaoSairTela")?.addEventListener("click", sairDaConta);
-elemento("botaoSairMenu")?.addEventListener("click", sairDaConta);
+    elemento("botaoSairTela")?.addEventListener("click", sairDaConta);
+    elemento("botaoSairMenu")?.addEventListener("click", sairDaConta);
+}
+
+/* ===================== INICIALIZAÇÃO ===================== */
+
 async function iniciarRunWorld() {
     console.log("Iniciando RunWorld...");
 
@@ -1590,7 +1597,6 @@ async function iniciarRunWorld() {
     await verificarSessao();
     restaurarAtividadeEmAndamento();
 
-    // Inicializa novamente as notificações apenas se o módulo já estiver pronto.
     if (usuarioAtual && typeof window.inicializarNotificacoes === "function") {
         window.inicializarNotificacoes(usuarioAtual.id);
     }
