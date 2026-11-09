@@ -1461,27 +1461,21 @@ async function sairDaConta() {
 
     window.__runworldSaindo = true;
 
-    const botoes = [
-        elemento("botaoSair"),
-        elemento("botaoSairTela"),
-        elemento("botaoSairMenu")
-    ];
-
-    botoes.forEach(botao => {
-        if (botao) botao.disabled = true;
-    });
-
     try {
-        // Finaliza e salva a atividade em andamento.
-        if (atividadeIniciada) {
-            try {
-                await pararAtividade();
-            } catch (erro) {
-                console.error("Erro ao finalizar atividade:", erro);
+        // Encerra a sessão do Supabase primeiro.
+        const supabase = window.supabaseClient;
+
+        if (supabase) {
+            const { error } = await supabase.auth.signOut({
+                scope: "local"
+            });
+
+            if (error) {
+                throw error;
             }
         }
 
-        // Encerra o GPS.
+        // Encerra o GPS sem bloquear a saída.
         try {
             pararRastreamentoGPS();
         } catch (erro) {
@@ -1491,51 +1485,26 @@ async function sairDaConta() {
         // Encerra a presença online.
         if (canalPresenca) {
             try {
-                await canalPresenca.untrack();
+                canalPresenca.unsubscribe();
             } catch (erro) {
                 console.warn("Erro ao encerrar presença:", erro);
-            }
-
-            try {
-                await canalPresenca.unsubscribe();
-            } catch (erro) {
-                console.warn("Erro ao desconectar presença:", erro);
             }
 
             canalPresenca = null;
         }
 
-        // Encerra a sessão do Supabase.
-        const supabase = window.supabaseClient;
-
-        if (!supabase) {
-            window.location.replace("inicio.html");
-            return;
-        }
-
-        const { error } = await supabase.auth.signOut({
-            scope: "local"
-        });
-
-        if (error) throw error;
-
-        // Volta para a tela inicial.
-        window.location.replace("inicio.html");
+        // Vai para a tela inicial.
+        window.location.href = "inicio.html";
 
     } catch (erro) {
-        console.error("Erro ao sair da conta:", erro);
+        console.error("Erro ao sair:", erro);
 
         window.__runworldSaindo = false;
-
-        botoes.forEach(botao => {
-            if (botao) botao.disabled = false;
-        });
 
         mostrarAviso("Não foi possível sair da conta. Tente novamente.");
     }
 }
 
-// Disponibiliza a função para o HTML.
 window.sairDaConta = sairDaConta;
 
 /* ===================== NOTIFICAÇÕES ===================== */
