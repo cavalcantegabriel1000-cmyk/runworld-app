@@ -1472,54 +1472,63 @@ async function sairDaConta() {
     });
 
     try {
+        console.log("RunWorld: iniciando saída da conta.");
+
         const supabase = window.supabaseClient;
 
-        if (!supabase) {
-            throw new Error("Supabase não foi inicializado.");
+        // Tenta encerrar a sessão pelo Supabase.
+        if (supabase?.auth) {
+            try {
+                const resultado = await Promise.race([
+                    supabase.auth.signOut({ scope: "local" }),
+                    new Promise((_, rejeitar) =>
+                        setTimeout(
+                            () => rejeitar(new Error("Tempo limite do logout.")),
+                            5000
+                        )
+                    )
+                ]);
+
+                if (resultado?.error) {
+                    console.warn("Supabase não concluiu o logout:", resultado.error);
+                }
+            } catch (erro) {
+                console.warn("Logout pelo Supabase falhou:", erro);
+            }
         }
 
-        // Encerra a sessão local do usuário.
-        const resultado = await supabase.auth.signOut({
-            scope: "local"
-        });
+    } finally {
+        // Remove somente a sessão deste projeto neste dispositivo.
+        try {
+            const chaveSessao = "sb-tysxervuxkedluqkhxsw-auth-token";
 
-        if (resultado.error) {
-            throw resultado.error;
+            localStorage.removeItem(chaveSessao);
+            sessionStorage.removeItem(chaveSessao);
+        } catch (erro) {
+            console.error("Erro ao limpar sessão local:", erro);
         }
 
-        // Limpa dados temporários de presença e GPS.
+        // Encerra o GPS.
         try {
             if (typeof pararRastreamentoGPS === "function") {
                 pararRastreamentoGPS();
             }
         } catch (erro) {
-            console.warn(erro);
+            console.warn("Erro ao encerrar GPS:", erro);
         }
 
+        // Desconecta a presença online.
         try {
             if (canalPresenca) {
                 canalPresenca.unsubscribe();
                 canalPresenca = null;
             }
         } catch (erro) {
-            console.warn(erro);
+            console.warn("Erro ao desconectar presença:", erro);
         }
 
-        // Volta para a tela inicial.
-        window.location.assign(
-            new URL("inicio.html", window.location.href).href
-        );
-
-    } catch (erro) {
-        console.error("Falha no logout:", erro);
-
-        window.__runworldSaindo = false;
-
-        botoes.forEach(botao => {
-            if (botao) botao.disabled = false;
-        });
-
-        alert("Falha ao sair: " + (erro.message || String(erro)));
+        // Libera o acesso à tela inicial.
+        window.location.replace("./inicio.html");
     }
 }
 
