@@ -1472,57 +1472,46 @@ async function sairDaConta() {
     });
 
     try {
-        console.log("RunWorld: iniciando logout...");
-
         const supabase = window.supabaseClient;
 
         if (!supabase) {
-            throw new Error("Cliente Supabase não encontrado.");
+            throw new Error("Supabase não foi inicializado.");
         }
 
-        // Encerra a sessão do usuário.
-        const { error } = await supabase.auth.signOut({
+        // Encerra a sessão local do usuário.
+        const resultado = await supabase.auth.signOut({
             scope: "local"
         });
 
-        if (error) {
-            throw error;
+        if (resultado.error) {
+            throw resultado.error;
         }
 
-        console.log("RunWorld: sessão encerrada.");
-
-        // Encerra o GPS.
+        // Limpa dados temporários de presença e GPS.
         try {
             if (typeof pararRastreamentoGPS === "function") {
                 pararRastreamentoGPS();
             }
         } catch (erro) {
-            console.warn("Erro ao encerrar GPS:", erro);
+            console.warn(erro);
         }
 
-        // Desconecta a presença online.
-        if (canalPresenca) {
-            try {
-                await canalPresenca.unsubscribe();
-            } catch (erro) {
-                console.warn("Erro ao desconectar presença:", erro);
+        try {
+            if (canalPresenca) {
+                canalPresenca.unsubscribe();
+                canalPresenca = null;
             }
-
-            canalPresenca = null;
+        } catch (erro) {
+            console.warn(erro);
         }
 
-        console.log("RunWorld: voltando para o início.");
-
-        // Retorna à tela inicial.
-        window.location.replace("inicio.html");
+        // Volta para a tela inicial.
+        window.location.assign(
+            new URL("inicio.html", window.location.href).href
+        );
 
     } catch (erro) {
-        console.error("Erro ao sair da conta:", erro);
-
-        alert(
-            "Erro ao sair: " +
-            (erro?.message || String(erro))
-        );
+        console.error("Falha no logout:", erro);
 
         window.__runworldSaindo = false;
 
@@ -1530,7 +1519,7 @@ async function sairDaConta() {
             if (botao) botao.disabled = false;
         });
 
-        mostrarAviso("Não foi possível sair da conta. Tente novamente.");
+        alert("Falha ao sair: " + (erro.message || String(erro)));
     }
 }
 
