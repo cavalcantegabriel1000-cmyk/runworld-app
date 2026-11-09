@@ -1570,14 +1570,9 @@ function configurarNotificacoes() {
 /* ===================== BOTÕES E INICIALIZAÇÃO ===================== */
 
 function configurarBotoesAtividade() {
-    elemento("botaoComecar")?.addEventListener("click", iniciarAtividade);
-    elemento("botaoParar")?.addEventListener("click", pararAtividade);
-
     elemento("botaoSair")?.addEventListener("click", sairDaConta);
-    elemento("botaoSairTela")?.addEventListener("click", sairDaConta);
-    elemento("botaoSairMenu")?.addEventListener("click", sairDaConta);
-}
-
+elemento("botaoSairTela")?.addEventListener("click", sairDaConta);
+elemento("botaoSairMenu")?.addEventListener("click", sairDaConta);
 async function iniciarRunWorld() {
     console.log("Iniciando RunWorld...");
 
