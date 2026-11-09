@@ -5,7 +5,7 @@
  * O aplicativo nativo Capacitor não depende deste arquivo.
  */
 
-const CACHE_NAME = "runworld-static-v6";
+const CACHE_NAME = "runworld-static-v7";
 
 const ARQUIVOS = [
     "./",
