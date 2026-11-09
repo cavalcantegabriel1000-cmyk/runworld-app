@@ -1472,22 +1472,30 @@ async function sairDaConta() {
     });
 
     try {
+        console.log("RunWorld: iniciando logout...");
+
         const supabase = window.supabaseClient;
 
         if (!supabase) {
             throw new Error("Cliente Supabase não encontrado.");
         }
 
-        // Encerra a sessão da conta neste dispositivo.
+        // Encerra a sessão do usuário.
         const { error } = await supabase.auth.signOut({
             scope: "local"
         });
 
-        if (error) throw error;
+        if (error) {
+            throw error;
+        }
+
+        console.log("RunWorld: sessão encerrada.");
 
         // Encerra o GPS.
         try {
-            pararRastreamentoGPS();
+            if (typeof pararRastreamentoGPS === "function") {
+                pararRastreamentoGPS();
+            }
         } catch (erro) {
             console.warn("Erro ao encerrar GPS:", erro);
         }
@@ -1503,11 +1511,18 @@ async function sairDaConta() {
             canalPresenca = null;
         }
 
+        console.log("RunWorld: voltando para o início.");
+
         // Retorna à tela inicial.
         window.location.replace("inicio.html");
 
     } catch (erro) {
         console.error("Erro ao sair da conta:", erro);
+
+        alert(
+            "Erro ao sair: " +
+            (erro?.message || String(erro))
+        );
 
         window.__runworldSaindo = false;
 
