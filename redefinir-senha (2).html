@@ -1,0 +1,1800 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
+
+    <meta name="theme-color" content="#050807">
+
+    <title>Redefinir senha • RunWorld</title>
+
+    <!-- Ícones -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Configuração do projeto -->
+    <script src="config.js"></script>
+
+    <style>
+        /* =========================================
+           CONFIGURAÇÕES GERAIS
+        ========================================= */
+
+        :root {
+            --fundo: #050807;
+            --verde: #00e676;
+            --verde-escuro: #00bd62;
+            --texto: #f5f7f6;
+            --texto-suave: #9ca9a2;
+            --borda: rgba(255, 255, 255, 0.10);
+            --cartao: rgba(9, 16, 12, 0.82);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            min-height: 100%;
+            background: var(--fundo);
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            font-family: -apple-system, BlinkMacSystemFont,
+                "Segoe UI", Roboto, Arial, sans-serif;
+            color: var(--texto);
+            background: var(--fundo);
+            overflow-x: hidden;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* =========================================
+           VÍDEO DE FUNDO
+        ========================================= */
+
+        .fundo-video {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            background:
+                radial-gradient(
+                    circle at 50% 30%,
+                    #10271a 0%,
+                    #07100b 42%,
+                    #020403 100%
+                );
+        }
+
+        .fundo-video video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            inset: 0;
+            object-fit: cover;
+            opacity: 0.48;
+            filter: saturate(0.85);
+        }
+
+        .fundo-video::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(2, 6, 4, 0.62) 0%,
+                    rgba(2, 7, 4, 0.48) 45%,
+                    rgba(2, 5, 3, 0.88) 100%
+                );
+        }
+
+        .luz-fundo {
+            position: fixed;
+            width: 380px;
+            height: 380px;
+            left: 50%;
+            top: 42%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: rgba(0, 230, 118, 0.10);
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* =========================================
+           LAYOUT
+        ========================================= */
+
+        .pagina {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            min-height: 100dvh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding:
+                max(26px, env(safe-area-inset-top))
+                20px
+                max(26px, env(safe-area-inset-bottom));
+        }
+
+        /* =========================================
+           LOGO
+        ========================================= */
+
+        .topo {
+            width: 100%;
+            max-width: 430px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 27px;
+            animation: aparecer 0.7s ease both;
+        }
+
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 49px;
+            height: 49px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 230, 118, 0.48);
+            box-shadow:
+                0 0 25px rgba(0, 230, 118, 0.13);
+        }
+
+        .marca-texto {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .marca-nome {
+            font-size: 21px;
+            font-weight: 850;
+            letter-spacing: -0.8px;
+        }
+
+        .marca-nome span {
+            color: var(--verde);
+        }
+
+        .marca-frase {
+            font-size: 10px;
+            letter-spacing: 2.1px;
+            text-transform: uppercase;
+            color: #9ba99f;
+        }
+
+        /* =========================================
+           CARTÃO PRINCIPAL
+        ========================================= */
+
+        .cartao {
+            position: relative;
+            width: 100%;
+            max-width: 430px;
+            padding: 30px 25px 25px;
+            overflow: hidden;
+
+            background: var(--cartao);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 27px;
+
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.42),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+            animation: subir 0.75s cubic-bezier(.2, .8, .2, 1) both;
+        }
+
+        .cartao::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 15%;
+            width: 70%;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 230, 118, 0.75),
+                transparent
+            );
+        }
+
+        .icone-principal {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 21px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--verde);
+            background: rgba(0, 230, 118, 0.09);
+            border: 1px solid rgba(0, 230, 118, 0.20);
+            border-radius: 20px;
+
+            box-shadow: 0 0 35px rgba(0, 230, 118, 0.06);
+        }
+
+        .icone-principal svg {
+            width: 27px;
+            height: 27px;
+            stroke-width: 1.8;
+        }
+
+        .titulo {
+            text-align: center;
+            font-size: 26px;
+            line-height: 1.2;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            margin-bottom: 11px;
+        }
+
+        .descricao {
+            text-align: center;
+            color: var(--texto-suave);
+            font-size: 13px;
+            line-height: 1.7;
+            margin: 0 auto 26px;
+            max-width: 310px;
+        }
+
+        /* =========================================
+           ETAPAS
+        ========================================= */
+
+        .etapas {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 25px;
+        }
+
+        .etapa {
+            height: 4px;
+            width: 35px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.13);
+            transition:
+                background 0.3s ease,
+                box-shadow 0.3s ease,
+                width 0.3s ease;
+        }
+
+        .etapa.ativa {
+            background: var(--verde);
+            box-shadow: 0 0 12px rgba(0, 230, 118, 0.35);
+            width: 47px;
+        }
+
+        /* =========================================
+           FORMULÁRIOS
+        ========================================= */
+
+        .formulario {
+            width: 100%;
+        }
+
+        .campo-grupo {
+            margin-bottom: 19px;
+        }
+
+        .rotulo {
+            display: block;
+            font-size: 12px;
+            color: #d7e0da;
+            font-weight: 650;
+            margin-bottom: 10px;
+        }
+
+        .campo {
+            width: 100%;
+            height: 51px;
+            padding: 0 15px;
+            border: 1px solid var(--borda);
+            border-radius: 14px;
+            outline: none;
+
+            color: #fff;
+            background: rgba(255, 255, 255, 0.045);
+
+            font-size: 14px;
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .campo::placeholder {
+            color: #66736b;
+        }
+
+        .campo:focus {
+            border-color: rgba(0, 230, 118, 0.75);
+            background: rgba(0, 230, 118, 0.035);
+            box-shadow: 0 0 0 4px rgba(0, 230, 118, 0.075);
+        }
+
+        /* =========================================
+           SEIS QUADRADOS DO CÓDIGO
+        ========================================= */
+
+        .codigo-legenda {
+            font-size: 11px;
+            color: var(--texto-suave);
+            margin: -2px 0 12px;
+            line-height: 1.5;
+        }
+
+        .codigo-caixas {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 8px;
+            margin-bottom: 13px;
+        }
+
+        .codigo-caixa {
+            min-width: 0;
+            width: 100%;
+            height: 54px;
+            padding: 0;
+            text-align: center;
+
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            border-radius: 13px;
+            outline: none;
+
+            background: rgba(255, 255, 255, 0.045);
+            color: var(--verde);
+
+            font-size: 23px;
+            font-weight: 800;
+            caret-color: var(--verde);
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .codigo-caixa:focus {
+            transform: translateY(-3px);
+            border-color: var(--verde);
+            background: rgba(0, 230, 118, 0.08);
+            box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.09);
+            animation: focoCodigo 0.25s ease;
+        }
+
+        .codigo-caixa.preenchida {
+            border-color: rgba(0, 230, 118, 0.45);
+            background: rgba(0, 230, 118, 0.07);
+            animation: preencher 0.2s ease;
+        }
+
+        .codigo-caixas.erro .codigo-caixa {
+            border-color: #ff6565;
+            animation: tremer 0.35s ease;
+        }
+
+        .codigo-ajuda {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--texto-suave);
+            margin-bottom: 21px;
+        }
+
+        .codigo-ajuda strong {
+            color: #dce5df;
+            font-weight: 600;
+        }
+
+        .botao-texto {
+            padding: 5px 0;
+            border: none;
+            background: transparent;
+            color: var(--verde);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .botao-texto:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* =========================================
+           CAMPO DE SENHA
+        ========================================= */
+
+        .campo-senha {
+            position: relative;
+        }
+
+        .campo-senha .campo {
+            padding-right: 48px;
+        }
+
+        .mostrar-senha {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 51px;
+            width: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: none;
+            background: transparent;
+            color: #8c9a90;
+            cursor: pointer;
+        }
+
+        .mostrar-senha svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .mostrar-senha:focus-visible {
+            outline: 1px solid var(--verde);
+            border-radius: 8px;
+        }
+
+        .requisitos {
+            margin-top: 9px;
+            font-size: 11px;
+            line-height: 1.6;
+            color: #85948a;
+        }
+
+        /* =========================================
+           BOTÕES
+        ========================================= */
+
+        .botao-principal {
+            width: 100%;
+            min-height: 53px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            padding: 13px 18px;
+            border: 1px solid rgba(0, 230, 118, 0.8);
+            border-radius: 15px;
+
+            color: #031109;
+            background: linear-gradient(
+                135deg,
+                #19f58c,
+                #00d66d
+            );
+
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+
+            box-shadow: 0 8px 25px rgba(0, 230, 118, 0.12);
+
+            transition:
+                transform 0.2s ease,
+                filter 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .botao-principal svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .botao-principal:hover {
+            filter: brightness(1.07);
+            box-shadow: 0 10px 30px rgba(0, 230, 118, 0.2);
+        }
+
+        .botao-principal:active {
+            transform: scale(0.98);
+        }
+
+        .botao-principal:disabled {
+            opacity: 0.65;
+            cursor: wait;
+            transform: none;
+        }
+
+        .botao-voltar {
+            width: 100%;
+            min-height: 43px;
+            margin-top: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            border: none;
+            background: transparent;
+            color: #a4b1a8;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .botao-voltar svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        .botao-voltar:hover {
+            color: #fff;
+        }
+
+        /* =========================================
+           MENSAGENS
+        ========================================= */
+
+        .mensagem {
+            display: none;
+            align-items: flex-start;
+            gap: 9px;
+            padding: 12px 13px;
+            border-radius: 12px;
+            margin-bottom: 17px;
+            font-size: 12px;
+            line-height: 1.55;
+            overflow-wrap: anywhere;
+            animation: aparecer 0.25s ease;
+        }
+
+        .mensagem svg {
+            width: 17px;
+            height: 17px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .mensagem.sucesso {
+            display: flex;
+            color: #a6ffd0;
+            border: 1px solid rgba(0, 230, 118, 0.25);
+            background: rgba(0, 230, 118, 0.08);
+        }
+
+        .mensagem.erro {
+            display: flex;
+            color: #ffb4b4;
+            border: 1px solid rgba(255, 101, 101, 0.25);
+            background: rgba(255, 70, 70, 0.07);
+        }
+
+        .mensagem.info {
+            display: flex;
+            color: #d2e6ff;
+            border: 1px solid rgba(120, 170, 255, 0.25);
+            background: rgba(120, 170, 255, 0.07);
+        }
+
+        /* =========================================
+           TROCA ENTRE ETAPAS
+        ========================================= */
+
+        .tela-etapa {
+            animation: entrarEtapa 0.35s ease both;
+        }
+
+        .oculto {
+            display: none !important;
+        }
+
+        .rodape {
+            margin-top: 23px;
+            text-align: center;
+            color: #748078;
+            font-size: 10px;
+            line-height: 1.7;
+            animation: aparecer 0.9s ease both;
+        }
+
+        .rodape span {
+            color: var(--verde);
+        }
+
+        /* =========================================
+           ANIMAÇÕES
+        ========================================= */
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes subir {
+            from {
+                opacity: 0;
+                transform: translateY(24px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes entrarEtapa {
+            from {
+                opacity: 0;
+                transform: translateX(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes focoCodigo {
+            0% {
+                transform: scale(0.95);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes preencher {
+            0% {
+                transform: scale(0.92);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes tremer {
+            0%, 100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-3px);
+            }
+
+            75% {
+                transform: translateX(3px);
+            }
+        }
+
+        /* =========================================
+           RESPONSIVIDADE
+        ========================================= */
+
+        @media (max-width: 380px) {
+            .pagina {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            .cartao {
+                padding: 25px 17px 19px;
+                border-radius: 23px;
+            }
+
+            .titulo {
+                font-size: 24px;
+            }
+
+            .codigo-caixas {
+                gap: 6px;
+            }
+
+            .codigo-caixa {
+                height: 49px;
+                font-size: 21px;
+                border-radius: 11px;
+            }
+        }
+
+        @media (max-height: 740px) {
+            .pagina {
+                justify-content: flex-start;
+            }
+
+            .topo {
+                margin-top: 12px;
+                margin-bottom: 18px;
+            }
+
+            .logo {
+                width: 42px;
+                height: 42px;
+            }
+
+            .icone-principal {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 15px;
+            }
+
+            .cartao {
+                padding-top: 23px;
+            }
+
+            .descricao {
+                margin-bottom: 20px;
+            }
+
+            .rodape {
+                margin-top: 15px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================
+         VÍDEO DE FUNDO
+    ========================================= -->
+
+    <div class="fundo-video">
+        <video
+            id="videoFundo"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+        >
+            <source
+                src="VID-20261001-WA7966.mp4"
+                type="video/mp4"
+            >
+        </video>
+    </div>
+
+    <div class="luz-fundo"></div>
+
+    <!-- =========================================
+         CONTEÚDO
+    ========================================= -->
+
+    <main class="pagina">
+
+        <header class="topo">
+            <div class="marca">
+
+            
+                <img
+                    class="logo"
+                    src="IMG-20260923-WA4190.jpg"
+                    alt="Logo RunWorld"
+                >
+
+                <div class="marca-texto">
+                    <div class="marca-nome">
+                        Run<span>World</span>
+                    </div>
+
+                    <div class="marca-frase">
+                        Explore. Corra. Conquiste.
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+        <section class="cartao">
+
+            <div class="icone-principal">
+                <i data-lucide="shield-check"></i>
+            </div>
+
+            <h1 class="titulo" id="tituloPagina">
+                Recuperar acesso
+            </h1>
+
+            <p class="descricao" id="descricaoPagina">
+                Vamos confirmar sua identidade para você criar
+                uma nova senha e voltar ao RunWorld.
+            </p>
+
+            <div class="etapas" aria-label="Etapas da recuperação">
+                <span class="etapa ativa" id="etapa1"></span>
+                <span class="etapa" id="etapa2"></span>
+            </div>
+
+            <div
+                class="mensagem"
+                id="mensagem"
+                role="status"
+                aria-live="polite"
+            ></div>
+
+            <!-- =====================================
+                 ETAPA 1: EMAIL E CÓDIGO
+            ====================================== -->
+
+            <form id="formCodigo" class="formulario tela-etapa">
+
+                <div class="campo-grupo">
+
+                    <label class="rotulo" for="email">
+                        E-mail da sua conta
+                    </label>
+
+                    <input
+                        class="campo"
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="voce@exemplo.com"
+                        autocomplete="email"
+                        autocapitalize="none"
+                        required
+                    >
+
+                </div>
+
+                <div class="campo-grupo">
+
+                    <label class="rotulo">
+                        Código de recuperação
+                    </label>
+
+                    <p class="codigo-legenda">
+                        Digite os seis números enviados para seu e-mail.
+                    </p>
+
+                    <div
+                        class="codigo-caixas"
+                        id="codigoCaixas"
+                        aria-label="Código de seis dígitos"
+                    >
+                        <input class="codigo-caixa" type="text"
+                            inputmode="numeric" pattern="[0-9]*"
+                            maxlength="1" autocomplete="one-time-code"
+                            aria-label="Primeiro número" required>
+
+                        <input class="codigo-caixa" type="text"
+                            inputmode="numeric" pattern="[0-9]*"
+                            maxlength="1" aria-label="Segundo número"
+                            required>
+
+                        <input class="codigo-caixa" type="text"
+                            inputmode="numeric" pattern="[0-9]*"
+                            maxlength="1" aria-label="Terceiro número"
+                            required>
+
+                        <input class="codigo-caixa" type="text"
+                            inputmode="numeric" pattern="[0-9]*"
+                            maxlength="1" aria-label="Quarto número"
+                            required>
+
+                        <input class="codigo-caixa" type="text"
+                            inputmode="numeric" pattern="[0-9]*"
+                            maxlength="1" aria-label="Quinto número"
+                            required>
+
+                        <input class="codigo-caixa" type="text"
+                            inputmode="numeric" pattern="[0-9]*"
+                            maxlength="1" aria-label="Sexto número"
+                            required>
+                    </div>
+
+                    <div class="codigo-ajuda">
+                        <span>Não recebeu o código?</span>
+
+                        <button
+                            type="button"
+                            class="botao-texto"
+                            id="reenviarCodigo"
+                        >
+                            Reenviar código
+                        </button>
+                    </div>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="botao-principal"
+                    id="botaoVerificar"
+                >
+                    <span>Verificar código</span>
+                    <i data-lucide="arrow-right"></i>
+                </button>
+
+                <a href="login.html" class="botao-voltar">
+                    <i data-lucide="arrow-left"></i>
+                    Voltar para entrar
+                </a>
+
+            </form>
+
+            <!-- =====================================
+                 ETAPA 2: NOVA SENHA
+            ====================================== -->
+
+            <form
+                id="formSenha"
+                class="formulario tela-etapa oculto"
+            >
+
+                <div class="campo-grupo">
+
+                    <label class="rotulo" for="novaSenha">
+                        Nova senha
+                    </label>
+
+                    <div class="campo-senha">
+
+                        <input
+                            class="campo"
+                            type="password"
+                            id="novaSenha"
+                            name="novaSenha"
+                            placeholder="Crie uma senha segura"
+                            autocomplete="new-password"
+                            minlength="8"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="mostrar-senha"
+                            data-alvo="novaSenha"
+                            aria-label="Mostrar senha"
+                        >
+                            <i data-lucide="eye"></i>
+                        </button>
+
+                    </div>
+
+                    <p class="requisitos">
+                        Use pelo menos 8 caracteres.
+                    </p>
+
+                </div>
+
+                <div class="campo-grupo">
+
+                    <label class="rotulo" for="confirmarSenha">
+                        Confirmar nova senha
+                    </label>
+
+                    <div class="campo-senha">
+
+                        <input
+                            class="campo"
+                            type="password"
+                            id="confirmarSenha"
+                            name="confirmarSenha"
+                            placeholder="Digite a senha novamente"
+                            autocomplete="new-password"
+                            minlength="8"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="mostrar-senha"
+                            data-alvo="confirmarSenha"
+                            aria-label="Mostrar confirmação da senha"
+                        >
+                            <i data-lucide="eye"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="botao-principal"
+                    id="botaoSalvar"
+                >
+                    <i data-lucide="lock-keyhole"></i>
+                    <span>Salvar nova senha</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="botao-voltar"
+                    id="voltarCodigo"
+                >
+                    <i data-lucide="arrow-left"></i>
+                    Voltar para o código
+                </button>
+
+            </form>
+
+        </section>
+
+        <footer class="rodape">
+            Sua segurança é importante para nós.<br>
+            <span>RUNWORLD</span> • Sua próxima conquista começa aqui.
+        </footer>
+
+    </main>
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================= -->
+
+    <script>
+        (() => {
+            "use strict";
+
+            const emailInput = document.getElementById("email");
+
+            const formCodigo = document.getElementById("formCodigo");
+            const formSenha = document.getElementById("formSenha");
+
+            const tituloPagina = document.getElementById("tituloPagina");
+            const descricaoPagina = document.getElementById("descricaoPagina");
+            const mensagem = document.getElementById("mensagem");
+
+            const codigoCaixas = document.getElementById("codigoCaixas");
+
+            const caixas = Array.from(
+                document.querySelectorAll(".codigo-caixa")
+            );
+
+            const botaoVerificar =
+                document.getElementById("botaoVerificar");
+
+            const botaoSalvar =
+                document.getElementById("botaoSalvar");
+
+            const botaoReenviar =
+                document.getElementById("reenviarCodigo");
+
+            const novaSenha =
+                document.getElementById("novaSenha");
+
+            const confirmarSenha =
+                document.getElementById("confirmarSenha");
+
+            const etapa1 = document.getElementById("etapa1");
+            const etapa2 = document.getElementById("etapa2");
+
+            const voltarCodigo =
+                document.getElementById("voltarCodigo");
+
+            const supabase = window.supabaseClient;
+
+            let codigoVerificado = false;
+            let enviandoCodigo = false;
+
+            /* =====================================
+               CONEXÃO
+            ====================================== */
+
+            function clienteDisponivel() {
+                if (!supabase) {
+                    mostrarMensagem(
+                        "Não foi possível conectar ao Supabase. Confira o arquivo config.js.",
+                        "erro"
+                    );
+
+                    return false;
+                }
+
+                return true;
+            }
+
+            /* =====================================
+               MENSAGENS
+            ====================================== */
+
+            function mostrarMensagem(texto, tipo = "info") {
+                mensagem.className = "mensagem " + tipo;
+
+                const icone = document.createElement("i");
+
+                icone.setAttribute(
+                    "data-lucide",
+                    tipo === "erro"
+                        ? "alert-circle"
+                        : tipo === "sucesso"
+                            ? "check-circle-2"
+                            : "info"
+                );
+
+                const conteudo = document.createElement("span");
+                conteudo.textContent = texto;
+
+                mensagem.replaceChildren(icone, conteudo);
+
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }
+
+            function limparMensagem() {
+                mensagem.className = "mensagem";
+                mensagem.replaceChildren();
+            }
+
+            /* =====================================
+               VÍDEO DE FUNDO
+            ====================================== */
+
+            const video = document.getElementById("videoFundo");
+
+            video.play().catch(() => {
+                // O fundo escuro continua funcionando
+                // caso o navegador bloqueie o autoplay.
+            });
+
+            /* =====================================
+               EMAIL NA URL
+            ====================================== */
+
+            const parametros = new URLSearchParams(
+                window.location.search
+            );
+
+            const emailDaUrl = parametros.get("email");
+
+            if (emailDaUrl) {
+                emailInput.value = emailDaUrl;
+            }
+
+            /* =====================================
+               CÓDIGO DE SEIS NÚMEROS
+            ====================================== */
+
+            function obterCodigo() {
+                return caixas.map(caixa => caixa.value).join("");
+            }
+
+            function limparCodigo() {
+                caixas.forEach(caixa => {
+                    caixa.value = "";
+                    caixa.classList.remove("preenchida");
+                });
+
+                codigoCaixas.classList.remove("erro");
+            }
+
+            function focarPrimeiraCaixaVazia() {
+                const vazia = caixas.find(caixa => !caixa.value);
+
+                if (vazia) {
+                    vazia.focus();
+                } else {
+                    caixas[caixas.length - 1].focus();
+                }
+            }
+
+            function preencherCodigo(texto) {
+                const digitos = texto
+                    .replace(/\D/g, "")
+                    .slice(0, 6);
+
+                caixas.forEach((caixa, indice) => {
+                    caixa.value = digitos[indice] || "";
+
+                    caixa.classList.toggle(
+                        "preenchida",
+                        caixa.value.length === 1
+                    );
+                });
+
+                codigoCaixas.classList.remove("erro");
+
+                if (digitos.length === 6) {
+                    caixas[5].focus();
+                } else {
+                    caixas[digitos.length]?.focus();
+                }
+            }
+
+            caixas.forEach((caixa, indice) => {
+
+                caixa.addEventListener("input", () => {
+                    limparMensagem();
+
+                    const numeros = caixa.value.replace(/\D/g, "");
+
+                    if (numeros.length > 1) {
+                        preencherCodigo(numeros);
+                        return;
+                    }
+
+                    caixa.value = numeros.slice(0, 1);
+
+                    caixa.classList.toggle(
+                        "preenchida",
+                        caixa.value.length === 1
+                    );
+
+                    codigoCaixas.classList.remove("erro");
+
+                    if (caixa.value && indice < caixas.length - 1) {
+                        caixas[indice + 1].focus();
+                    }
+                });
+
+                caixa.addEventListener("keydown", evento => {
+
+                    if (
+                        evento.key === "Backspace" &&
+                        !caixa.value &&
+                        indice > 0
+                    ) {
+                        caixas[indice - 1].focus();
+                        caixas[indice - 1].value = "";
+
+                        caixas[indice - 1].classList.remove(
+                            "preenchida"
+                        );
+
+                        evento.preventDefault();
+                    }
+
+                    if (
+                        evento.key === "ArrowLeft" &&
+                        indice > 0
+                    ) {
+                        caixas[indice - 1].focus();
+                    }
+
+                    if (
+                        evento.key === "ArrowRight" &&
+                        indice < caixas.length - 1
+                    ) {
+                        caixas[indice + 1].focus();
+                    }
+                });
+
+                caixa.addEventListener("paste", evento => {
+                    evento.preventDefault();
+
+                    const texto = evento.clipboardData
+                        .getData("text")
+                        .replace(/\D/g, "");
+
+                    preencherCodigo(texto);
+                });
+
+            });
+
+            /* =====================================
+               BOTÃO DE CARREGAMENTO
+            ====================================== */
+
+            function definirCarregamento(
+                botao,
+                carregando,
+                texto = ""
+            ) {
+                botao.disabled = carregando;
+
+                if (carregando) {
+                    botao.innerHTML = `
+                        <span class="spinner"
+                            style="
+                                width:17px;
+                                height:17px;
+                                border:2px solid rgba(0,0,0,.25);
+                                border-top-color:#031109;
+                                border-radius:50%;
+                                display:inline-block;
+                                animation:girar .7s linear infinite;
+                            ">
+                        </span>
+                        <span>${texto}</span>
+                    `;
+
+                    if (!document.getElementById("estiloSpinner")) {
+                        const estilo = document.createElement("style");
+
+                        estilo.id = "estiloSpinner";
+
+                        estilo.textContent = `
+                            @keyframes girar {
+                                to { transform: rotate(360deg); }
+                            }
+                        `;
+
+                        document.head.appendChild(estilo);
+                    }
+
+                    return;
+                }
+
+                if (botao === botaoVerificar) {
+                    botao.innerHTML = `
+                        <span>Verificar código</span>
+                        <i data-lucide="arrow-right"></i>
+                    `;
+                } else {
+                    botao.innerHTML = `
+                        <i data-lucide="lock-keyhole"></i>
+                        <span>Salvar nova senha</span>
+                    `;
+                }
+
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }
+
+            /* =====================================
+               ETAPAS
+            ====================================== */
+
+            function abrirEtapaSenha() {
+                formCodigo.classList.add("oculto");
+                formSenha.classList.remove("oculto");
+
+                etapa1.classList.add("ativa");
+                etapa2.classList.add("ativa");
+
+                tituloPagina.textContent = "Crie uma nova senha";
+
+                descricaoPagina.textContent =
+                    "Código confirmado! Agora escolha uma senha segura para sua conta.";
+
+                limparMensagem();
+
+                setTimeout(() => novaSenha.focus(), 200);
+            }
+
+            function voltarParaCodigo() {
+                formSenha.classList.add("oculto");
+                formCodigo.classList.remove("oculto");
+
+                etapa1.classList.add("ativa");
+                etapa2.classList.remove("ativa");
+
+                tituloPagina.textContent = "Recuperar acesso";
+
+                descricaoPagina.textContent =
+                    "Digite o código de seis números enviado para seu e-mail.";
+
+                limparMensagem();
+                focarPrimeiraCaixaVazia();
+            }
+
+            voltarCodigo.addEventListener("click", () => {
+                voltarParaCodigo();
+            });
+
+            /* =====================================
+               VERIFICAR CÓDIGO
+            ====================================== */
+
+            formCodigo.addEventListener("submit", async evento => {
+                evento.preventDefault();
+
+                limparMensagem();
+
+                if (!clienteDisponivel()) {
+                    return;
+                }
+
+                const email = emailInput.value.trim();
+                const codigo = obterCodigo();
+
+                if (!email) {
+                    mostrarMensagem(
+                        "Digite o e-mail da sua conta.",
+                        "erro"
+                    );
+
+                                  return;
+                }
+
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    mostrarMensagem(
+                        "Digite um endereço de e-mail válido.",
+                        "erro"
+                    );
+
+                    emailInput.focus();
+                    return;
+                }
+
+                if (codigo.length !== 6) {
+                    codigoCaixas.classList.add("erro");
+
+                    mostrarMensagem(
+                        "Digite os seis números do código.",
+                        "erro"
+                    );
+
+                    focarPrimeiraCaixaVazia();
+                    return;
+                }
+
+                definirCarregamento(
+                    botaoVerificar,
+                    true,
+                    "Verificando código..."
+                );
+
+                try {
+                    const { data, error } =
+                        await supabase.auth.verifyOtp({
+                            email: email,
+                            token: codigo,
+                            type: "recovery"
+                        });
+
+                    if (error) {
+                        throw error;
+                    }
+
+                    if (!data || !data.session) {
+                        throw new Error(
+                            "Não foi possível confirmar o código. Solicite um novo e tente novamente."
+                        );
+                    }
+
+                    codigoVerificado = true;
+
+                    abrirEtapaSenha();
+
+                    mostrarMensagem(
+                        "Código confirmado! Agora crie sua nova senha.",
+                        "sucesso"
+                    );
+
+                } catch (erro) {
+                    console.error(
+                        "Erro ao verificar código:",
+                        erro
+                    );
+
+                    codigoCaixas.classList.add("erro");
+
+                    mostrarMensagem(
+                        "Código inválido ou expirado. Confira os números ou solicite outro código.",
+                        "erro"
+                    );
+
+                } finally {
+                    definirCarregamento(
+                        botaoVerificar,
+                        false
+                    );
+                }
+            });
+
+            /* =====================================
+               REENVIAR CÓDIGO
+            ====================================== */
+
+            botaoReenviar.addEventListener(
+                "click",
+                async () => {
+                    limparMensagem();
+
+                    if (!clienteDisponivel()) {
+                        return;
+                    }
+
+                    if (enviandoCodigo) {
+                        return;
+                    }
+
+                    const email = emailInput.value.trim();
+
+                    if (
+                        !email ||
+                        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+                    ) {
+                        mostrarMensagem(
+                            "Digite um e-mail válido antes de solicitar outro código.",
+                            "erro"
+                        );
+
+                        emailInput.focus();
+                        return;
+                    }
+
+                    enviandoCodigo = true;
+
+                    botaoReenviar.disabled = true;
+                    botaoReenviar.textContent = "Enviando...";
+
+                    try {
+                        const { error } =
+                            await supabase.auth.resetPasswordForEmail(
+                                email
+                            );
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        limparCodigo();
+
+                        mostrarMensagem(
+                            "Solicitação enviada. Confira sua caixa de entrada e a pasta de spam.",
+                            "sucesso"
+                        );
+
+                        focarPrimeiraCaixaVazia();
+
+                    } catch (erro) {
+                        console.error(
+                            "Erro ao reenviar código:",
+                            erro
+                        );
+
+                        mostrarMensagem(
+                            "Não foi possível solicitar outro código. Tente novamente em instantes.",
+                            "erro"
+                        );
+
+                    } finally {
+                        enviandoCodigo = false;
+
+                        botaoReenviar.disabled = false;
+                        botaoReenviar.textContent =
+                            "Reenviar código";
+                    }
+                }
+            );
+
+            /* =====================================
+               MOSTRAR E OCULTAR SENHA
+            ====================================== */
+
+            document
+                .querySelectorAll(".mostrar-senha")
+                .forEach(botao => {
+
+                    botao.addEventListener("click", () => {
+                        const alvoId =
+                            botao.getAttribute("data-alvo");
+
+                        const campo =
+                            document.getElementById(alvoId);
+
+                        if (!campo) {
+                            return;
+                        }
+
+                        const mostrar =
+                            campo.type === "password";
+
+                        campo.type = mostrar
+                            ? "text"
+                            : "password";
+
+                        botao.innerHTML = `
+                            <i data-lucide="${
+                                mostrar ? "eye-off" : "eye"
+                            }"></i>
+                        `;
+
+                        botao.setAttribute(
+                            "aria-label",
+                            mostrar
+                                ? "Ocultar senha"
+                                : "Mostrar senha"
+                        );
+
+                        if (window.lucide) {
+                            window.lucide.createIcons();
+                        }
+                    });
+
+                });
+
+            /* =====================================
+               SALVAR NOVA SENHA
+            ====================================== */
+
+            formSenha.addEventListener(
+                "submit",
+                async evento => {
+                    evento.preventDefault();
+
+                    limparMensagem();
+
+                    if (!clienteDisponivel()) {
+                        return;
+                    }
+
+                    if (!codigoVerificado) {
+                        mostrarMensagem(
+                            "Primeiro, confirme o código de recuperação.",
+                            "erro"
+                        );
+
+                        voltarParaCodigo();
+                        return;
+                    }
+
+                    const senha = novaSenha.value;
+                    const confirmacao =
+                        confirmarSenha.value;
+
+                    if (senha.length < 8) {
+                        mostrarMensagem(
+                            "Sua senha precisa ter pelo menos 8 caracteres.",
+                            "erro"
+                        );
+
+                        novaSenha.focus();
+                        return;
+                    }
+
+                    if (senha !== confirmacao) {
+                        mostrarMensagem(
+                            "As senhas não coincidem. Confira os dois campos.",
+                            "erro"
+                        );
+
+                        confirmarSenha.focus();
+                        confirmarSenha.classList.add("erro-campo");
+
+                        return;
+                    }
+
+                    confirmarSenha.classList.remove(
+                        "erro-campo"
+                    );
+
+                    definirCarregamento(
+                        botaoSalvar,
+                        true,
+                        "Salvando senha..."
+                    );
+
+                    try {
+                        const { error } =
+                            await supabase.auth.updateUser({
+                                password: senha
+                            });
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        mostrarMensagem(
+                            "Senha alterada com sucesso! Você será encaminhado para entrar.",
+                            "sucesso"
+                        );
+
+                        botaoSalvar.innerHTML = `
+                            <i data-lucide="check-circle-2"></i>
+                            <span>Senha alterada!</span>
+                        `;
+
+                        if (window.lucide) {
+                            window.lucide.createIcons();
+                        }
+
+                        /*
+                         * Encerra a sessão de recuperação
+                         * para que a pessoa entre novamente.
+                         */
+                        await supabase.auth.signOut();
+
+                        setTimeout(() => {
+                            window.location.href = "login.html";
+                        }, 1800);
+
+                    } catch (erro) {
+                        console.error(
+                            "Erro ao salvar nova senha:",
+                            erro
+                        );
+
+                        mostrarMensagem(
+                            "Não foi possível alterar a senha. Confira o código e tente novamente.",
+                            "erro"
+                        );
+
+                        definirCarregamento(
+                            botaoSalvar,
+                            false
+                        );
+                    }
+                }
+            );
+
+            /* =====================================
+               ANIMAÇÕES E ESTADO INICIAL
+            ====================================== */
+
+            emailInput.addEventListener("input", () => {
+                limparMensagem();
+            });
+
+            novaSenha.addEventListener("input", () => {
+                novaSenha.classList.remove("erro-campo");
+            });
+
+            confirmarSenha.addEventListener("input", () => {
+                confirmarSenha.classList.remove(
+                    "erro-campo"
+                );
+            });
+
+            caixas.forEach(caixa => {
+                caixa.addEventListener("focus", () => {
+                    caixa.classList.add("em-foco");
+                });
+
+                caixa.addEventListener("blur", () => {
+                    caixa.classList.remove("em-foco");
+                });
+            });
+
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+
+        })();
+    </script>
+
+</body>
+</html>
