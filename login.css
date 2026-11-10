@@ -892,3 +892,50 @@ input:focus-visible {
         transition-duration: 0.01ms !important;
     }
 }
+/* =====================================================
+   LINK CRIAR CONTA — ÍCONE LUCIDE
+   ===================================================== */
+
+.login-link-cadastro {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    color: var(--login-verde);
+    font-weight: 850;
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease,
+        gap 0.2s ease;
+}
+
+/* Ícone SVG criado pelo Lucide */
+.login-link-cadastro svg {
+    display: block;
+    flex-shrink: 0;
+
+    width: 16px;
+    height: 16px;
+
+    stroke-width: 2.4;
+    color: currentColor;
+
+    transition: transform 0.2s ease;
+}
+
+.login-link-cadastro:hover {
+    color: #51ffa4;
+    gap: 9px;
+}
+
+.login-link-cadastro:hover svg {
+    transform: translateX(3px);
+}
+
+.login-link-cadastro:focus-visible {
+    outline: 2px solid var(--login-verde);
+    outline-offset: 5px;
+    border-radius: 4px;
+}
