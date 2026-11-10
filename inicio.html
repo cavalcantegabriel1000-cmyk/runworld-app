@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -12,6 +13,8 @@
     <meta name="theme-color" content="#050807">
 
     <title>RunWorld — Explore. Corra. Conquiste.</title>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
         :root {
@@ -373,7 +376,7 @@
                     href="cadastro.html"
                 >
                     Criar minha conta
-                    <span class="seta" aria-hidden="true">→</span>
+                    <i data-lucide="arrow-right" aria-hidden="true"></i>
                 </a>
 
                 <!-- ABRE O LOGIN -->
@@ -393,6 +396,14 @@
         </section>
 
     </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+        });
+    </script>
 
 </body>
 
