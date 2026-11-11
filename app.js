@@ -1534,6 +1534,7 @@ async function sairDaConta() {
 
 window.sairDaConta = sairDaConta;
 
+
 /* ===================== NOTIFICAÇÕES ===================== */
 
 function configurarNotificacoes() {
@@ -1555,16 +1556,13 @@ function configurarNotificacoes() {
 
     elemento("fundoNotificacoes")?.addEventListener("click", evento => {
         if (evento.target !== elemento("fundoNotificacoes")) return;
+
         if (typeof window.fecharPainelNotificacoes === "function") {
             window.fecharPainelNotificacoes();
         } else {
             fecharPainel("fundoNotificacoes");
         }
     });
-
-    if (usuarioAtual && typeof window.inicializarNotificacoes === "function") {
-        window.inicializarNotificacoes(usuarioAtual.id);
-    }
 }
 
 /* ===================== BOTÕES E INICIALIZAÇÃO ===================== */
