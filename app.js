@@ -1454,6 +1454,7 @@ function configurarOpcoesExtras() {
     });
 }
 
+
 /* ===================== SAIR DA CONTA ===================== */
 
 async function sairDaConta() {
@@ -1498,6 +1499,16 @@ async function sairDaConta() {
         }
 
     } finally {
+
+        // Encerra o canal Realtime das notificações.
+        try {
+            if (window.RunWorldNotificacoes?.encerrar) {
+                await window.RunWorldNotificacoes.encerrar();
+            }
+        } catch (erro) {
+            console.warn("Erro ao encerrar notificações:", erro);
+        }
+
         // Remove somente a sessão deste projeto neste dispositivo.
         try {
             const chaveSessao = "sb-tysxervuxkedluqkhxsw-auth-token";
@@ -1533,6 +1544,7 @@ async function sairDaConta() {
 }
 
 window.sairDaConta = sairDaConta;
+
 
 
 /* ===================== NOTIFICAÇÕES ===================== */
