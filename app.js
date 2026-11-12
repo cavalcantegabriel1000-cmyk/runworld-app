@@ -154,7 +154,46 @@ async function verificarSessao() {
         window.location.replace("inicio.html");
     }
 }
+/* ===================== REGISTRO DO TOKEN PUSH ===================== */
 
+async function salvarTokenPush(token) {
+    const supabase = window.supabaseClient;
+
+    if (!supabase || !usuarioAtual || !token) {
+        console.warn("RunWorld Push: dados insuficientes para salvar o token.");
+        return;
+    }
+
+    try {
+        const { error } = await supabase
+            .from("dispositivos_push")
+            .upsert({
+                usuario_id: usuarioAtual.id,
+                token: token,
+                plataforma: "android",
+                atualizado_em: new Date().toISOString()
+            }, {
+                onConflict: "token"
+            });
+
+        if (error) throw error;
+
+        console.log("RunWorld Push: token salvo no Supabase.");
+        mostrarAviso("Notificações do RunWorld configuradas!");
+
+    } catch (erro) {
+        console.error("Erro ao salvar token Push:", erro);
+    }
+}
+
+/* Recebe o token enviado pelo módulo Firebase/Capacitor. */
+window.addEventListener("runworld:push-token", evento => {
+    const token = evento.detail?.token;
+
+    if (token) {
+        salvarTokenPush(token);
+    }
+});
 /* ===================== PERFIL ===================== */
 
 async function carregarPerfil() {
