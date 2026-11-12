@@ -1644,8 +1644,17 @@ async function iniciarRunWorld() {
     configurarNotificacoes();
 
     await verificarSessao();
-    restaurarAtividadeEmAndamento();
 
+// Inicializa as notificações Push do Android.
+if (
+    usuarioAtual &&
+    window.RunWorldPush &&
+    typeof window.RunWorldPush.iniciar === "function"
+) {
+    await window.RunWorldPush.iniciar();
+}
+
+restaurarAtividadeEmAndamento();
     if (usuarioAtual && typeof window.inicializarNotificacoes === "function") {
         window.inicializarNotificacoes(usuarioAtual.id);
     }
